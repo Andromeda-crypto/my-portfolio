@@ -601,3 +601,28 @@ nav a:hover {
   align-items: center;
   gap: 10px;
 }
+
+.about-content .tagline {
+  font-size: 20px;
+  font-weight: 500;
+  font-style: italic;
+  color: #6d5844;
+  margin-bottom: 28px;
+  position: relative;
+  padding-left: 12px;
+  border-left: 4px solid #d4b78b;
+  line-height: 1.6;
+}
+
+.about-content .tagline::after {
+  content: "|";
+  animation: blink 1s step-end infinite;
+  margin-left: 6px;
+  opacity: 0.5;
+  font-weight: 300;
+}
+
+@keyframes blink {
+  from, to { opacity: 0; }
+  50% { opacity: 1; }
+}
