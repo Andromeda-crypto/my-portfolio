@@ -298,7 +298,6 @@ nav a:hover {
   font-weight: bold;
 }
 
-
 /* Decorative Shape */
 .about-bg-shape {
   position: absolute;
@@ -378,7 +377,6 @@ nav a:hover {
   border-bottom: 1px solid #a28866;
 }
 
-/* Call-to-Action Button */
 .contact-btn {
   background-color: #bfa980;
   color: #fff;
@@ -398,7 +396,6 @@ nav a:hover {
   box-shadow: 0 8px 22px rgba(164, 140, 104, 0.3);
 }
 
-/* Decorative Element */
 .contact-deco-circle {
   position: absolute;
   left: -80px;
@@ -437,7 +434,6 @@ nav a:hover {
   color: #6e5d4d;
 }
 
-/* Grid Layout */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -446,7 +442,6 @@ nav a:hover {
   margin: 0 auto;
 }
 
-/* Project Card */
 .project-card {
   background: #fffaf5;
   padding: 30px;
@@ -474,7 +469,6 @@ nav a:hover {
   color: #5e5244;
 }
 
-/* Project Links */
 .project-links {
   display: flex;
   gap: 16px;
@@ -537,7 +531,7 @@ nav a:hover {
 }
 
 .upload-btn:hover {
-  background-color: #d2b18c
+  background-color: #d2b18c;
 }
 
 /* Relevant Courses Section */
@@ -583,6 +577,7 @@ nav a:hover {
   color: #5d4c3a;
   line-height: 1.6;
 }
+
 .course-badge {
   display: inline-block;
   background-color: #f0dac3;
@@ -619,10 +614,37 @@ nav a:hover {
   animation: blink 1s step-end infinite;
   margin-left: 6px;
   opacity: 0.5;
-  font-weight: 300;
 }
 
 @keyframes blink {
   from, to { opacity: 0; }
+  50% { opacity: 1; }
+}
+/* Sports Section Intro */
+.sports-intro {
+  font-size: 18px;
+  font-style: italic;
+  color: #5d4c3a; /* Slightly muted, warm tone */
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  text-align: center;
+  line-height: 1.7;
+  border-left: 4px solid #bfa980; /* subtle accent bar */
+  padding-left: 16px;
+  background-color: #fff6ee; /* light background for emphasis */
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(191, 169, 128, 0.1);
+}
+
+/* Optional subtle animation to catch the eye */
+.sports-intro::after {
+  content: "⚡";
+  display: inline-block;
+  margin-left: 8px;
+  animation: blink-spark 1.5s step-end infinite;
+}
+
+@keyframes blink-spark {
+  0%, 100% { opacity: 0; }
   50% { opacity: 1; }
 }

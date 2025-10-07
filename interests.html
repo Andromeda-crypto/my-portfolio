@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Om Anand | Interests</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #f8f5f0;
+      color: #2e2e2e;
+      line-height: 1.7;
+      scroll-behavior: smooth;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Sora', sans-serif;
+      font-weight: 700;
+    }
+
+    .interests-section {
+      max-width: 950px;
+      margin: 120px auto 80px;
+      padding: 0 30px;
+    }
+
+    .interests-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .interests-header h2 {
+      font-size: 38px;
+      color: #8b7359;
+      margin-bottom: 12px;
+    }
+
+    .interests-header p {
+      font-size: 18px;
+      color: #5e5244;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background-color: #fff6ee;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(191, 169, 128, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px rgba(191, 169, 128, 0.12);
+    }
+
+    .card h3 {
+      font-size: 22px;
+      margin-bottom: 14px;
+      color: #5b4a3b;
+      position: relative;
+    }
+
+    .card h3::after {
+      content: "";
+      display: block;
+      width: 50px;
+      height: 3px;
+      background-color: #bfa980;
+      border-radius: 3px;
+      margin-top: 6px;
+    }
+
+    .card h4 {
+      font-size: 20px;
+      margin-top: 15px;
+      margin-bottom: 10px;
+      color: #6e5d4d;
+    }
+
+    .card p, .card ul {
+      font-size: 16px;
+      color: #5e5244;
+      line-height: 1.6;
+    }
+
+    .card ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+
+    /* Football Highlight */
+    .football-card {
+      background: linear-gradient(90deg, #fdf3e7, #fef5e1);
+      border-left: 5px solid #bfa980;
+    }
+
+    /* Sports Section Header */
+    .sports-intro {
+      font-size: 18px;
+      margin-bottom: 40px;
+      color: #5e5244;
+      text-align: center;
+    }
+
+    /* Mathematics & Research Icon */
+    .interest-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .interest-icon {
+      font-size: 40px;
+      flex-shrink: 0;
+      color: #bfa980;
+    }
+
+    .interest-content h3 {
+      margin-bottom: 10px;
+    }
+
+    .interest-content h4 {
+      font-size: 18px;
+      color: #7e664b;
+      margin-top: 15px;
+    }
+
+    .interest-content p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #5e5244;
+    }
+
+    /* Currently Working Subsection */
+    .currently-working {
+      background-color: #fdf7f0; 
+      border-left: 4px solid #bfa980;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    @media screen and (max-width: 720px) {
+      .interest-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .interest-icon {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<section class="interests-section">
+  <div class="interests-header">
+    <h2>Interests & Passions</h2>
+    <p>Beyond coding and studies, I pursue activities that sharpen my mind, body, and creativity.</p>
+  </div>
+
+  <!-- Cards Grid -->
+  <div class="cards-grid">
+
+    <!-- Currently Reading -->
+    <div class="card">
+      <h3>Currently Reading 📖</h3>
+      <ul>
+        <li>"The Confidence Game" by Maria Konnikova</li>
+        <li>"Sapiens" by Yuval Noah Harari</li>
+        <li>"The Pragmatic Programmer" by Andrew Hunt & David Thomas</li>
+      </ul>
+    </div>
+
+    <!-- Favorites -->
+    <div class="card">
+      <h3>Favorites ⭐</h3>
+      <ul>
+        <li>"Man's Search for Meaning" by Viktor Frankl</li>
+        <li>"Meditations" by Marcus Aurelius</li>
+        <li>"The Alchemist" by Paulo Coelho</li>
+        <li>"1984" by George Orwell</li>
+      </ul>
+    </div>
+
+    <!-- Mathematics/Research -->
+    <div class="card">
+      <div class="interest-item">
+        <div class="interest-icon">🧮</div>
+        <div class="interest-content">
+          <h3>Mathematics & Research</h3>
+          <p>
+            Mathematics is a world I love to explore beyond coursework. I’m fascinated by statistics, probability, combinatorics, and the ways these fields interconnect in problem-solving and modeling complex systems. Diving into proofs, patterns, and abstract reasoning sharpens my analytical thinking and creativity.
+          </p>
+          <h4>Currently Working On 🔍</h4>
+          <div class="currently-working">
+            <p>
+              I’m exploring topics related to functional analysis and game theory, running small simulations and planning research projects to uncover new insights. This ongoing exploration allows me to experiment with advanced concepts while connecting them to computational and practical applications.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Sports Section -->
+<section class="interests-section">
+  <h2>Sports & Games</h2>
+  <p class="sports-intro">
+    Sports are a huge part of who I am—whether it’s playing, watching, or trying something new. I love keeping in touch with the ones I know best, while never backing down from exploring new challenges. It’s more than fitness—it’s curiosity, discipline, and joy in action.
+  </p>
+
+  <div class="cards-grid">
+    <div class="card football-card">
+      <h3>Football ⚽</h3>
+      <p>I live and breathe football—both as a player and a fan. From intense matches to following top leagues, the sport fuels my energy and strategic thinking. Football isn’t just a game; it’s my passion.</p>
+    </div>
+
+    <div class="card">
+      <h3>Chess ♟️</h3>
+      <p>I love testing wits across the 64 squares. Sometimes it’s strategy, sometimes just fun. Up for a challenge? Find me on <a href="https://www.chess.com/member/your-username" target="_blank">Chess.com</a>!</p>
+    </div>
+
+    <div class="card">
+      <h3>Swimming 🏊‍♂️</h3>
+      <p>Whether it’s laps in the pool or floating under the sun, swimming helps me relax and refresh. Gliding through water is pure joy and calm.</p>
+    </div>
+
+    <div class="card">
+      <h3>Badminton 🏸</h3>
+      <p>Quick reflexes, sneaky smashes, and laughs with friends. Badminton is my go-to for fun competition and staying active.</p>
+    </div>
+
+    <div class="card">
+      <h3>Running 🏃‍♂️</h3>
+      <p>Running clears my mind and pushes limits. Solo sprints or long-distance challenges, it keeps me energized and focused.</p>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
