@@ -3,280 +3,553 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Om Anand | Portfolio</title>
-
-  <!-- Fonts: Sora (modern) + DM Sans (elegant body) -->
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <title>Om Anand | Engineering Dashboard</title>
+  <meta
+    name="description"
+    content="Portfolio of Om Anand — building intelligent systems across software and hardware."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="brand-text-block">
+          <p class="eyebrow">OM ANAND</p>
+          <p class="brand-subtitle">CS + Math | Robotics</p>
+        </div>
+      </div>
 
-  <!-- Navbar -->
-  <header>
-    <div class="nav-wrapper">
-      <h1 class="brand">Om Anand</h1>
-      <nav>
-        <a href="#about">About</a>
+      <nav class="nav-links">
+        <a href="#overview">Overview</a>
         <a href="#projects">Projects</a>
-        <a href="#upcoming">Upcoming</a>
+        <a href="#lab-log">Lab Log</a>
+        <a href="#capabilities">Capabilities</a>
         <a href="#contact">Contact</a>
-        <a href="interests.html">Interests</a> 
       </nav>
-    </div>
-  </header>
+    </header>
 
-  <!-- Hero Section -->
-  <section id="home" class="hero">
-    <div class="hero-content">
-      <h2>Crafting experiences <span class="accent">one line</span> of code at a time.</h2>
-      <p class="subtext">
-        I build intelligent, expressive, and functional digital experiences — with curiosity, empathy, and logic.
-      </p>
-      <div class="button-row">
-        <a href="#projects" class="cta primary">Explore Work</a>
-        <a href="#contact" class="cta secondary">Let’s Talk</a>
-      </div>
-    </div>
-    <div class="hero-decoration">
-      <div class="circle"></div>
-      <div class="grid-lines"></div>
-    </div>
-  </section>
+    <main>
+      <section class="hero-panel" id="overview">
+        <div class="hero-bg-grid"></div>
+        <div class="hero-bg-glow hero-bg-glow-left"></div>
+        <div class="hero-bg-glow hero-bg-glow-right"></div>
+      
+        <div class="hero-copy">
+          <p class="section-tag">SYSTEM OVERVIEW</p>
+      
+          <h1>
+            <span class="headline-line">I start from scratch when I can</span>
+            <span class="headline-line accent-line">— it’s the fastest way to understand</span>
+          </h1>
+      
+          <p class="hero-description">
+            Building echnical systems that connect sensing, computation, and execution —
+            from autonomous robotics and embedded sensing to simulation, decision systems,
+            and quantitative modeling.
+          </p>
+      
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#projects">View Modules</a>
+            <a class="btn btn-secondary" href="resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+            <a class="btn btn-secondary" href="#contact">Contact</a>
+          </div>
+      
+          <div class="hero-stats hero-stats-two">
+            <div class="stat-card">
+              <span class="stat-label">Focus</span>
+              <span class="stat-value">Robotics + SWE</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Building</span>
+              <span class="stat-value">Systems / Simulation / Embedded</span>
+            </div>
+          </div>
+      
+        <div class="hero-monitor">
+          <div class="monitor-frame-corner corner-tl"></div>
+          <div class="monitor-frame-corner corner-tr"></div>
+          <div class="monitor-frame-corner corner-bl"></div>
+          <div class="monitor-frame-corner corner-br"></div>
+      
+          <div class="monitor-header">
+            <span class="monitor-title">LIVE SYSTEM MONITOR</span>
+            <span class="monitor-status">ONLINE</span>
+          </div>
+      
+          <div class="signal-flow">
+            <div class="signal-node">
+              <span class="node-label">INPUT</span>
+              <p>Sensor Data / Market Params / Game State</p>
+            </div>
+      
+            <div class="signal-arrow">→</div>
+      
+            <div class="signal-node">
+              <span class="node-label">PROCESSING</span>
+              <p>Planning / Simulation / Optimization</p>
+            </div>
+      
+            <div class="signal-arrow">→</div>
+      
+            <div class="signal-node">
+              <span class="node-label">OUTPUT</span>
+              <p>Motion / Pricing / Strategy</p>
+            </div>
+          </div>
+      
+          <div class="monitor-grid">
+            <div class="monitor-card">
+              <span class="mini-label">Active Build</span>
+              <h3>Autonomous Navigation</h3>
+              <p>Perception, planning, control, and simulation in one closed loop.</p>
+            </div>
+      
+            <div class="monitor-card">
+              <span class="mini-label">Core Domain</span>
+              <h3>Systems Engineering</h3>
+              <p>Robotics, software infrastructure, and analytical modeling.</p>
+            </div>
+      
+            <div class="monitor-card highlight-card">
+              <span class="mini-label">Current Modules</span>
+              <ul>
+                <li>Autonomous Robot Navigation</li>
+                <li>Options Pricing Engine</li>
+                <li>Poker CFR Solver</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
 
-  <!-- About Section -->
-  <section id="about" class="about-section">
-    <div class="about-container">
-      <div class="about-heading">
-        <h2>About Me</h2>
-        <div class="line"></div>
-      </div>
-      <div class="about-content">
-        <p class="tagline">I like figuring out how things work — and making things that do.</p>
-        <p>
-          I'm a computer science student driven by curiosity and clarity. I believe in building things that are both 
-          <span class="highlight">useful</span> and <span class="highlight">beautiful</span> — tools that make life a little more elegant.
-        </p>
-        <p>
-          I like building things that feel natural to use — systems that quietly do what they’re meant to. Sometimes it’s a simple script, sometimes something bigger. But whether I’m tinkering alone at 2 AM or trying to debug that one stubborn bug, I’m mostly just chasing that feeling where everything clicks.
-        </p>
-        <p class="quote">"I just try to learn something every day"</p>
-      </div>
-    </div>
-    <div class="about-bg-shape"></div>
+      <section class="content-section profile-section" id="about">
+        <div class="section-heading">
+          <p class="section-tag">PROFILE</p>
+          <h2>A bit about me.</h2>
+        </div>
+      
+        <div class="profile-grid">
+          <article class="profile-main">
+            <p class="profile-lead">
+              I’m Om Anand — a computer science and mathematics student who likes building systems that actually do something.
+            </p>
+          
+            <div class="profile-highlight-line">
+              <span class="profile-highlight-text">I like figuring out how things work — and making things that do.</span>
+              <span class="blink-cursor" aria-hidden="true"></span>
+            </div>
+          
+            <p>
+              Most of my work sits at the intersection of robotics, software engineering, and mathematical modeling. I’m not that interested in just wiring things together — I’d rather understand how they work underneath and build them from scratch when possible.
+            </p>
+          
+            <p>
+              That’s led me to projects like writing my own physics engine for robot simulation, building motion planners and control systems, implementing numerical models for pricing, and working through decision algorithms like CFR.
+            </p>
+          
+            <p>
+              I enjoy problems where code has to interact with constraints — physical, probabilistic, or computational — and where getting something to work means thinking through the system end to end.
+            </p>
+          
+            <p class="profile-quote">
+              “I just try to learn something every day.”
+            </p>
+          </article>
+      
+          <aside class="profile-side">
+            <div class="profile-panel">
+              <span class="mini-label">Identity</span>
+              <h3>Systems Builder</h3>
+              <p>I like working across software, math, and real-world systems.</p>
+            </div>
+      
+            <div class="profile-panel">
+              <span class="mini-label">Approach</span>
+              <h3>First Principles</h3>
+              <p>I like to know how things work inside-out. </p>
+            </div>
+      
+            <div class="profile-panel">
+              <span class="mini-label">Interests</span>
+              <h3>Robotics / Quant / Algorithms</h3>
+              <p>Anything that mixes reasoning, constraints, and actual execution — not just theory.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
 
-    <!-- Skills Section -->
-    <div class="skills-section">
-      <h3>Skills & Tech Stack</h3>
-      <div class="skills-grid">
-
-        <div class="skill-card">
-          <h4>Languages</h4>
-          <ul>
-            <li>Python</li>
-            <li>Java</li>
-            <li>HTML & CSS</li>
-            <li>JavaScript</li>
-          </ul>
+      <section class="content-section" id="projects">
+        <div class="section-heading">
+          <p class="section-tag">FEATURED MODULES</p>
+          <h2>Systems I’ve built across robotics, computation, and modeling.</h2>
+          <p>
+            Each module below is structured as an engineering system.
+          </p>
         </div>
 
-        <div class="skill-card">
-          <h4>Frameworks</h4>
-          <ul>
-            <li>Flask</li>
-            <li>Bootstrap</li>
-          </ul>
+        <div class="modules-grid">
+          <article class="module-card">
+            <div class="module-topline">
+              <span class="module-id">MODULE_01</span>
+              <span class="module-type">Robotics / Simulation / Control</span>
+            </div>
+
+            <h3>Autonomous Navigation System</h3>
+            <p class="module-mission">
+              Design and execute a full-stack autonomous navigation pipeline from perception to control.
+            </p>
+
+            <div class="module-tags">
+              <span>C++17</span>
+              <span>RRT</span>
+              <span>PID</span>
+              <span>LIDAR</span>
+              <span>Physics Engine</span>
+            </div>
+
+            <div class="flow-strip">
+              <span>Environment</span>
+              <span>→</span>
+              <span>Mapping</span>
+              <span>→</span>
+              <span>Planning</span>
+              <span>→</span>
+              <span>Control</span>
+            </div>
+
+            <p class="module-detail">
+              Built from first principles with a custom physics engine, Log-Odds occupancy grid,
+              goal-biased RRT planner, path smoothing, simulated LIDAR, and dual-loop PID control.
+            </p>
+
+            <div class="module-links">
+              <a href="https://github.com/Andromeda-crypto/Autonomous-Robot-Navigation" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="#contact">Discuss</a>
+            </div>
+          </article>
+
+          <article class="module-card">
+            <div class="module-topline">
+              <span class="module-id">MODULE_02</span>
+              <span class="module-type">Quant / Numerical Methods</span>
+            </div>
+
+            <h3>Derivatives Pricing Engine</h3>
+            <p class="module-mission">
+              Model and compute financial derivatives through analytical and simulation-based methods.
+            </p>
+
+            <div class="module-tags">
+              <span>C++17</span>
+              <span>Black-Scholes</span>
+              <span>Monte Carlo</span>
+              <span>Greeks</span>
+              <span>IV Solver</span>
+            </div>
+
+            <div class="flow-strip">
+              <span>Market Inputs</span>
+              <span>→</span>
+              <span>Model</span>
+              <span>→</span>
+              <span>Simulation</span>
+              <span>→</span>
+              <span>Price Output</span>
+            </div>
+
+            <p class="module-detail">
+              Includes Black-Scholes analytical pricing, Monte Carlo with multiple variance reduction
+              modes, Greeks computation, and a Newton-Raphson implied volatility solver built with
+              convergence handling.
+            </p>
+
+            <div class="module-links">
+              <a href="https://github.com/Andromeda-crypto/options-pricing-engine" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="#contact">Discuss</a>
+            </div>
+          </article>
+
+          <article class="module-card">
+            <div class="module-topline">
+              <span class="module-id">MODULE_03</span>
+              <span class="module-type">Algorithms / Decision Systems</span>
+            </div>
+
+            <h3>Imperfect Information Decision Engine</h3>
+            <p class="module-mission">
+              Learn optimal strategies in imperfect-information environments using regret minimization.
+            </p>
+
+            <div class="module-tags">
+              <span>Python</span>
+              <span>CFR</span>
+              <span>Game Theory</span>
+              <span>NumPy</span>
+              <span>Streamlit</span>
+            </div>
+
+            <div class="flow-strip">
+              <span>Game State</span>
+              <span>→</span>
+              <span>Counterfactual Eval</span>
+              <span>→</span>
+              <span>Regret Update</span>
+              <span>→</span>
+              <span>Strategy</span>
+            </div>
+
+            <p class="module-detail">
+              Implements Counterfactual Regret Minimization on Kuhn Poker with information set tracking,
+              regret-matching, averaged strategies, and visualization of strategy evolution.
+            </p>
+
+            <div class="module-links">
+              <a href="https://github.com/Andromeda-crypto/poker-cfr-solver" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="#contact">Discuss</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section work-section">
+        <div class="section-heading">
+          <p class="section-tag">CURRENT WORK</p>
+          <h2>What I’ve been working on lately.</h2>
+          <p>
+            A few things I’ve been exploring, building, or thinking through recently.
+          </p>
+        </div>
+      
+        <div class="work-grid">
+          <article class="work-card">
+            <h3>Hardware Integration</h3>
+            <p>
+              Working through ESP32 + LiDAR integration and getting comfortable with real-world
+              sensor behavior, noise, and system constraints.
+            </p>
+          </article>
+      
+          <article class="work-card">
+            <h3>Robotics Systems</h3>
+            <p>
+              Going deeper into perception → planning → control pipelines and understanding how
+              full navigation systems are structured beyond just individual components.
+            </p>
+          </article>
+      
+          <article class="work-card">
+            <h3>Quant + Modeling</h3>
+            <p>
+              Exploring numerical methods and probabilistic models, especially where theory
+              meets implementation and edge cases actually matter.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section" id="projects">
+        <div class="section-heading">
+          <p class="section-tag">FEATURED MODULES</p>
+          <h2>Systems I’ve built across robotics, computation, and modeling.</h2>
+          <p>
+            Each module is framed as a working system — with inputs, processing layers, and outputs.
+          </p>
+        </div>
+      
+        <div class="modules-grid modules-grid-featured">
+          <article class="module-card module-card-featured">
+            <div class="module-topline">
+              <span class="module-id">MODULE_01</span>
+              <span class="module-type">Robotics / Simulation / Control</span>
+            </div>
+      
+            <h3>Autonomous Navigation System</h3>
+            <p class="module-mission">
+              Design and execute a full-stack autonomous navigation pipeline from perception to control.
+            </p>
+      
+            <div class="module-tags">
+              <span>C++17</span>
+              <span>RRT</span>
+              <span>PID</span>
+              <span>LIDAR</span>
+              <span>Occupancy Grid</span>
+              <span>Physics Engine</span>
+            </div>
+      
+            <div class="flow-strip">
+              <span>Environment</span>
+              <span>→</span>
+              <span>Perception</span>
+              <span>→</span>
+              <span>Mapping</span>
+              <span>→</span>
+              <span>Planning</span>
+              <span>→</span>
+              <span>Control</span>
+            </div>
+      
+            <div class="module-feature-layout">
+              <div class="module-detail-block">
+                <span class="mini-label">Architecture</span>
+                <p class="module-detail">
+                  Built from first principles with a custom physics engine, Log-Odds occupancy grid,
+                  goal-biased RRT planner, line-of-sight path smoothing, simulated LIDAR with Gaussian noise,
+                  and a dual-loop PID controller for heading and velocity.
+                </p>
+              </div>
+      
+              <div class="module-side-panel">
+                <span class="mini-label">Built From Scratch</span>
+                <ul class="module-bullets">
+                  <li>Physics engine + collision resolution</li>
+                  <li>LIDAR ray-caster</li>
+                  <li>Spatial hash grid</li>
+                  <li>RRT planner + smoothing</li>
+                  <li>Dual-loop PID control</li>
+                </ul>
+              </div>
+            </div>
+      
+            <div class="module-links">
+              <a href="https://github.com/Andromeda-crypto/Autonomous-Robot-Navigation" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="#contact">Discuss</a>
+            </div>
+          </article>
+      
+          <article class="module-card">
+            <div class="module-topline">
+              <span class="module-id">MODULE_02</span>
+              <span class="module-type">Quant / Numerical Methods</span>
+            </div>
+      
+            <h3>Derivatives Pricing Engine</h3>
+            <p class="module-mission">
+              Model and compute financial derivatives through analytical and simulation-based methods.
+            </p>
+      
+            <div class="module-tags">
+              <span>C++17</span>
+              <span>Black-Scholes</span>
+              <span>Monte Carlo</span>
+              <span>Greeks</span>
+              <span>IV Solver</span>
+            </div>
+      
+            <div class="flow-strip">
+              <span>Market Inputs</span>
+              <span>→</span>
+              <span>Model</span>
+              <span>→</span>
+              <span>Simulation</span>
+              <span>→</span>
+              <span>Price Output</span>
+            </div>
+      
+            <p class="module-detail">
+              Includes Black-Scholes analytical pricing, Monte Carlo with multiple variance reduction modes,
+              Greeks computation, and a Newton-Raphson implied volatility solver built with convergence handling.
+            </p>
+      
+            <div class="module-links">
+              <a href="https://github.com/Andromeda-crypto/options-pricing-engine" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="#contact">Discuss</a>
+            </div>
+          </article>
+      
+          <article class="module-card">
+            <div class="module-topline">
+              <span class="module-id">MODULE_03</span>
+              <span class="module-type">Algorithms / Decision Systems</span>
+            </div>
+      
+            <h3>Imperfect Information Decision Engine</h3>
+            <p class="module-mission">
+              Learn optimal strategies in imperfect-information environments using regret minimization.
+            </p>
+      
+            <div class="module-tags">
+              <span>Python</span>
+              <span>CFR</span>
+              <span>Game Theory</span>
+              <span>NumPy</span>
+              <span>Streamlit</span>
+            </div>
+      
+            <div class="flow-strip">
+              <span>Game State</span>
+              <span>→</span>
+              <span>Counterfactual Eval</span>
+              <span>→</span>
+              <span>Regret Update</span>
+              <span>→</span>
+              <span>Strategy</span>
+            </div>
+      
+            <p class="module-detail">
+              Implements Counterfactual Regret Minimization on Kuhn Poker with information set tracking,
+              regret-matching, averaged strategies, and visualization of strategy evolution.
+            </p>
+      
+            <div class="module-links">
+              <a href="https://github.com/Andromeda-crypto/poker-cfr-solver" target="_blank" rel="noopener noreferrer">GitHub</a>
+              <a href="#contact">Discuss</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section" id="capabilities">
+        <div class="section-heading">
+          <p class="section-tag">CAPABILITIES</p>
+          <h2>Technical strengths organized by function.</h2>
         </div>
 
-        <div class="skill-card">
-          <h4>Technologies</h4>
-          <ul>
-            <li>REST APIs</li>
-            <li>TensorFlow</li>
-            <li>Plotly</li>
-            <li>Data Analysis & Visualization</li>
-          </ul>
+        <div class="capabilities-grid">
+          <article class="capability-card">
+            <h3>Software Systems</h3>
+            <p>Python, C++, Flask, structured program design, modular thinking.</p>
+          </article>
+
+          <article class="capability-card">
+            <h3>Embedded & Robotics</h3>
+            <p>ESP32, sensors, IMU/LiDAR integration, control logic, simulation, robotics-oriented systems work.</p>
+          </article>
+
+          <article class="capability-card">
+            <h3>Mathematical & Algorithmic</h3>
+            <p>Data structures, algorithms, calculus, probabilistic reasoning, numerical methods, modeling.</p>
+          </article>
+
+          <article class="capability-card">
+            <h3>Tools & Workflow</h3>
+            <p>Git, Linux, CMake, VS Code, debugging, testing, iterative system development.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-section contact-section" id="contact">
+        <div class="section-heading">
+          <p class="section-tag">OUTBOUND CHANNELS</p>
+          <h2>Let’s connect.</h2>
+          <p>Open to internships, technical collaboration, and interesting engineering conversations.</p>
         </div>
 
-        <div class="skill-card">
-          <h4>Tools</h4>
-          <ul>
-            <li>Git & GitHub</li>
-            <li>VS Code</li>
-            <li>Vercel</li>
-            <li>Jupyter Notebooks</li>
-            <li>Figma (Basic)</li>
-          </ul>
+        <div class="contact-links">
+          <a href="https://github.com/Andromeda-crypto" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+          <a href="mailto:your-email@example.com">Email</a>
         </div>
-
-        <div class="skill-card">
-          <h4>Technical Skills</h4>
-          <ul>
-            <li>AI</li>
-            <li>Machine Learning</li>
-            <li>Data Structures & Algorithms</li>
-            <li>Debugging</li>
-            <li>Code Refactoring</li>
-            <li>System Design (Learning)</li>
-          </ul>
-        </div>
-
-        <div class="skill-card">
-          <h4>Engineering & Hardware</h4>
-          <ul>
-            <li>Digital Electronics</li>
-            <li>Circuit Design</li>
-          </ul>
-        </div>
-
-        <div class="skill-card">
-          <h4>Data & Modeling Skills</h4>
-          <ul>
-            <li>Probability & Statistics</li>
-            <li>Simulation & Modeling</li>
-            <li>Pandas & NumPy</li>
-            <li>Matplotlib & Seaborn</li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Courses Section -->
-    <div class="courses-section">
-      <h3>Relevant Courses</h3>
-      <div class="courses-grid">
-
-        <div class="course-card">
-          <h4>Data Structures & Algorithms</h4>
-          <p>Focused on recursion, trees, graphs, hash tables, and complexity analysis.</p>
-        </div>
-
-        <div class="course-card in-progress">
-          <h4>Web & OOP with Java <span class="course-badge">Currently Taking</span></h4>
-          <p>Building full-stack Java web apps with a strong focus on object-oriented design, servlets, and backend logic.</p>
-        </div>
-
-        <div class="course-card in-progress">
-          <h4>Digital Design <span class="course-badge">Currently Taking</span></h4>
-          <p>Studying logic gates, combinational and sequential circuits, flip-flops, and basic digital system design.</p>
-        </div>
-
-        <div class="course-card in-progress">
-          <h4>Circuit Theory <span class="course-badge">Currently Taking</span></h4>
-          <p>Exploring electrical principles including Ohm’s Law, circuit analysis techniques, and simulation-based understanding.</p>
-        </div>
-
-        <div class="course-card in-progress">
-          <h4>Discrete Mathematics <span class="course-badge">Currently Taking</span></h4>
-          <p>Covering logic, set theory, combinatorics, and graph theory fundamentals relevant to algorithms, ML, and system modeling.</p>
-        </div>
-
-      </div>
-    </div>
-
-  </section>
-
-  <!-- Projects Section -->
-  <section id="projects" class="projects-section">
-    <div class="projects-header">
-      <h2>Projects</h2>
-      <p>A collection of ideas, experiments, and meaningful builds.</p>
-    </div>
-
-    <div class="projects-grid">
-
-      <!-- Project 1: PlantPulse -->
-      <div class="project-card">
-        <h3>PlantPulse 🌱</h3>
-        <p>
-          An intelligent, real-time dashboard visualizing live plant sensor data. Built with React + Flask, it demonstrates practical applications of data pipelines, user interaction, and predictive insights for everyday environmental monitoring. Most practical project in my portfolio.
-        </p>
-        <div class="project-links">
-          <a href="https://github.com/Andromeda-crypto/PlantPulse" target="_blank" class="btn small">GitHub</a>
-        </div>
-      </div>
-
-      <!-- Project 2: VolatiQ -->
-      <div class="project-card">
-        <h3>VolatiQ</h3>
-        <p>
-          A predictive crypto trading tool leveraging historical patterns and advanced Python ML models. Combines feature engineering, time-series analysis, and algorithmic prediction to offer data-driven market insights. Most complete ML project in my portfolio.
-        </p>
-        <div class="project-links">
-          <a href="https://github.com/Andromeda-crypto/VolatiQ" target="_blank" class="btn small">GitHub</a>
-        </div>
-      </div>
-
-      <!-- Project 3: Fluxion -->
-      <div class="project-card">
-        <h3>Fluxion <span class="course-badge">In Progress</span></h3>
-        <p>
-          Explores the ultimate question: can we determine and predict order from chaos? Using football as a chaotic yet systematic system, Fluxion applies probabilistic modeling, simulation, and ML to uncover patterns hidden within seemingly random sequences. Most unique project conceptually in my portfolio.
-        </p>
-        <div class="project-links">
-          <a href="https://github.com/Andromeda-crypto/fluxion" target="_blank" class="btn small">GitHub</a>
-        </div>
-      </div>
-
-      <!-- Project 4: KnightVision -->
-      <div class="project-card">
-        <h3>KnightVision</h3>
-        <p>
-          A Python-based tool for parsing and analyzing massive chess datasets. Extracts insights on openings, player ratings, and move sequences, demonstrating applications of ML and algorithmic research. Bridges strategy, analytics, and computational reasoning.
-        </p>
-        <div class="project-links">
-          <a href="https://github.com/Andromeda-crypto/knightVision" target="_blank" class="btn small">GitHub</a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- Upcoming Research Section -->
-  <section id="research" class="projects-section">
-    <div class="projects-header">
-      <h2>Current Research & Work</h2>
-      <p>Exploring challenging problems in mathematics, AI, and systems design.</p>
-    </div>
-
-    <div class="projects-grid">
-      <div class="project-card">
-        <h3>Graph Theory Research</h3>
-        <p>Investigating connectivity, shortest-path algorithms, and network resilience using Python and Neo4j. Applications include cybersecurity, infrastructure mapping, and complex systems modeling.</p>
-      </div>
-
-      <div class="project-card">
-        <h3>Smart Energy System</h3>
-        <p>Developing AI-based energy optimization for devices and grid nodes. Focused on predictive algorithms to minimize waste and maximize efficiency.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="contact-section">
-    <div class="contact-container">
-      <div class="contact-heading">
-        <h2>Let’s Create Together</h2>
-        <p>Whether it's an idea, a challenge, or just a hello — I'm always open to meaningful conversations.</p>
-      </div>
-
-      <div class="contact-box">
-        <div class="contact-methods">
-          <p><strong>Email</strong>: <a href="mailto:anandom.dev@gmail.com">email me</a></p>
-          <p><strong>LinkedIn</strong>: <a href="https://www.linkedin.com/in/om-anand-wozchek" target="_blank">linkedin</a></p>
-          <p><strong>GitHub</strong>: <a href="https://github.com/Andromeda-crypto" target="_blank">github</a></p>
-        </div>
-
-        <div class="contact-button-wrap">
-          <a href="mailto:anandom.dev@gmail.com" class="contact-btn">Start a Conversation</a>
-        </div>
-
-        <a href="https://www.dropbox.com/scl/fi/1mp0ji67ug4vmtjmcnf4n/resume.v0.pdf?rlkey=bu52vapo869fubvv2ljinszxa&dl=0" download class="contact-btn">Download Resume</a>
-      </div>
-    </div>
-
-    <div class="contact-deco-circle"></div>
-  </section>
-
+      </section>
+    </main>
+  </div>
 </body>
 </html>
