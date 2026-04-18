@@ -128,230 +128,6 @@
           </div>
         </div>
       </section>
-
-      <section class="content-section profile-section" id="about">
-        <div class="section-heading">
-          <p class="section-tag">PROFILE</p>
-          <h2>A bit about me.</h2>
-        </div>
-      
-        <div class="profile-grid">
-          <article class="profile-main">
-            <p class="profile-lead">
-              I’m Om Anand — a computer science and mathematics student who likes building systems that actually do something.
-            </p>
-          
-            <div class="profile-highlight-line">
-              <span class="profile-highlight-text">I like figuring out how things work — and making things that do.</span>
-              <span class="blink-cursor" aria-hidden="true"></span>
-            </div>
-          
-            <p>
-              Most of my work sits at the intersection of robotics, software engineering, and mathematical modeling. I’m not that interested in just wiring things together — I’d rather understand how they work underneath and build them from scratch when possible.
-            </p>
-          
-            <p>
-              That’s led me to projects like writing my own physics engine for robot simulation, building motion planners and control systems, implementing numerical models for pricing, and working through decision algorithms like CFR.
-            </p>
-          
-            <p>
-              I enjoy problems where code has to interact with constraints — physical, probabilistic, or computational — and where getting something to work means thinking through the system end to end.
-            </p>
-          
-            
-          </article>
-      
-          <aside class="profile-side">
-            <div class="profile-panel">
-              <span class="mini-label">Identity</span>
-              <h3>Systems Builder</h3>
-              <p>I like working across software, math, and real-world systems.</p>
-            </div>
-      
-            <div class="profile-panel">
-              <span class="mini-label">Approach</span>
-              <h3>First Principles</h3>
-              <p>I like to know how things work inside-out. </p>
-            </div>
-      
-            <div class="profile-panel">
-              <span class="mini-label">Interests</span>
-              <h3>Robotics / Quant / Algorithms</h3>
-              <p>Anything that mixes reasoning, constraints, and actual execution — not just theory.</p>
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="content-section" id="projects">
-        <div class="section-heading">
-          <p class="section-tag">FEATURED MODULES</p>
-          <h2>Systems I’ve built across robotics, computation, and modeling.</h2>
-          <p>
-            Each module below is structured as an engineering system.
-          </p>
-        </div>
-
-        <div class="modules-grid">
-          <article class="module-card">
-            <div class="module-topline">
-              <span class="module-id">MODULE_01</span>
-              <span class="module-type">Robotics / Simulation / Control</span>
-            </div>
-
-            <h3>Autonomous Navigation System</h3>
-            <p class="module-mission">
-              Design and execute a full-stack autonomous navigation pipeline from perception to control.
-            </p>
-
-            <div class="module-tags">
-              <span>C++17</span>
-              <span>RRT</span>
-              <span>PID</span>
-              <span>LIDAR</span>
-              <span>Physics Engine</span>
-            </div>
-
-            <div class="flow-strip">
-              <span>Environment</span>
-              <span>→</span>
-              <span>Mapping</span>
-              <span>→</span>
-              <span>Planning</span>
-              <span>→</span>
-              <span>Control</span>
-            </div>
-
-            <p class="module-detail">
-              Built from first principles with a custom physics engine, Log-Odds occupancy grid,
-              goal-biased RRT planner, path smoothing, simulated LIDAR, and dual-loop PID control.
-            </p>
-
-            <div class="module-links">
-              <a href="https://github.com/Andromeda-crypto/Autonomous-Robot-Navigation" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a href="#contact">Discuss</a>
-            </div>
-          </article>
-
-          <article class="module-card">
-            <div class="module-topline">
-              <span class="module-id">MODULE_02</span>
-              <span class="module-type">Quant / Numerical Methods</span>
-            </div>
-
-            <h3>Derivatives Pricing Engine</h3>
-            <p class="module-mission">
-              Model and compute financial derivatives through analytical and simulation-based methods.
-            </p>
-
-            <div class="module-tags">
-              <span>C++17</span>
-              <span>Black-Scholes</span>
-              <span>Monte Carlo</span>
-              <span>Greeks</span>
-              <span>IV Solver</span>
-            </div>
-
-            <div class="flow-strip">
-              <span>Market Inputs</span>
-              <span>→</span>
-              <span>Model</span>
-              <span>→</span>
-              <span>Simulation</span>
-              <span>→</span>
-              <span>Price Output</span>
-            </div>
-
-            <p class="module-detail">
-              Includes Black-Scholes analytical pricing, Monte Carlo with multiple variance reduction
-              modes, Greeks computation, and a Newton-Raphson implied volatility solver built with
-              convergence handling.
-            </p>
-
-            <div class="module-links">
-              <a href="https://github.com/Andromeda-crypto/options-pricing-engine" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a href="#contact">Discuss</a>
-            </div>
-          </article>
-
-          <article class="module-card">
-            <div class="module-topline">
-              <span class="module-id">MODULE_03</span>
-              <span class="module-type">Algorithms / Decision Systems</span>
-            </div>
-
-            <h3>Imperfect Information Decision Engine</h3>
-            <p class="module-mission">
-              Learn optimal strategies in imperfect-information environments using regret minimization.
-            </p>
-
-            <div class="module-tags">
-              <span>Python</span>
-              <span>CFR</span>
-              <span>Game Theory</span>
-              <span>NumPy</span>
-              <span>Streamlit</span>
-            </div>
-
-            <div class="flow-strip">
-              <span>Game State</span>
-              <span>→</span>
-              <span>Counterfactual Eval</span>
-              <span>→</span>
-              <span>Regret Update</span>
-              <span>→</span>
-              <span>Strategy</span>
-            </div>
-
-            <p class="module-detail">
-              Implements Counterfactual Regret Minimization on Kuhn Poker with information set tracking,
-              regret-matching, averaged strategies, and visualization of strategy evolution.
-            </p>
-
-            <div class="module-links">
-              <a href="https://github.com/Andromeda-crypto/poker-cfr-solver" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a href="#contact">Discuss</a>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section class="content-section work-section">
-        <div class="section-heading">
-          <p class="section-tag">CURRENT WORK</p>
-          <h2>What I’ve been working on lately.</h2>
-          <p>
-            A few things I’ve been exploring, building, or thinking through recently.
-          </p>
-        </div>
-      
-        <div class="work-grid">
-          <article class="work-card">
-            <h3>Hardware Integration</h3>
-            <p>
-              Working through ESP32 + LiDAR integration and getting comfortable with real-world
-              sensor behavior, noise, and system constraints.
-            </p>
-          </article>
-      
-          <article class="work-card">
-            <h3>Robotics Systems</h3>
-            <p>
-              Going deeper into perception → planning → control pipelines and understanding how
-              full navigation systems are structured beyond just individual components.
-            </p>
-          </article>
-      
-          <article class="work-card">
-            <h3>Quant + Modeling</h3>
-            <p>
-              Exploring numerical methods and probabilistic models, especially where theory
-              meets implementation and edge cases actually matter.
-            </p>
-          </article>
-        </div>
-      </section>
-
       <section class="content-section" id="projects">
         <div class="section-heading">
           <p class="section-tag">FEATURED MODULES</p>
@@ -504,6 +280,44 @@
         </div>
       </section>
 
+      
+      
+        <div class="section-heading">
+          <p class="section-tag">CURRENT WORK</p>
+          <h2>What I’ve been working on lately.</h2>
+          <p>
+            A few things I’ve been exploring, building, or thinking through recently.
+          </p>
+        </div>
+      
+        <div class="work-grid">
+          <article class="work-card">
+            <h3>Hardware Integration</h3>
+            <p>
+              Working through ESP32 + LiDAR integration and getting comfortable with real-world
+              sensor behavior, noise, and system constraints.
+            </p>
+          </article>
+      
+          <article class="work-card">
+            <h3>Robotics Systems</h3>
+            <p>
+              Going deeper into perception → planning → control pipelines and understanding how
+              full navigation systems are structured beyond just individual components.
+            </p>
+          </article>
+      
+          <article class="work-card">
+            <h3>Quant + Modeling</h3>
+            <p>
+              Exploring numerical methods and probabilistic models, especially where theory
+              meets implementation and edge cases actually matter.
+            </p>
+          </article>
+        </div>
+      </section>
+
+    
       <section class="content-section" id="capabilities">
         <div class="section-heading">
           <p class="section-tag">CAPABILITIES</p>
