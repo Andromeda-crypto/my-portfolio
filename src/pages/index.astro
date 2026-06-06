@@ -1,0 +1,89 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ContactBlock from "../components/ContactBlock.astro";
+import Hero from "../components/Hero.astro";
+import ProjectList from "../components/ProjectList.astro";
+import ResearchList from "../components/ResearchList.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import SkillsGrid from "../components/SkillsGrid.astro";
+---
+
+<BaseLayout
+  title="Om Anand | Engineering Portfolio"
+  description="Portfolio of Om Anand — CS and Mathematics student focused on robotics, embedded systems, controls, and algorithmic engineering."
+>
+  <Hero />
+
+  <section class="section about-section" id="about">
+    <SectionHeader
+      eyebrow="About"
+      title="Robotics engineer and Computer Science student."
+    />
+
+    <div class="about-grid about-grid-minimal">
+      <div class="about-copy">
+        <p>
+          I’m a Computer Science and Mathematics student focused on robotics,
+          embedded systems, controls, and algorithmic engineering.
+        </p>
+
+        <p>
+          I build software that connects algorithms to physical behavior: sensors,
+          firmware, control loops, planning systems, and numerical tools.
+        </p>
+      </div>
+
+      <aside class="about-note">
+        <strong>Working direction</strong>
+        <p>Robotics engineering, embedded systems, and research-oriented implementation.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" id="work">
+    <SectionHeader
+      eyebrow="Selected work"
+      title="Projects"
+    />
+
+    <ProjectList />
+  </section>
+
+  <section class="section" id="research">
+    <SectionHeader
+      eyebrow="Research"
+      title="Research & implementation"
+    />
+
+    <ResearchList />
+  </section>
+
+  <section class="section" id="lab-preview">
+    <SectionHeader
+      eyebrow="Engineering lab"
+      title="Mini projects and experiments"
+    />
+
+    <div class="simple-panel">
+      <p>
+        Smaller builds, reverse-engineering attempts, and experiments are collected
+        separately so the homepage stays focused.
+      </p>
+
+      <a class="button" href="/lab/">View Engineering Lab</a>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <SectionHeader
+      eyebrow="Skills"
+      title="Technical focus"
+    />
+
+    <SkillsGrid />
+  </section>
+
+  <section class="section" id="contact">
+    <ContactBlock />
+  </section>
+</BaseLayout>

@@ -1,0 +1,90 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { interests } from "../data/siteContent";
+---
+
+<BaseLayout
+  title="Om Anand | Interests"
+  description="Interests, reading, sports, and personal context for Om Anand."
+>
+  <section class="interests-hero">
+    <p class="eyebrow">Beyond the portfolio</p>
+
+    <h1>Interests</h1>
+
+    <p>
+      A few things I enjoy outside technical work.
+    </p>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Reading</p>
+        <h2>Books</h2>
+      </div>
+
+      <p>
+        I like books that make me think about judgment, discipline, meaning, and how people make decisions.
+      </p>
+    </div>
+
+    <div class="interest-grid">
+      <article class="interest-card">
+        <h3>Currently Reading</h3>
+
+        <ul>
+          {interests.reading.current.map((book) => <li>{book}</li>)}
+        </ul>
+      </article>
+
+      <article class="interest-card">
+        <h3>Favorites</h3>
+
+        <ul>
+          {interests.reading.favorites.map((book) => <li>{book}</li>)}
+        </ul>
+      </article>
+
+      <article class="interest-card">
+        <h3>Mathematics</h3>
+
+        <p>
+          I enjoy probability, statistics, combinatorics, and game theory, especially when the ideas can be tested through code.
+        </p>
+      </article>
+
+      <article class="interest-card">
+        <h3>Exploration</h3>
+
+        <p>
+          I usually learn by building small versions of ideas and seeing where they break.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Sports & games</p>
+        <h2>Sports</h2>
+      </div>
+
+      <p>
+        Sports are a big part of how I stay active and competitive.
+      </p>
+    </div>
+
+    <div class="interest-grid">
+      {
+        interests.sports.map((sport) => (
+          <article class="interest-card">
+            <h3>{sport.title}</h3>
+            <p>{sport.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

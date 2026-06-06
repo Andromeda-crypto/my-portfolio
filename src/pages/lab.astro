@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import LabList from "../components/LabList.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+---
+
+<BaseLayout
+  title="Om Anand | Engineering Lab"
+  description="Engineering lab, mini projects, experiments, and technical explorations by Om Anand."
+>
+  <section class="interests-hero">
+    <p class="eyebrow">Engineering Lab</p>
+
+    <h1>Mini projects and experiments.</h1>
+
+    <p>
+      Smaller builds, reverse-engineering attempts, and technical explorations.
+    </p>
+  </section>
+
+  <section class="section">
+    <SectionHeader
+      eyebrow="Lab entries"
+      title="Experiments"
+    />
+
+    <LabList />
+  </section>
+</BaseLayout>
