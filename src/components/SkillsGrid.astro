@@ -1,0 +1,14 @@
+---
+import { skills } from "../data/siteContent";
+---
+
+<div class="skills-grid">
+  {
+    skills.map((skill) => (
+      <article class="skill-card">
+        <h3>{skill.title}</h3>
+        <p>{skill.description}</p>
+      </article>
+    ))
+  }
+</div>

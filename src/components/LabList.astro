@@ -1,0 +1,25 @@
+---
+import { labItems } from "../data/siteContent";
+---
+
+<div class="item-list">
+  {
+    labItems.map((item) => (
+      <article class="list-item">
+        <div class="item-meta">
+          <span>{item.category}</span>
+        </div>
+
+        <div class="item-content">
+          <h3>{item.title}</h3>
+
+          <p>{item.description}</p>
+
+          <div class="tag-row">
+            {item.tags.map((tag) => <span>{tag}</span>)}
+          </div>
+        </div>
+      </article>
+    ))
+  }
+</div>

@@ -1,0 +1,37 @@
+---
+import { links, profile } from "../data/siteContent";
+---
+
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">{profile.role}</p>
+
+    <h1>{profile.headline}</h1>
+
+    <p class="hero-subtitle">
+      {profile.summary}
+    </p>
+
+    <div class="hero-actions">
+      <a class="button primary" href="#work">View work</a>
+      <a class="button" href={links.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+      <a class="button" href={links.resume} target="_blank" rel="noopener noreferrer">Resume</a>
+    </div>
+
+    <p class="signature-line">
+      {profile.signature}
+    </p>
+
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span>Current</span>
+        <p>{profile.currently}</p>
+      </div>
+
+      <div class="meta-item">
+        <span>Focus</span>
+        <p>{profile.focus}</p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,20 @@
+---
+import { research } from "../data/siteContent";
+---
+
+<div class="item-list">
+  {
+    research.map((item) => (
+      <article class="list-item">
+        <div class="item-meta">
+          <span>Research</span>
+        </div>
+
+        <div class="item-content">
+          <h3>{item.title}</h3>
+          <p>{item.description}</p>
+        </div>
+      </article>
+    ))
+  }
+</div>
