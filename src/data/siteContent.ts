@@ -16,7 +16,8 @@ export const links = {
   linkedin: "https://www.linkedin.com/in/om-anand-wozchek",
   resume:
     "https://www.dropbox.com/scl/fi/k8x1fz7anyucz48qgrjxz/resume.v1-Om-Anand.docx?rlkey=tnzxmdl7l3yrhu0wnxyt3dkw9&dl=0",
-  email: "mailto:anandom.dev@gmail.com"
+  email: "mailto:anandom.dev@gmail.com",
+  chessCom: "https://www.chess.com/member/andro_meda1"
 };
 
 export const projects = [

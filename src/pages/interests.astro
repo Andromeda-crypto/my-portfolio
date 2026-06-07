@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { interests } from "../data/siteContent";
+import { interests, links } from "../data/siteContent";
 ---
 
 <BaseLayout
@@ -81,7 +81,16 @@ import { interests } from "../data/siteContent";
         interests.sports.map((sport) => (
           <article class="interest-card">
             <h3>{sport.title}</h3>
+
             <p>{sport.description}</p>
+
+            {sport.title === "Chess" && (
+              <div class="item-links">
+                <a href={links.chessCom} target="_blank" rel="noopener noreferrer">
+                  Chess.com
+                </a>
+              </div>
+            )}
           </article>
         ))
       }
