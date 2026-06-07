@@ -8,7 +8,7 @@ export const profile = {
   focus: "Robotics · Embedded Systems · Controls · Algorithms",
   currently: "Building BALBOT, a two-wheeled self-balancing robot on ESP32.",
   signature:
-    "I like projects where software has to deal with sensors, hardware behavior, numerical edge cases, and real constraints."
+    "I build systems where software, hardware, sensing, and numerical methods have to work together under real-world constraints."
 };
 
 export const links = {
@@ -24,8 +24,16 @@ export const projects = [
     title: "Autonomous Robot Navigation",
     type: "Robotics / C++",
     description:
-      "A from-scratch C++ navigation system with custom physics, LIDAR simulation, occupancy mapping, RRT planning, path smoothing, and PID control.",
-    tags: ["C++17", "RRT", "LIDAR", "Occupancy Grid", "PID", "SFML"],
+      "A from-scratch autonomous navigation simulator built in C++ with custom rigid-body physics, LIDAR ray-casting, occupancy mapping, RRT planning, path smoothing, and PID control. The project focuses on how perception, planning, and control interact inside one working robotics pipeline.",
+    tags: [
+      "C++17",
+      "Robotics",
+      "Motion Planning",
+      "LIDAR",
+      "Mapping",
+      "PID Control",
+      "Simulation"
+    ],
     links: [
       {
         label: "GitHub",
@@ -37,16 +45,32 @@ export const projects = [
     title: "BALBOT",
     type: "Embedded Controls",
     description:
-      "A self-balancing robot built around ESP32 firmware, MPU6050 attitude estimation, motor control, PID tuning, power delivery, and telemetry.",
-    tags: ["ESP32", "MPU6050", "C++", "PID", "Telemetry"],
+      "A two-wheeled self-balancing robot built around embedded firmware, IMU-based attitude estimation, motor control, PID tuning, power delivery, and live telemetry. The project is focused on taking control theory into physical hardware where noise, wiring, timing, and mechanical behavior matter.",
+    tags: [
+      "Embedded Systems",
+      "IoT",
+      "IMU",
+      "Control Systems",
+      "Firmware",
+      "Telemetry",
+      "Hardware Integration"
+    ],
     links: []
   },
   {
     title: "Options Pricing Engine",
     type: "Quant / Numerical Software",
     description:
-      "A C++ derivatives pricing engine implementing Black-Scholes, Monte Carlo simulation, variance reduction, Greeks, and implied volatility solving.",
-    tags: ["C++17", "Black-Scholes", "Monte Carlo", "Greeks", "IV Solver"],
+      "A C++ derivatives pricing engine implementing Black-Scholes pricing, Monte Carlo simulation, variance reduction, Greeks, and implied volatility solving. The project emphasizes numerical stability, model implementation, and financial computation from first principles.",
+    tags: [
+      "C++17",
+      "Quant Finance",
+      "Numerical Methods",
+      "Monte Carlo",
+      "Black-Scholes",
+      "Greeks",
+      "Implied Volatility"
+    ],
     links: [
       {
         label: "GitHub",
@@ -58,8 +82,15 @@ export const projects = [
     title: "Poker CFR Solver",
     type: "Algorithms / Game Theory",
     description:
-      "A Counterfactual Regret Minimization solver for imperfect-information games, with regret matching, information sets, and strategy convergence.",
-    tags: ["Python", "CFR", "Game Theory", "Strategy"],
+      "A Counterfactual Regret Minimization solver for imperfect-information games, with information sets, regret matching, averaged strategies, and strategy convergence. The project explores how decision algorithms learn under hidden information and delayed feedback.",
+    tags: [
+      "Python",
+      "Game Theory",
+      "CFR",
+      "Decision Algorithms",
+      "Strategy Optimization",
+      "Imperfect Information"
+    ],
     links: [
       {
         label: "GitHub",
@@ -90,31 +121,37 @@ export const research = [
 export const labItems = [
   {
     title: "Flight Attitude Dashboard",
-    category: "ESP32 / Visualization",
+    category: "IoT / IMU / Visualization",
     description:
-      "A small reverse-engineering build using ESP32, MPU6050 attitude estimation, serial telemetry, Processing 4 rendering, and live motor/PID feedback.",
-    tags: ["ESP32", "MPU6050", "Processing 4", "Telemetry"]
-  },
-  {
-    title: "DXF to G-code Sandbox",
-    category: "Geometry / Tooling",
-    description:
-      "A geometry-processing experiment for parsing CAD-like entities, converting them into paths, visualizing movement, and generating G-code.",
-    tags: ["Python", "Geometry", "G-code", "Visualization"]
-  },
-  {
-    title: "Sensor Fusion Playground",
-    category: "State Estimation",
-    description:
-      "Small experiments around noisy measurements, filtering, belief updates, and state estimation behavior.",
-    tags: ["Kalman Filter", "Bayes", "Python"]
-  },
-  {
-    title: "ROS2 Bring-up Notes",
-    category: "Robotics Middleware",
-    description:
-      "Practical setup notes and experiments with ROS2 Humble, packages, nodes, subscribers, and robotics middleware structure.",
-    tags: ["ROS2", "Linux", "Robotics"]
+      "A completed reverse-engineering experiment inspired by an aircraft attitude demo. I built an IoT telemetry loop using an ESP32-class microcontroller, IMU attitude estimation, serial data streaming, Processing 4 rendering, and motor/PID feedback visualization.",
+    result:
+      "The final prototype rendered a live 3D aircraft model from IMU pitch and roll data, displayed telemetry on a dashboard, and visualized motor control error in real time.",
+    tags: [
+      "IoT",
+      "IMU",
+      "Sensor Fusion",
+      "Telemetry",
+      "Processing 4",
+      "PID Feedback",
+      "Visualization"
+    ],
+    media: [
+      {
+        type: "video",
+        src: "/media/lab/attitude-dashboard/demo.mp4",
+        alt: "Demo video of the flight attitude dashboard responding to live IMU motion"
+      },
+      {
+        type: "image",
+        src: "/media/lab/attitude-dashboard/dashboard.png",
+        alt: "Full Processing 4 telemetry dashboard for the IMU-driven flight attitude visualizer"
+      },
+      {
+        type: "image",
+        src: "/media/lab/attitude-dashboard/circuitry.jpg",
+        alt: "Circuitry and wiring setup for the ESP32 and IMU flight attitude dashboard experiment"
+      }
+    ]
   }
 ];
 
@@ -127,7 +164,7 @@ export const skills = [
   {
     title: "Embedded Systems",
     description:
-      "ESP32, sensor bring-up, IMU pipelines, firmware structure, telemetry, debugging, and hardware integration."
+      "IoT systems, sensor bring-up, IMU pipelines, firmware structure, telemetry, debugging, and hardware integration."
   },
   {
     title: "Algorithmic Engineering",

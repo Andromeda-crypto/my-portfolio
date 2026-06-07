@@ -1,38 +1,27 @@
 :root {
-  --bg: #eef1f4;
-  --surface: #fafbfd;
-  --surface-soft: #e4e8ed;
-  --surface-tint: #f4f6f8;
+  --bg: #f6f6f3;
+  --surface: #ffffff;
+  --surface-soft: #eeeeea;
+  --surface-tint: #fafaf7;
 
-  --text: #16191d;
-  --text-soft: #49505a;
-  --text-muted: #7c8590;
+  --text: #141414;
+  --text-soft: #434343;
+  --text-muted: #767676;
 
-  --line: #d7dce2;
-  --line-strong: #bcc5cf;
+  --line: #deded8;
+  --line-strong: #c8c8c0;
 
-  --accent: #5a7084;
-  --accent-deep: #405464;
-  --accent-soft: rgba(90, 112, 132, 0.1);
-  --accent-warm: #7c8996;
-  --accent-ink: #27323b;
+  --accent: #245c73;
+  --accent-deep: #173c4b;
+  --accent-soft: rgba(36, 92, 115, 0.09);
+  --accent-warm: #8a6a42;
+  --accent-ink: #1e2b31;
 
-  --card: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.92) 0%,
-    rgba(248, 250, 252, 0.88) 48%,
-    rgba(236, 240, 244, 0.92) 100%
-  );
-
-  --card-strong: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.98) 0%,
-    rgba(249, 251, 253, 0.94) 52%,
-    rgba(239, 243, 247, 0.96) 100%
-  );
+  --card: rgba(255, 255, 255, 0.72);
+  --card-strong: rgba(255, 255, 255, 0.94);
 
   --max-width: 1060px;
-  --radius: 16px;
+  --radius: 14px;
 }
 
 * {
@@ -47,9 +36,9 @@ body {
   margin: 0;
   font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at 12% -8%, rgba(255, 255, 255, 0.95), transparent 28rem),
-    radial-gradient(circle at 88% 4%, rgba(154, 167, 180, 0.22), transparent 24rem),
-    linear-gradient(180deg, #fcfdff 0%, var(--bg) 52%, #e3e8ed 100%);
+    radial-gradient(circle at 10% -8%, rgba(255, 255, 255, 0.95), transparent 30rem),
+    radial-gradient(circle at 88% 2%, rgba(36, 92, 115, 0.13), transparent 26rem),
+    linear-gradient(180deg, #ffffff 0%, var(--bg) 52%, #e9e9e3 100%);
   color: var(--text);
   line-height: 1.62;
 }
@@ -59,22 +48,12 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  opacity: 0.1;
+  opacity: 0.08;
   background-image:
-    linear-gradient(rgba(22, 25, 29, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(22, 25, 29, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(20, 20, 20, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 20, 20, 0.05) 1px, transparent 1px);
   background-size: 56px 56px;
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.42), transparent 60%);
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 24%),
-    linear-gradient(180deg, transparent 70%, rgba(140, 151, 162, 0.06) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.48), transparent 58%);
 }
 
 a {
@@ -148,7 +127,7 @@ ul {
 }
 
 .site-nav a:hover {
-  color: var(--accent-deep);
+  color: var(--accent);
 }
 
 .site-nav a:hover::after {
@@ -213,29 +192,26 @@ h3 {
 .hero::before {
   content: "";
   position: absolute;
-  right: 10px;
+  right: 8px;
   top: 82px;
-  width: 152px;
-  height: 152px;
-  border: 1px solid rgba(90, 112, 132, 0.16);
+  width: 150px;
+  height: 150px;
+  border: 1px solid rgba(36, 92, 115, 0.16);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.48), transparent 34%),
-    radial-gradient(circle at center, rgba(90, 112, 132, 0.055), transparent 58%);
+  background: radial-gradient(circle at center, rgba(36, 92, 115, 0.055), transparent 58%);
   pointer-events: none;
 }
 
 .hero::after {
   content: "";
   position: absolute;
-  right: 64px;
-  top: 138px;
+  right: 62px;
+  top: 136px;
   width: 42px;
   height: 42px;
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.45), rgba(124, 137, 150, 0.08));
-  border: 1px solid rgba(124, 137, 150, 0.16);
+  background: rgba(138, 106, 66, 0.08);
+  border: 1px solid rgba(138, 106, 66, 0.14);
   pointer-events: none;
 }
 
@@ -267,41 +243,32 @@ h3 {
   padding: 0 16px;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(236, 241, 245, 0.82));
+  background: rgba(255, 255, 255, 0.65);
   color: var(--text);
   font-size: 0.9rem;
   font-weight: 750;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.75),
-    0 6px 18px rgba(84, 96, 109, 0.08);
   transition:
     transform 0.18s ease,
     border-color 0.18s ease,
     background 0.18s ease,
-    color 0.18s ease,
-    box-shadow 0.18s ease;
+    color 0.18s ease;
 }
 
 .button.primary {
-  background:
-    linear-gradient(180deg, rgba(86, 104, 120, 0.96), rgba(58, 75, 90, 0.96));
-  border-color: rgba(58, 75, 90, 0.95);
+  background: var(--text);
+  border-color: var(--text);
   color: white;
 }
 
 .button:hover {
   transform: translateY(-1px);
   border-color: var(--accent);
-  color: var(--accent-deep);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    0 10px 22px rgba(84, 96, 109, 0.1);
+  color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .button.primary:hover {
-  background:
-    linear-gradient(180deg, rgba(90, 112, 132, 0.98), rgba(64, 84, 100, 0.98));
+  background: var(--accent);
   border-color: var(--accent);
   color: white;
 }
@@ -311,11 +278,9 @@ h3 {
   margin-top: 32px;
   padding: 16px 18px;
   border-left: 3px solid var(--accent);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(236, 241, 245, 0.62));
+  background: linear-gradient(90deg, rgba(36, 92, 115, 0.07), rgba(255, 255, 255, 0.08));
   color: var(--text-soft);
   font-size: 1.02rem;
-  border-radius: 0 12px 12px 0;
 }
 
 .hero-meta {
@@ -333,7 +298,6 @@ h3 {
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   background: var(--card);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
 .meta-item span {
@@ -391,9 +355,6 @@ h3 {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--card);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    0 8px 20px rgba(98, 108, 118, 0.06);
 }
 
 .about-note::before {
@@ -401,7 +362,7 @@ h3 {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border-top: 2px solid rgba(90, 112, 132, 0.22);
+  border-top: 2px solid rgba(36, 92, 115, 0.22);
   pointer-events: none;
 }
 
@@ -457,14 +418,12 @@ h3 {
 
 .tag-row span {
   padding: 4px 9px;
-  border: 1px solid rgba(90, 112, 132, 0.14);
+  border: 1px solid rgba(36, 92, 115, 0.14);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(239, 243, 247, 0.76));
+  background: rgba(36, 92, 115, 0.055);
   color: var(--accent-deep);
   font-size: 0.77rem;
   font-weight: 750;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 .item-links {
@@ -513,21 +472,16 @@ h3 {
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   background: var(--card);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
   transition:
     transform 0.18s ease,
     background 0.18s ease,
-    border-color 0.18s ease,
-    box-shadow 0.18s ease;
+    border-color 0.18s ease;
 }
 
 .skill-card:hover {
   transform: translateY(-1px);
   background: var(--card-strong);
-  border-color: rgba(90, 112, 132, 0.2);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    0 10px 22px rgba(98, 108, 118, 0.08);
+  border-color: rgba(36, 92, 115, 0.2);
 }
 
 .skill-card h3 {
@@ -548,10 +502,7 @@ h3 {
   border: 1px solid var(--line);
   border-radius: 16px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(238, 242, 246, 0.78));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    0 12px 28px rgba(96, 108, 120, 0.08);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(36, 92, 115, 0.06));
 }
 
 .contact-panel p {
@@ -614,7 +565,6 @@ h3 {
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   background: var(--card);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 .interest-card h3 {
@@ -633,6 +583,54 @@ h3 {
 .interest-card li + li {
   margin-top: 8px;
 }
+
+/* LAB MEDIA */
+
+.lab-media-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0 8px;
+}
+
+.lab-media-card {
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.lab-media-card:first-child {
+  grid-column: 1 / -1;
+}
+
+.lab-media-card img,
+.lab-media-card video {
+  display: block;
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+}
+
+.lab-media-card:first-child img,
+.lab-media-card:first-child video {
+  height: 340px;
+}
+
+.lab-result {
+  margin-top: 4px;
+  padding: 14px 16px;
+  border-left: 3px solid var(--accent);
+  background: rgba(36, 92, 115, 0.055);
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+
+.lab-result strong {
+  color: var(--text);
+}
+
+/* RESPONSIVE */
 
 @media (max-width: 900px) {
   .site-header {
@@ -685,11 +683,23 @@ h3 {
 
   .hero-meta,
   .skills-grid,
-  .interest-grid {
+  .interest-grid,
+  .lab-media-grid {
     grid-template-columns: 1fr;
   }
 
   .contact-panel {
     padding: 24px;
+  }
+
+  .lab-media-card:first-child {
+    grid-column: auto;
+  }
+
+  .lab-media-card img,
+  .lab-media-card video,
+  .lab-media-card:first-child img,
+  .lab-media-card:first-child video {
+    height: 210px;
   }
 }
