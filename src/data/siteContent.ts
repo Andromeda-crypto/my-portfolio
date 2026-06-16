@@ -156,6 +156,23 @@ export const labItems = [
   }
 ];
 
+export const cadStudies = [
+  {
+    title: "Motor Mount Practice",
+    stage: "Beginner study",
+    description:
+      "A basic CAD exercise for understanding mounting geometry, hole placement, clearances, and how a motor could be positioned in a small mechanical assembly.",
+    tags: ["CAD", "Motor Mount", "Mechanical Design", "Tutorial Practice"]
+  },
+  {
+    title: "Standoff Point Practice",
+    stage: "Beginner study",
+    description:
+      "A simple standoff-style part used to practice sketch constraints, extrusion, dimensions, and basic mechanical reference points for future robot frame design.",
+    tags: ["CAD", "Standoff", "Part Modeling", "Tutorial Practice"]
+  }
+];
+
 export const skills = [
   {
     title: "Robotics & Control",

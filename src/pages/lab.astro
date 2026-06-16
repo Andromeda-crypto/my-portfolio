@@ -2,11 +2,12 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import LabList from "../components/LabList.astro";
 import SectionHeader from "../components/SectionHeader.astro";
+import { cadStudies } from "../data/siteContent";
 ---
 
 <BaseLayout
   title="Om Anand | Engineering Lab"
-  description="Engineering lab, mini projects, experiments, and technical explorations by Om Anand."
+  description="Engineering lab, mini projects, experiments, CAD studies, and technical explorations by Om Anand."
 >
   <section class="interests-hero">
     <p class="eyebrow">Engineering Lab</p>
@@ -21,9 +22,60 @@ import SectionHeader from "../components/SectionHeader.astro";
   <section class="section">
     <SectionHeader
       eyebrow="Lab entries"
-      title="Experiments"
+      title="Completed experiments"
     />
 
     <LabList />
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">CAD & mechanical design</p>
+        <h2>Early CAD studies</h2>
+      </div>
+
+      <p>
+        Beginner mechanical design practice focused on building CAD fluency for robotics work.
+        This section will grow into design studies, part models, assemblies, and prototype
+        concepts as the mechanical side of my projects develops.
+      </p>
+    </div>
+
+    <div class="interest-grid">
+      {
+        cadStudies.map((item) => (
+          <article class="interest-card">
+            <p class="eyebrow">{item.stage}</p>
+
+            <h3>{item.title}</h3>
+
+            <p>{item.description}</p>
+
+            <div class="tag-row">
+              {item.tags.map((tag) => <span>{tag}</span>)}
+            </div>
+          </article>
+        ))
+      }
+
+      <article class="interest-card">
+        <p class="eyebrow">Coming next</p>
+
+        <h3>Design showcases</h3>
+
+        <p>
+          Future additions will include screenshots, exported renders, short notes on design
+          intent, and small mechanical parts connected to robotics builds.
+        </p>
+
+        <div class="tag-row">
+          <span>Assemblies</span>
+          <span>Robot Frames</span>
+          <span>Mounts</span>
+          <span>Design Iterations</span>
+        </div>
+      </article>
+    </div>
   </section>
 </BaseLayout>
