@@ -1,0 +1,49 @@
+---
+interface Props {
+  index?: string;
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  id?: string;
+  class?: string;
+}
+
+const {
+  index,
+  eyebrow,
+  title,
+  description,
+  id,
+  class: className = ""
+} = Astro.props;
+---
+
+<header class={`section-heading ${className}`.trim()} id={id}>
+  {
+    index && (
+      <span class="section-heading__index">
+        {index}
+      </span>
+    )
+  }
+
+  {
+    eyebrow && (
+      <p class="section-kicker">
+        {eyebrow}
+      </p>
+    )
+  }
+
+  <h2 class="section-heading__title">
+    {title}
+  </h2>
+
+  {
+    description && (
+      <p class="section-heading__copy">
+        {description}
+      </p>
+    )
+  }
+</header>
