@@ -1,6 +1,8 @@
 ---
 import SectionIntro from "../layout/SectionIntro.astro";
 import { research } from "../../data/siteContent";
+
+const safeResearch = Array.isArray(research) ? research : [];
 ---
 
 <section
@@ -13,7 +15,8 @@ import { research } from "../../data/siteContent";
       <SectionIntro
         index="05"
         eyebrow="Research"
-        title="Research and technical work."
+        title="Research implementation."
+        description="Paper implementations developed by working through the underlying method and translating it into functioning code."
         id="research-heading"
       />
     </div>
@@ -21,26 +24,48 @@ import { research } from "../../data/siteContent";
     <div class="home-section__content">
       <div class="research-list">
         {
-          research.map((item, index) => (
+          safeResearch.map((item, index) => (
             <article class="research-item" data-reveal>
               <span class="research-item__index">
                 {String(index + 1).padStart(2, "0")}
               </span>
 
               <div class="research-item__content">
-                <h3 class="research-item__title">
-                  {item.title}
-                </h3>
+                <div class="research-item__heading">
+                  <h3 class="research-item__title">
+                    {item.title}
+                  </h3>
+
+                  <span
+                    class:list={[
+                      "research-item__status",
+                      item.status === "In Progress" &&
+                        "research-item__status--active"
+                    ]}
+                  >
+                    {item.status}
+                  </span>
+                </div>
 
                 <p class="research-item__description">
                   {item.description}
                 </p>
 
-                <ul class="tag-list">
-                  {item.tags.map((tag) => (
-                    <li class="tag">{tag}</li>
-                  ))}
-                </ul>
+                {
+                  Array.isArray(item.tags) &&
+                  item.tags.length > 0 && (
+                    <ul
+                      class="tag-list"
+                      aria-label={`${item.title} topics`}
+                    >
+                      {
+                        item.tags.map((tag) => (
+                          <li class="tag">{tag}</li>
+                        ))
+                      }
+                    </ul>
+                  )
+                }
               </div>
             </article>
           ))
@@ -49,3 +74,39 @@ import { research } from "../../data/siteContent";
     </div>
   </div>
 </section>
+
+<style>
+  .research-item__heading {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-5);
+    align-items: flex-start;
+  }
+
+  .research-item__status {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.9rem;
+    padding-inline: 0.7rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .research-item__status--active {
+    border-color: rgba(229, 43, 47, 0.55);
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 640px) {
+    .research-item__heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+  }
+</style>

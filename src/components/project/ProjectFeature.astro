@@ -15,6 +15,8 @@ interface Props {
   title: string;
   type: string;
   description: string;
+  origin?: string;
+  note?: string | null;
   tags?: string[];
   links?: ProjectLink[];
   media?: ProjectMedia | null;
@@ -25,6 +27,8 @@ const {
   title,
   type,
   description,
+  origin,
+  note = null,
   tags = [],
   links = [],
   media = null
@@ -55,6 +59,15 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     </p>
 
     {
+      origin && (
+        <div class="project-feature__origin">
+          <span>Why —</span>
+          <p>{origin}</p>
+        </div>
+      )
+    }
+
+    {
       safeTags.length > 0 && (
         <ul
           class="tag-list"
@@ -81,6 +94,14 @@ const formattedIndex = String(index + 1).padStart(2, "0");
             </a>
           ))}
         </div>
+      )
+    }
+
+    {
+      note && (
+        <p class="project-feature__note">
+          ↗ {note}
+        </p>
       )
     }
   </div>
@@ -115,3 +136,51 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     }
   </div>
 </article>
+
+<style>
+  .project-feature__origin {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-4);
+    max-width: 42rem;
+    padding-block: var(--space-5);
+    border-top: var(--border-thin);
+    border-bottom: var(--border-thin);
+  }
+
+  .project-feature__origin span {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .project-feature__origin p {
+    color: var(--color-text);
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    line-height: 1.5;
+  }
+
+  .project-feature__note {
+    max-width: 17rem;
+    margin-top: var(--space-5);
+    margin-left: auto;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    transform: rotate(-1.5deg);
+  }
+
+  @media (max-width: 640px) {
+    .project-feature__origin {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+
+    .project-feature__note {
+      margin-left: 0;
+    }
+  }
+</style>

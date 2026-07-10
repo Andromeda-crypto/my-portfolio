@@ -7,7 +7,7 @@ export const profile = {
   location: "Pennsylvania State University",
   focus: "Robotics · Embedded Systems · Controls · Algorithms",
   currently:
-    "Building BALBOT, a two-wheeled self-balancing robot.",
+    "Building across robotics, embedded systems, and technical research.",
   signature:
     "I build systems where software, hardware, sensing, and numerical methods have to work together under real-world constraints."
 };
@@ -21,41 +21,31 @@ export const links = {
   chessCom: "https://www.chess.com/member/andro_meda1"
 };
 
-/*
-  Add verified professional roles here later.
-
-  Example structure:
-
+export const experience = [
   {
-    company: "Company name",
-    role: "Role title",
-    period: "May 2026 — August 2026",
-    location: "City, Country",
-    description: "One concise description.",
+    company: "Indian Institute of Technology (BHU) Varanasi",
+    role: "Research Intern",
+    period: "June 2026 — Present",
+    location: "Varanasi, India",
+    description:
+      "Working at the intersection of machine learning, IoT, and autonomous systems for smart agriculture.",
     highlights: [
-      "Specific contribution.",
-      "Specific contribution."
+      "Training and evaluating machine-learning models for perception-oriented agricultural applications.",
+      "Integrating intelligent perception solutions into IoT-based agricultural systems.",
+      "Researching UAV platforms and autonomous aerial systems for agriculture-focused deployment."
     ],
-    link: "https://..."
+    link: "https://www.iitbhu.ac.in/"
   }
-*/
-
-export const experience: Array<{
-  company: string;
-  role: string;
-  period: string;
-  location: string;
-  description: string;
-  highlights: string[];
-  link?: string;
-}> = [];
+];
 
 export const projects = [
   {
     title: "Autonomous Robot Navigation",
-    type: "Robotics / C++",
+    type: "Autonomous Systems",
     description:
-      "A from-scratch autonomous navigation simulator built in C++ with differential-drive physics, LIDAR ray casting, log-odds occupancy mapping, RRT path planning, path smoothing, and PID control. The project integrates perception, planning, and control within a single simulation architecture.",
+      "A from-scratch C++ navigation system bringing perception, mapping, motion planning, and control into a single simulation. Built to explore what changes when individual robotics algorithms have to operate as one connected pipeline.",
+    origin:
+      "I wanted to understand how perception, planning, and control behave when they have to work together in one system.",
     tags: [
       "C++17",
       "Robotics",
@@ -73,9 +63,11 @@ export const projects = [
   },
   {
     title: "BALBOT",
-    type: "Embedded Systems / Controls",
+    type: "Embedded Control",
     description:
-      "A two-wheeled self-balancing robot built around embedded C++ firmware, IMU-based attitude estimation, encoder feedback, PID control, motor actuation, power delivery, and live telemetry. The project brings control theory into hardware where timing, noise, mechanics, and electrical constraints directly affect behavior.",
+      "A two-wheeled self-balancing robot built around embedded C++ and closed-loop control. Attitude estimation, encoder feedback, motor actuation, and telemetry come together on physical hardware, where timing, noise, and mechanics become part of the problem.",
+    origin:
+      "I wanted to take control theory out of simulation and deal with what changes when the system becomes physical.",
     tags: [
       "Embedded Systems",
       "IMU",
@@ -88,9 +80,11 @@ export const projects = [
   },
   {
     title: "Options Pricing Engine",
-    type: "Quantitative Finance / C++",
+    type: "Computational Finance",
     description:
-      "A C++ derivatives-pricing engine implementing Black–Scholes valuation, Monte Carlo simulation, antithetic and control-variate variance reduction, option Greeks, and implied-volatility solving. The implementation emphasizes numerical methods, testable model behavior, and financial computation from first principles.",
+      "A C++ derivatives pricing engine built to study financial models through implementation. Black–Scholes, Monte Carlo methods, variance reduction, Greeks, and implied volatility are treated as numerical systems to build, test, and reason about.",
+    origin:
+      "I built it to understand the models through implementation rather than only through their equations.",
     tags: [
       "C++17",
       "Quantitative Finance",
@@ -108,9 +102,11 @@ export const projects = [
   },
   {
     title: "Poker CFR Solver",
-    type: "Algorithms / Game Theory",
+    type: "Game Theory",
     description:
-      "A Counterfactual Regret Minimization solver for imperfect-information games, implementing information sets, regret matching, average-strategy tracking, and convergence analysis. The project examines how decision policies improve when players operate with incomplete information.",
+      "An implementation of Counterfactual Regret Minimization for imperfect-information games. Built out of an interest in how strategies evolve when decisions must be made with incomplete information and against an adapting opponent.",
+    origin:
+      "Poker made decision-making under incomplete information interesting enough to implement and test.",
     tags: [
       "Python",
       "Game Theory",
@@ -131,21 +127,27 @@ export const projects = [
 export const research = [
   {
     title: "FastSLAM 1.0",
+    status: "Implemented",
     description:
-      "A C++ implementation of FastSLAM 1.0 using particle-based robot-pose estimation, per-landmark extended Kalman filters, range-bearing observations, and systematic resampling.",
-    tags: ["C++17", "SLAM", "Particle Filters", "EKF"]
+      "A from-scratch C++ implementation of FastSLAM 1.0, combining particle-based robot-pose estimation with independent landmark extended Kalman filters. The implementation includes range-bearing observations, particle weighting, landmark updates, and systematic resampling.",
+    tags: [
+      "C++17",
+      "SLAM",
+      "Particle Filters",
+      "EKF"
+    ]
   },
   {
-    title: "Probabilistic Robotics",
+    title: "FastSLAM 2.0",
+    status: "In Progress",
     description:
-      "Implementation work involving Bayesian state estimation, occupancy grids, particle filters, frontier exploration, and uncertainty-aware navigation.",
-    tags: ["Bayesian Estimation", "Occupancy Grids", "Exploration"]
-  },
-  {
-    title: "Motion Planning",
-    description:
-      "Practical comparison and implementation of graph-search and sampling-based planning methods, including A*, RRT, path smoothing, obstacle inflation, and frontier-goal selection.",
-    tags: ["A*", "RRT", "Path Planning", "Simulation"]
+      "An implementation of FastSLAM 2.0 focused on incorporating the latest observation into the particle proposal distribution. The work is currently centred on understanding the paper, structuring the algorithm, and translating the updated proposal step into a reliable implementation.",
+    tags: [
+      "C++17",
+      "SLAM",
+      "Particle Filters",
+      "Research Implementation"
+    ]
   }
 ];
 
@@ -190,14 +192,22 @@ export const cadStudies = [
     stage: "Beginner study",
     description:
       "A tutorial-led exercise used to practise sketch constraints, mounting geometry, hole placement, dimensions, and basic mechanical clearances.",
-    tags: ["CAD", "Part Modelling", "Motor Mount"]
+    tags: [
+      "CAD",
+      "Part Modelling",
+      "Motor Mount"
+    ]
   },
   {
     title: "Standoff Practice",
     stage: "Beginner study",
     description:
       "A small tutorial-led part used to practise constrained sketches, extrusion, dimensions, and simple mechanical reference geometry.",
-    tags: ["CAD", "Standoff", "Mechanical Design"]
+    tags: [
+      "CAD",
+      "Standoff",
+      "Mechanical Design"
+    ]
   }
 ];
 
@@ -226,7 +236,9 @@ export const skills = [
 
 export const interests = {
   reading: {
-    current: ["The Confidence Game by Maria Konnikova"],
+    current: [
+      "The Confidence Game by Maria Konnikova"
+    ],
     favorites: [
       "Man’s Search for Meaning by Viktor Frankl",
       "Meditations by Marcus Aurelius",
@@ -238,27 +250,27 @@ export const interests = {
     {
       title: "Football",
       description:
-        "Football has been a major part of my life. I played fullback and enjoy the combination of positioning, recovery work, one-on-one defending, and decision-making under pressure."
+        "I played primarily as a fullback and competed at state and national level. Football has been a serious part of my life, and I still enjoy the positioning, recovery work, and decisions made away from the ball."
     },
     {
       title: "Chess",
       description:
-        "I enjoy chess for its emphasis on calculation, patience, pattern recognition, and the long-term consequences of small decisions."
+        "I play casually and enjoy positions that reward calculation, patience, and long-term planning."
     },
     {
       title: "Running",
       description:
-        "Running gives me a straightforward way to build endurance, maintain consistency, and measure progress."
+        "I run regularly and enjoy having a straightforward way to work on endurance and consistency."
     },
     {
       title: "Swimming",
       description:
-        "I enjoy the rhythm, breathing control, and low-impact conditioning that swimming provides."
+        "Something I enjoy for the rhythm of it, the breathing control, and the fact that it feels completely different from running."
     },
     {
       title: "Badminton",
       description:
-        "I enjoy the speed, footwork, timing, and quick tactical adjustments involved in badminton."
+        "Mostly for the speed of the game, the footwork, and how quickly a point can change."
     }
   ]
 };
