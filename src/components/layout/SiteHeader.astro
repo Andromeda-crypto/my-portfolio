@@ -1,0 +1,167 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navigation = [
+  { label: "About", href: "/#about" },
+  { label: "Experience", href: "/#experience" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Lab", href: "/lab/" },
+  { label: "Research", href: "/#research" },
+  { label: "Interests", href: "/interests/" },
+  { label: "Contact", href: "/#contact" }
+];
+
+const isCurrentPage = (href: string) => {
+  if (href === "/lab/") {
+    return currentPath.startsWith("/lab");
+  }
+
+  if (href === "/interests/") {
+    return currentPath.startsWith("/interests");
+  }
+
+  return false;
+};
+---
+
+<header class="site-header" data-site-header data-scrolled="false">
+  <div class="page-frame site-header__inner">
+    <a class="site-brand" href="/" aria-label="Om Anand home">
+      <span class="site-brand__mark" aria-hidden="true"></span>
+      <span>Om Anand</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <ul class="site-nav__list">
+        {
+          navigation.map((item) => (
+            <li>
+              <a
+                class="site-nav__link"
+                href={item.href}
+                aria-current={isCurrentPage(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button
+      class="site-menu-button"
+      type="button"
+      aria-label="Open navigation"
+      aria-expanded="false"
+      aria-controls="mobile-navigation"
+      data-menu-button
+    >
+      <span class="site-menu-button__line"></span>
+      <span class="site-menu-button__line"></span>
+    </button>
+  </div>
+
+  <div
+    class="mobile-navigation"
+    id="mobile-navigation"
+    aria-hidden="true"
+    data-mobile-navigation
+  >
+    <nav class="mobile-navigation__inner" aria-label="Mobile navigation">
+      <ul class="mobile-navigation__list">
+        {
+          navigation.map((item, index) => (
+            <li class="mobile-navigation__item">
+              <a
+                class="mobile-navigation__link"
+                href={item.href}
+                aria-current={isCurrentPage(item.href) ? "page" : undefined}
+              >
+                <span class="mobile-navigation__index">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+
+                <span>{item.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-site-header]");
+  const menuButton =
+    document.querySelector<HTMLButtonElement>("[data-menu-button]");
+  const mobileNavigation =
+    document.querySelector<HTMLElement>("[data-mobile-navigation]");
+
+  const updateHeaderState = () => {
+    if (!header) return;
+
+    header.dataset.scrolled = window.scrollY > 24 ? "true" : "false";
+  };
+
+  const closeMenu = () => {
+    if (!menuButton || !mobileNavigation) return;
+
+    menuButton.setAttribute("aria-expanded", "false");
+    menuButton.setAttribute("aria-label", "Open navigation");
+
+    mobileNavigation.setAttribute("aria-hidden", "true");
+    mobileNavigation.dataset.open = "false";
+
+    document.body.classList.remove("menu-open");
+  };
+
+  const openMenu = () => {
+    if (!menuButton || !mobileNavigation) return;
+
+    menuButton.setAttribute("aria-expanded", "true");
+    menuButton.setAttribute("aria-label", "Close navigation");
+
+    mobileNavigation.setAttribute("aria-hidden", "false");
+    mobileNavigation.dataset.open = "true";
+
+    document.body.classList.add("menu-open");
+  };
+
+  const toggleMenu = () => {
+    const isOpen = menuButton?.getAttribute("aria-expanded") === "true";
+
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  };
+
+  updateHeaderState();
+
+  window.addEventListener("scroll", updateHeaderState, {
+    passive: true
+  });
+
+  menuButton?.addEventListener("click", toggleMenu);
+
+  mobileNavigation
+    ?.querySelectorAll<HTMLAnchorElement>("a")
+    .forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMenu();
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 980) {
+      closeMenu();
+    }
+  });
+</script>
