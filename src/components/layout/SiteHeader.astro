@@ -28,7 +28,7 @@ const isCurrentPage = (href: string) => {
   <div class="page-frame site-header__inner">
     <a class="site-brand" href="/" aria-label="Om Anand home">
       <span class="site-brand__mark" aria-hidden="true"></span>
-      <span>Om Anand</span>
+      <span>OA</span>
     </a>
 
     <nav class="site-nav" aria-label="Primary navigation">
@@ -94,8 +94,10 @@ const isCurrentPage = (href: string) => {
 
 <script>
   const header = document.querySelector<HTMLElement>("[data-site-header]");
+
   const menuButton =
     document.querySelector<HTMLButtonElement>("[data-menu-button]");
+
   const mobileNavigation =
     document.querySelector<HTMLElement>("[data-mobile-navigation]");
 
@@ -130,7 +132,8 @@ const isCurrentPage = (href: string) => {
   };
 
   const toggleMenu = () => {
-    const isOpen = menuButton?.getAttribute("aria-expanded") === "true";
+    const isOpen =
+      menuButton?.getAttribute("aria-expanded") === "true";
 
     if (isOpen) {
       closeMenu();

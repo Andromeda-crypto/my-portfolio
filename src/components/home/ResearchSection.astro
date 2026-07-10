@@ -1,0 +1,51 @@
+---
+import SectionIntro from "../layout/SectionIntro.astro";
+import { research } from "../../data/siteContent";
+---
+
+<section
+  class="home-section"
+  id="research"
+  aria-labelledby="research-heading"
+>
+  <div class="page-frame home-section__grid">
+    <div class="home-section__aside" data-reveal="left">
+      <SectionIntro
+        index="05"
+        eyebrow="Research"
+        title="Research and technical work."
+        id="research-heading"
+      />
+    </div>
+
+    <div class="home-section__content">
+      <div class="research-list">
+        {
+          research.map((item, index) => (
+            <article class="research-item" data-reveal>
+              <span class="research-item__index">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+
+              <div class="research-item__content">
+                <h3 class="research-item__title">
+                  {item.title}
+                </h3>
+
+                <p class="research-item__description">
+                  {item.description}
+                </p>
+
+                <ul class="tag-list">
+                  {item.tags.map((tag) => (
+                    <li class="tag">{tag}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

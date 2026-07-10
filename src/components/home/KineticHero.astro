@@ -10,7 +10,7 @@ import { profile } from "../../data/siteContent";
   <div class="page-frame kinetic-hero__inner">
     <div class="kinetic-hero__topline" data-reveal>
       <p class="kinetic-hero__discipline">
-        Computer Science + Mathematics
+        Computer Science &amp; Mathematics
       </p>
 
       <p class="kinetic-hero__location">
@@ -57,6 +57,35 @@ import { profile } from "../../data/siteContent";
     </div>
   </div>
 </section>
+
+<script>
+  import { initializeHeroController } from "../motion/heroController";
+
+  let cleanupHeroController: (() => void) | undefined;
+
+  const initializeHero = () => {
+    cleanupHeroController?.();
+    cleanupHeroController = initializeHeroController();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeHero, {
+      once: true
+    });
+  } else {
+    initializeHero();
+  }
+
+  window.addEventListener(
+    "pagehide",
+    () => {
+      cleanupHeroController?.();
+    },
+    {
+      once: true
+    }
+  );
+</script>
 
 <style>
   .kinetic-hero {
@@ -131,10 +160,10 @@ import { profile } from "../../data/siteContent";
 
   .kinetic-hero__title {
     display: grid;
-    font-size: clamp(6rem, 18.5vw, 17rem);
+    font-size: clamp(5.4rem, 15.8vw, 14rem);
     font-weight: var(--font-weight-heavy);
-    line-height: 0.69;
-    letter-spacing: -0.095em;
+    line-height: 0.72;
+    letter-spacing: -0.09em;
     text-transform: uppercase;
   }
 
@@ -253,8 +282,8 @@ import { profile } from "../../data/siteContent";
 
   @media (max-width: 900px) {
     .kinetic-hero__title {
-      font-size: clamp(5.8rem, 20vw, 11rem);
-      line-height: 0.72;
+      font-size: clamp(5rem, 18vw, 10rem);
+      line-height: 0.74;
     }
   }
 
@@ -278,8 +307,8 @@ import { profile } from "../../data/siteContent";
     }
 
     .kinetic-hero__title {
-      font-size: clamp(5rem, 27vw, 9rem);
-      line-height: 0.75;
+      font-size: clamp(4.6rem, 23vw, 8rem);
+      line-height: 0.77;
     }
 
     .kinetic-hero__word--anand {

@@ -1,81 +1,296 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import LabList from "../components/LabList.astro";
-import SectionHeader from "../components/SectionHeader.astro";
-import { cadStudies } from "../data/siteContent";
+import { cadStudies, labItems } from "../data/siteContent";
 ---
 
 <BaseLayout
   title="Om Anand | Engineering Lab"
-  description="Engineering lab, mini projects, experiments, CAD studies, and technical explorations by Om Anand."
+  description="Engineering experiments, hardware work, visual demonstrations, and early CAD studies by Om Anand."
+  bodyClass="lab-page"
 >
-  <section class="interests-hero">
-    <p class="eyebrow">Engineering Lab</p>
+  <section class="subpage-hero">
+    <div class="page-frame subpage-hero__inner">
+      <p class="section-kicker">Engineering Lab</p>
 
-    <h1>Mini projects and experiments.</h1>
-
-    <p>
-      Smaller builds, reverse-engineering attempts, and technical explorations.
-    </p>
-  </section>
-
-  <section class="section">
-    <SectionHeader
-      eyebrow="Lab entries"
-      title="Completed experiments"
-    />
-
-    <LabList />
-  </section>
-
-  <section class="section">
-    <div class="section-header">
-      <div>
-        <p class="eyebrow">CAD & mechanical design</p>
-        <h2>Early CAD studies</h2>
-      </div>
+      <h1>Experiments and smaller builds.</h1>
 
       <p>
-        Beginner mechanical design practice focused on building CAD fluency for robotics work.
-        This section will grow into design studies, part models, assemblies, and prototype
-        concepts as the mechanical side of my projects develops.
+        Completed prototypes, hardware experiments, visual demonstrations,
+        and early mechanical-design work.
       </p>
     </div>
+  </section>
 
-    <div class="interest-grid">
+  <section class="home-section">
+    <div class="page-frame">
       {
-        cadStudies.map((item) => (
-          <article class="interest-card">
-            <p class="eyebrow">{item.stage}</p>
+        labItems.map((item) => (
+          <article class="lab-entry">
+            <div class="lab-entry__header">
+              <div>
+                <p class="section-kicker">{item.category}</p>
+                <h2>{item.title}</h2>
+              </div>
 
-            <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </div>
 
-            <p>{item.description}</p>
+            <div class="lab-entry__media">
+              {item.media.map((media, index) => (
+                <figure
+                  class:list={[
+                    "media-frame",
+                    "media-reveal",
+                    "lab-entry__media-item",
+                    index === 0 && "lab-entry__media-item--primary"
+                  ]}
+                >
+                  {media.type === "video" ? (
+                    <video
+                      src={media.src}
+                      aria-label={media.alt}
+                      controls
+                      muted
+                      playsinline
+                      preload="metadata"
+                    />
+                  ) : (
+                    <img
+                      src={media.src}
+                      alt={media.alt}
+                      loading="lazy"
+                    />
+                  )}
+                </figure>
+              ))}
+            </div>
 
-            <div class="tag-row">
-              {item.tags.map((tag) => <span>{tag}</span>)}
+            <div class="lab-entry__result">
+              <p class="section-kicker">Result</p>
+              <p>{item.result}</p>
+
+              <ul class="tag-list">
+                {item.tags.map((tag) => (
+                  <li class="tag">{tag}</li>
+                ))}
+              </ul>
             </div>
           </article>
         ))
       }
+    </div>
+  </section>
 
-      <article class="interest-card">
-        <p class="eyebrow">Coming next</p>
-
-        <h3>Design showcases</h3>
+  <section class="home-section" id="cad">
+    <div class="page-frame">
+      <div class="cad-header">
+        <div>
+          <p class="section-kicker">CAD & mechanical design</p>
+          <h2>Early CAD studies.</h2>
+        </div>
 
         <p>
-          Future additions will include screenshots, exported renders, short notes on design
-          intent, and small mechanical parts connected to robotics builds.
+          I am building foundational CAD skills through small,
+          tutorial-led part models. This section will expand into original
+          mounts, assemblies, chassis concepts, and robotics-oriented
+          mechanical designs as my ability develops.
         </p>
+      </div>
 
-        <div class="tag-row">
-          <span>Assemblies</span>
-          <span>Robot Frames</span>
-          <span>Mounts</span>
-          <span>Design Iterations</span>
-        </div>
-      </article>
+      <div class="cad-grid">
+        {
+          cadStudies.map((item) => (
+            <article class="content-card cad-card">
+              <p class="mono-label">{item.stage}</p>
+
+              <h3>{item.title}</h3>
+
+              <p>{item.description}</p>
+
+              <ul class="tag-list">
+                {item.tags.map((tag) => (
+                  <li class="tag">{tag}</li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+
+        <article class="content-card cad-card cad-card--future">
+          <p class="mono-label">Future additions</p>
+
+          <h3>Design work in progress.</h3>
+
+          <p>
+            Future entries will include original parts, design iterations,
+            exported renders, assemblies, and mechanical work connected to
+            physical robotics projects.
+          </p>
+        </article>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  import { initializeScrollAnimations } from "../components/motion/scrollAnimations";
+
+  const initializePage = () => {
+    document.body.classList.add("is-ready");
+    initializeScrollAnimations();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializePage, {
+      once: true
+    });
+  } else {
+    initializePage();
+  }
+</script>
+
+<style>
+  .subpage-hero {
+    display: flex;
+    align-items: end;
+    min-height: 78svh;
+    padding-top: 7rem;
+    border-bottom: var(--border-thin);
+  }
+
+  .subpage-hero__inner {
+    padding-bottom: var(--section-space-lg);
+  }
+
+  .subpage-hero h1 {
+    max-width: 10ch;
+    margin-top: var(--space-4);
+    font-size: clamp(4rem, 11vw, 10rem);
+    line-height: 0.86;
+    letter-spacing: var(--tracking-display);
+    text-transform: uppercase;
+  }
+
+  .subpage-hero p:last-child {
+    max-width: 44rem;
+    margin-top: var(--space-6);
+    font-size: var(--text-lg);
+  }
+
+  .lab-entry {
+    padding-block: var(--section-space-lg);
+    border-bottom: var(--border-thin);
+  }
+
+  .lab-entry:first-child {
+    padding-top: 0;
+  }
+
+  .lab-entry__header {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 7vw, 7rem);
+    margin-bottom: var(--space-8);
+  }
+
+  .lab-entry__header h2,
+  .cad-header h2 {
+    margin-top: var(--space-3);
+    font-size: var(--text-3xl);
+    text-transform: uppercase;
+  }
+
+  .lab-entry__media {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+
+  .lab-entry__media-item {
+    aspect-ratio: 4 / 3;
+  }
+
+  .lab-entry__media-item--primary {
+    grid-column: 1 / -1;
+    aspect-ratio: 16 / 9;
+  }
+
+  .lab-entry__result {
+    display: grid;
+    gap: var(--space-5);
+    max-width: 52rem;
+    margin-top: var(--space-7);
+    padding-left: var(--space-5);
+    border-left: 2px solid var(--color-accent);
+  }
+
+  .cad-header {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 7vw, 7rem);
+    margin-bottom: var(--space-8);
+  }
+
+  .cad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: var(--border-thin);
+    border-left: var(--border-thin);
+  }
+
+  .cad-card {
+    display: grid;
+    align-content: start;
+    gap: var(--space-5);
+    min-height: 22rem;
+    border-top: 0;
+    border-left: 0;
+  }
+
+  .cad-card h3 {
+    font-size: var(--text-2xl);
+    text-transform: uppercase;
+  }
+
+  .cad-card--future {
+    background:
+      linear-gradient(
+        135deg,
+        var(--color-red-soft),
+        transparent 60%
+      ),
+      var(--color-surface);
+  }
+
+  @media (max-width: 900px) {
+    .lab-entry__header,
+    .cad-header {
+      grid-template-columns: 1fr;
+    }
+
+    .cad-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .cad-card--future {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .lab-entry__media,
+    .cad-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .lab-entry__media-item--primary,
+    .cad-card--future {
+      grid-column: auto;
+    }
+
+    .lab-entry__media-item,
+    .lab-entry__media-item--primary {
+      aspect-ratio: 4 / 3;
+    }
+  }
+</style>

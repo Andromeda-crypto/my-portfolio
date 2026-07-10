@@ -1,0 +1,117 @@
+---
+interface ProjectLink {
+  label: string;
+  href: string;
+}
+
+interface ProjectMedia {
+  type: "image" | "video";
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  index: number;
+  title: string;
+  type: string;
+  description: string;
+  tags?: string[];
+  links?: ProjectLink[];
+  media?: ProjectMedia | null;
+}
+
+const {
+  index,
+  title,
+  type,
+  description,
+  tags = [],
+  links = [],
+  media = null
+} = Astro.props;
+
+const safeTags = Array.isArray(tags) ? tags : [];
+const safeLinks = Array.isArray(links) ? links : [];
+
+const formattedIndex = String(index + 1).padStart(2, "0");
+---
+
+<article class="project-feature">
+  <div class="project-feature__content" data-reveal="left">
+    <span class="project-feature__index">
+      {formattedIndex}
+    </span>
+
+    <p class="project-feature__type">
+      {type}
+    </p>
+
+    <h3 class="project-feature__title">
+      {title}
+    </h3>
+
+    <p class="project-feature__description">
+      {description}
+    </p>
+
+    {
+      safeTags.length > 0 && (
+        <ul
+          class="tag-list"
+          aria-label={`${title} technologies`}
+        >
+          {safeTags.map((tag) => (
+            <li class="tag">{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      safeLinks.length > 0 && (
+        <div class="project-feature__actions">
+          {safeLinks.map((link) => (
+            <a
+              class="text-link"
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </div>
+
+  <div
+    class="project-feature__media media-frame media-reveal"
+    data-parallax-media
+  >
+    {
+      media?.type === "video" ? (
+        <video
+          src={media.src}
+          aria-label={media.alt}
+          controls
+          muted
+          playsinline
+          preload="metadata"
+        />
+      ) : media?.type === "image" ? (
+        <img
+          src={media.src}
+          alt={media.alt}
+          loading="lazy"
+        />
+      ) : (
+        <div class="project-feature__placeholder">
+          <span>
+            Project media and case-study material will be added here.
+          </span>
+        </div>
+      )
+    }
+  </div>
+</article>

@@ -1,0 +1,82 @@
+---
+import SectionIntro from "../layout/SectionIntro.astro";
+import { labItems } from "../../data/siteContent";
+
+const featuredLab = labItems[0];
+const previewMedia = featuredLab?.media.find(
+  (item) => item.type === "video"
+);
+---
+
+<section
+  class="home-section"
+  id="lab"
+  aria-labelledby="lab-heading"
+>
+  <div class="page-frame home-section__grid">
+    <div class="home-section__aside" data-reveal="left">
+      <SectionIntro
+        index="04"
+        eyebrow="Engineering Lab"
+        title="Experiments and smaller builds."
+        id="lab-heading"
+      />
+    </div>
+
+    <div class="home-section__content">
+      <div class="lab-preview-grid">
+        <div
+          class="lab-preview__primary media-frame media-reveal"
+          data-parallax-media
+        >
+          {
+            previewMedia?.type === "video" ? (
+              <video
+                src={previewMedia.src}
+                aria-label={previewMedia.alt}
+                controls
+                muted
+                playsinline
+                preload="metadata"
+              />
+            ) : (
+              <div class="project-feature__placeholder">
+                Lab media
+              </div>
+            )
+          }
+        </div>
+
+        <div class="lab-preview__secondary" data-reveal="right">
+          <div>
+            <p class="section-kicker">
+              Featured experiment
+            </p>
+
+            <h3 class="lab-preview__title">
+              {featuredLab.title}
+            </h3>
+
+            <p class="lab-preview__copy">
+              {featuredLab.description}
+            </p>
+          </div>
+
+          <div class="content-stack content-stack--tight">
+            <ul class="tag-list">
+              {
+                featuredLab.tags.map((tag) => (
+                  <li class="tag">{tag}</li>
+                ))
+              }
+            </ul>
+
+            <a class="button button--primary" href="/lab/">
+              View Engineering Lab
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

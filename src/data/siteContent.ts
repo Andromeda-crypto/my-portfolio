@@ -4,9 +4,10 @@ export const profile = {
   headline: "Om Anand",
   summary:
     "Robotics, embedded systems, controls, and algorithmic engineering.",
-  location: "Penn State Harrisburg",
+  location: "Pennsylvania State University",
   focus: "Robotics · Embedded Systems · Controls · Algorithms",
-  currently: "Building BALBOT, a two-wheeled self-balancing robot on ESP32.",
+  currently:
+    "Building BALBOT, a two-wheeled self-balancing robot.",
   signature:
     "I build systems where software, hardware, sensing, and numerical methods have to work together under real-world constraints."
 };
@@ -20,102 +21,131 @@ export const links = {
   chessCom: "https://www.chess.com/member/andro_meda1"
 };
 
+/*
+  Add verified professional roles here later.
+
+  Example structure:
+
+  {
+    company: "Company name",
+    role: "Role title",
+    period: "May 2026 — August 2026",
+    location: "City, Country",
+    description: "One concise description.",
+    highlights: [
+      "Specific contribution.",
+      "Specific contribution."
+    ],
+    link: "https://..."
+  }
+*/
+
+export const experience: Array<{
+  company: string;
+  role: string;
+  period: string;
+  location: string;
+  description: string;
+  highlights: string[];
+  link?: string;
+}> = [];
+
 export const projects = [
   {
     title: "Autonomous Robot Navigation",
     type: "Robotics / C++",
     description:
-      "A from-scratch autonomous navigation simulator built in C++ with custom rigid-body physics, LIDAR ray-casting, occupancy mapping, RRT planning, path smoothing, and PID control. The project focuses on how perception, planning, and control interact inside one working robotics pipeline.",
+      "A from-scratch autonomous navigation simulator built in C++ with differential-drive physics, LIDAR ray casting, log-odds occupancy mapping, RRT path planning, path smoothing, and PID control. The project integrates perception, planning, and control within a single simulation architecture.",
     tags: [
       "C++17",
       "Robotics",
       "Motion Planning",
       "LIDAR",
-      "Mapping",
-      "PID Control",
-      "Simulation"
+      "Mapping"
     ],
     links: [
       {
         label: "GitHub",
         href: "https://github.com/Andromeda-crypto/Autonomous-Robot-Navigation"
       }
-    ]
+    ],
+    media: null
   },
   {
     title: "BALBOT",
-    type: "Embedded Controls",
+    type: "Embedded Systems / Controls",
     description:
-      "A two-wheeled self-balancing robot built around embedded firmware, IMU-based attitude estimation, motor control, PID tuning, power delivery, and live telemetry. The project is focused on taking control theory into physical hardware where noise, wiring, timing, and mechanical behavior matter.",
+      "A two-wheeled self-balancing robot built around embedded C++ firmware, IMU-based attitude estimation, encoder feedback, PID control, motor actuation, power delivery, and live telemetry. The project brings control theory into hardware where timing, noise, mechanics, and electrical constraints directly affect behavior.",
     tags: [
       "Embedded Systems",
-      "IoT",
       "IMU",
       "Control Systems",
       "Firmware",
-      "Telemetry",
-      "Hardware Integration"
+      "Telemetry"
     ],
-    links: []
+    links: [],
+    media: null
   },
   {
     title: "Options Pricing Engine",
-    type: "Quant / Numerical Software",
+    type: "Quantitative Finance / C++",
     description:
-      "A C++ derivatives pricing engine implementing Black-Scholes pricing, Monte Carlo simulation, variance reduction, Greeks, and implied volatility solving. The project emphasizes numerical stability, model implementation, and financial computation from first principles.",
+      "A C++ derivatives-pricing engine implementing Black–Scholes valuation, Monte Carlo simulation, antithetic and control-variate variance reduction, option Greeks, and implied-volatility solving. The implementation emphasizes numerical methods, testable model behavior, and financial computation from first principles.",
     tags: [
       "C++17",
-      "Quant Finance",
-      "Numerical Methods",
+      "Quantitative Finance",
       "Monte Carlo",
-      "Black-Scholes",
-      "Greeks",
-      "Implied Volatility"
+      "Numerical Methods",
+      "Derivatives"
     ],
     links: [
       {
         label: "GitHub",
         href: "https://github.com/Andromeda-crypto/options-pricing-engine"
       }
-    ]
+    ],
+    media: null
   },
   {
     title: "Poker CFR Solver",
     type: "Algorithms / Game Theory",
     description:
-      "A Counterfactual Regret Minimization solver for imperfect-information games, with information sets, regret matching, averaged strategies, and strategy convergence. The project explores how decision algorithms learn under hidden information and delayed feedback.",
+      "A Counterfactual Regret Minimization solver for imperfect-information games, implementing information sets, regret matching, average-strategy tracking, and convergence analysis. The project examines how decision policies improve when players operate with incomplete information.",
     tags: [
       "Python",
       "Game Theory",
       "CFR",
       "Decision Algorithms",
-      "Strategy Optimization",
-      "Imperfect Information"
+      "Optimization"
     ],
     links: [
       {
         label: "GitHub",
         href: "https://github.com/Andromeda-crypto/poker-cfr-solver"
       }
-    ]
+    ],
+    media: null
   }
 ];
 
 export const research = [
   {
-    title: "SLAM Implementation",
+    title: "FastSLAM 1.0",
     description:
-      "Reproducing a SLAM method with implementation notes, controlled tests, and logged metrics."
+      "A C++ implementation of FastSLAM 1.0 using particle-based robot-pose estimation, per-landmark extended Kalman filters, range-bearing observations, and systematic resampling.",
+    tags: ["C++17", "SLAM", "Particle Filters", "EKF"]
   },
   {
     title: "Probabilistic Robotics",
     description:
-      "Bayesian belief tracking, Kalman filters, particle filters, occupancy grids, and exploration behavior."
+      "Implementation work involving Bayesian state estimation, occupancy grids, particle filters, frontier exploration, and uncertainty-aware navigation.",
+    tags: ["Bayesian Estimation", "Occupancy Grids", "Exploration"]
   },
   {
     title: "Motion Planning",
     description:
-      "Comparing search-based and sampling-based planners across path quality, runtime, and obstacle density."
+      "Practical comparison and implementation of graph-search and sampling-based planning methods, including A*, RRT, path smoothing, obstacle inflation, and frontier-goal selection.",
+    tags: ["A*", "RRT", "Path Planning", "Simulation"]
   }
 ];
 
@@ -124,33 +154,31 @@ export const labItems = [
     title: "Flight Attitude Dashboard",
     category: "IoT / IMU / Visualization",
     description:
-      "A completed reverse-engineering experiment inspired by an aircraft attitude demo. I built an IoT telemetry loop using an ESP32-class microcontroller, IMU attitude estimation, serial data streaming, Processing 4 rendering, and motor/PID feedback visualization.",
+      "A completed reverse-engineering experiment combining an embedded telemetry loop, IMU attitude estimation, serial communication, Processing 4 rendering, and live control-feedback visualization.",
     result:
-      "The final prototype rendered a live 3D aircraft model from IMU pitch and roll data, displayed telemetry on a dashboard, and visualized motor control error in real time.",
+      "The final prototype rendered a live three-dimensional aircraft model from pitch and roll measurements, displayed sensor telemetry, and visualized motor-control error in real time.",
     tags: [
       "IoT",
       "IMU",
       "Sensor Fusion",
       "Telemetry",
-      "Processing 4",
-      "PID Feedback",
-      "Visualization"
+      "Processing 4"
     ],
     media: [
       {
         type: "video",
         src: "/media/lab/attitude-dashboard/demo.mp4",
-        alt: "Demo video of the flight attitude dashboard responding to live IMU motion"
+        alt: "Flight attitude dashboard responding to live IMU movement"
       },
       {
         type: "image",
         src: "/media/lab/attitude-dashboard/dashboard.png",
-        alt: "Full Processing 4 telemetry dashboard for the IMU-driven flight attitude visualizer"
+        alt: "Full Processing 4 flight attitude dashboard"
       },
       {
         type: "image",
         src: "/media/lab/attitude-dashboard/circuitry.jpg",
-        alt: "Circuitry and wiring setup for the ESP32 and IMU flight attitude dashboard experiment"
+        alt: "Embedded circuitry and wiring used for the attitude dashboard"
       }
     ]
   }
@@ -161,15 +189,15 @@ export const cadStudies = [
     title: "Motor Mount Practice",
     stage: "Beginner study",
     description:
-      "A basic CAD exercise for understanding mounting geometry, hole placement, clearances, and how a motor could be positioned in a small mechanical assembly.",
-    tags: ["CAD", "Motor Mount", "Mechanical Design", "Tutorial Practice"]
+      "A tutorial-led exercise used to practise sketch constraints, mounting geometry, hole placement, dimensions, and basic mechanical clearances.",
+    tags: ["CAD", "Part Modelling", "Motor Mount"]
   },
   {
-    title: "Standoff Point Practice",
+    title: "Standoff Practice",
     stage: "Beginner study",
     description:
-      "A simple standoff-style part used to practice sketch constraints, extrusion, dimensions, and basic mechanical reference points for future robot frame design.",
-    tags: ["CAD", "Standoff", "Part Modeling", "Tutorial Practice"]
+      "A small tutorial-led part used to practise constrained sketches, extrusion, dimensions, and simple mechanical reference geometry.",
+    tags: ["CAD", "Standoff", "Mechanical Design"]
   }
 ];
 
@@ -177,22 +205,22 @@ export const skills = [
   {
     title: "Robotics & Control",
     description:
-      "Planning, mapping, LIDAR simulation, PID control, state estimation, and robotics architecture."
+      "Planning, mapping, simulation, PID control, state estimation, and robotics architecture."
   },
   {
     title: "Embedded Systems",
     description:
-      "IoT systems, sensor bring-up, IMU pipelines, firmware structure, telemetry, debugging, and hardware integration."
+      "Sensor bring-up, IMU pipelines, firmware structure, telemetry, debugging, and hardware integration."
   },
   {
     title: "Algorithmic Engineering",
     description:
-      "Data structures, graph algorithms, numerical methods, simulation, optimization, and from-scratch implementations."
+      "Graph algorithms, numerical methods, simulation, optimisation, and implementation from first principles."
   },
   {
     title: "Tools & Workflow",
     description:
-      "C++, Python, Git, Linux, CMake, PlatformIO, VS Code, testing, debugging, and iterative development."
+      "C++, Python, Git, Linux, CMake, PlatformIO, testing, debugging, and iterative development."
   }
 ];
 
@@ -210,27 +238,27 @@ export const interests = {
     {
       title: "Football",
       description:
-        "Football has been a big part of my life. I played fullback, and I enjoy the mix of positioning, recovery runs, one-on-one defending, and reading the game under pressure."
+        "Football has been a major part of my life. I played fullback and enjoy the combination of positioning, recovery work, one-on-one defending, and decision-making under pressure."
     },
     {
       title: "Chess",
       description:
-        "I like chess because it slows the game down into calculation and patience. It is one of the few games where one careless decision can reshape the entire position."
+        "I enjoy chess for its emphasis on calculation, patience, pattern recognition, and the long-term consequences of small decisions."
     },
     {
       title: "Running",
       description:
-        "Running helps me stay consistent and clear-headed. I like that progress is simple to measure and hard to fake."
+        "Running gives me a straightforward way to build endurance, maintain consistency, and measure progress."
     },
     {
       title: "Swimming",
       description:
-        "Swimming is relaxing but still demanding. I enjoy the rhythm, breathing control, and the feeling of moving without impact."
+        "I enjoy the rhythm, breathing control, and low-impact conditioning that swimming provides."
     },
     {
       title: "Badminton",
       description:
-        "Badminton is quick and reactive. I like the footwork, fast exchanges, and how small timing changes can decide a point."
+        "I enjoy the speed, footwork, timing, and quick tactical adjustments involved in badminton."
     }
   ]
 };

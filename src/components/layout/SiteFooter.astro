@@ -1,5 +1,5 @@
 ---
-import { links, profile } from "../../data/siteContent";
+import { links } from "../../data/siteContent";
 
 const year = new Date().getFullYear();
 
@@ -13,7 +13,7 @@ const footerLinks = [
     href: links.linkedin
   },
   {
-    label: "Resume",
+    label: "Résumé",
     href: links.resume
   },
   {
@@ -23,25 +23,28 @@ const footerLinks = [
 ];
 ---
 
-<footer class="site-footer">
+<footer class="site-footer site-footer--minimal">
   <div class="page-frame">
-    <div class="site-footer__top">
-      <div>
-        <p class="section-marker">Contact</p>
+    <div class="site-footer-minimal__top">
+      <p class="section-marker">
+        Contact
+      </p>
 
-        <h2 class="site-footer__name">
-          {profile.name}
-        </h2>
-      </div>
-
-      <nav class="site-footer__links" aria-label="Footer links">
+      <nav
+        class="site-footer-minimal__links"
+        aria-label="Footer links"
+      >
         {
           footerLinks.map((link) => (
             <a
               class="site-footer__link"
               href={link.href}
               target={link.href.startsWith("mailto:") ? undefined : "_blank"}
-              rel={link.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+              rel={
+                link.href.startsWith("mailto:")
+                  ? undefined
+                  : "noopener noreferrer"
+              }
             >
               {link.label}
             </a>
@@ -52,7 +55,38 @@ const footerLinks = [
 
     <div class="site-footer__bottom">
       <span>© {year} Om Anand</span>
-      <span>Computer Science + Mathematics</span>
+      <span>Computer Science &amp; Mathematics</span>
     </div>
   </div>
 </footer>
+
+<style>
+  .site-footer--minimal {
+    padding-block: var(--space-8) var(--space-6);
+  }
+
+  .site-footer-minimal__top {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-7);
+    align-items: center;
+  }
+
+  .site-footer-minimal__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-5);
+  }
+
+  @media (max-width: 700px) {
+    .site-footer-minimal__top {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .site-footer-minimal__links {
+      justify-content: flex-start;
+    }
+  }
+</style>
