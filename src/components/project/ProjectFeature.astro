@@ -1,0 +1,186 @@
+---
+interface ProjectLink {
+  label: string;
+  href: string;
+}
+
+interface ProjectMedia {
+  type: "image" | "video";
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  index: number;
+  title: string;
+  type: string;
+  description: string;
+  origin?: string;
+  note?: string | null;
+  tags?: string[];
+  links?: ProjectLink[];
+  media?: ProjectMedia | null;
+}
+
+const {
+  index,
+  title,
+  type,
+  description,
+  origin,
+  note = null,
+  tags = [],
+  links = [],
+  media = null
+} = Astro.props;
+
+const safeTags = Array.isArray(tags) ? tags : [];
+const safeLinks = Array.isArray(links) ? links : [];
+
+const formattedIndex = String(index + 1).padStart(2, "0");
+---
+
+<article class="project-feature">
+  <div class="project-feature__content" data-reveal="left">
+    <span class="project-feature__index">
+      {formattedIndex}
+    </span>
+
+    <p class="project-feature__type">
+      {type}
+    </p>
+
+    <h3 class="project-feature__title">
+      {title}
+    </h3>
+
+    <p class="project-feature__description">
+      {description}
+    </p>
+
+    {
+      origin && (
+        <div class="project-feature__origin">
+          <span>Why —</span>
+          <p>{origin}</p>
+        </div>
+      )
+    }
+
+    {
+      safeTags.length > 0 && (
+        <ul
+          class="tag-list"
+          aria-label={`${title} technologies`}
+        >
+          {safeTags.map((tag) => (
+            <li class="tag">{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    {
+      safeLinks.length > 0 && (
+        <div class="project-feature__actions">
+          {safeLinks.map((link) => (
+            <a
+              class="text-link"
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      note && (
+        <p class="project-feature__note">
+          ↗ {note}
+        </p>
+      )
+    }
+  </div>
+
+  <div
+    class="project-feature__media media-frame media-reveal"
+    data-parallax-media
+  >
+    {
+      media?.type === "video" ? (
+        <video
+          src={media.src}
+          aria-label={media.alt}
+          controls
+          muted
+          playsinline
+          preload="metadata"
+        />
+      ) : media?.type === "image" ? (
+        <img
+          src={media.src}
+          alt={media.alt}
+          loading="lazy"
+        />
+      ) : (
+        <div class="project-feature__placeholder">
+          <span>
+            Project media and case-study material will be added here.
+          </span>
+        </div>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .project-feature__origin {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-4);
+    max-width: 42rem;
+    padding-block: var(--space-5);
+    border-top: var(--border-thin);
+    border-bottom: var(--border-thin);
+  }
+
+  .project-feature__origin span {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .project-feature__origin p {
+    color: var(--color-text);
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    line-height: 1.5;
+  }
+
+  .project-feature__note {
+    max-width: 17rem;
+    margin-top: var(--space-5);
+    margin-left: auto;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    transform: rotate(-1.5deg);
+  }
+
+  @media (max-width: 640px) {
+    .project-feature__origin {
+      grid-template-columns: 1fr;
+      gap: var(--space-2);
+    }
+
+    .project-feature__note {
+      margin-left: 0;
+    }
+  }
+</style>

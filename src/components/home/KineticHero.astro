@@ -1,0 +1,348 @@
+---
+import { profile } from "../../data/siteContent";
+---
+
+<section
+  class="kinetic-hero"
+  aria-labelledby="hero-title"
+  data-kinetic-hero
+>
+  <div class="page-frame kinetic-hero__inner">
+    <div class="kinetic-hero__topline" data-reveal>
+      <p class="kinetic-hero__discipline">
+        Computer Science &amp; Mathematics
+      </p>
+
+      <p class="kinetic-hero__location">
+        Pennsylvania State University
+      </p>
+    </div>
+
+    <div class="kinetic-hero__stage">
+      <div
+        class="kinetic-hero__name"
+        data-hero-name
+        style="--hero-angle: 0deg;"
+      >
+        <h1 class="kinetic-hero__title" id="hero-title">
+          <span class="kinetic-hero__word kinetic-hero__word--om">
+            OM
+          </span>
+
+          <span class="kinetic-hero__word kinetic-hero__word--anand">
+            ANAND
+          </span>
+        </h1>
+
+        <div class="kinetic-hero__axis" aria-hidden="true">
+          <span class="kinetic-hero__axis-line"></span>
+          <span class="kinetic-hero__axis-origin"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="kinetic-hero__bottom">
+      <p class="kinetic-hero__summary" data-reveal>
+        {profile.signature}
+      </p>
+
+      <a class="kinetic-hero__scroll" href="#about">
+        <span>Scroll to explore</span>
+
+        <span
+          class="kinetic-hero__scroll-line"
+          aria-hidden="true"
+        ></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initializeHeroController } from "../motion/heroController";
+
+  let cleanupHeroController: (() => void) | undefined;
+
+  const initializeHero = () => {
+    cleanupHeroController?.();
+    cleanupHeroController = initializeHeroController();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeHero, {
+      once: true
+    });
+  } else {
+    initializeHero();
+  }
+
+  window.addEventListener(
+    "pagehide",
+    () => {
+      cleanupHeroController?.();
+    },
+    {
+      once: true
+    }
+  );
+</script>
+
+<style>
+  .kinetic-hero {
+    position: relative;
+    display: flex;
+    min-height: 100svh;
+    padding-top: 5rem;
+    overflow: hidden;
+    border-bottom: var(--border-thin);
+  }
+
+  .kinetic-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent calc(50% - 0.5px),
+        rgba(255, 255, 255, 0.025) calc(50% - 0.5px),
+        rgba(255, 255, 255, 0.025) calc(50% + 0.5px),
+        transparent calc(50% + 0.5px)
+      );
+  }
+
+  .kinetic-hero__inner {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    width: 100%;
+    padding-block:
+      clamp(1.5rem, 4vh, 3rem)
+      clamp(2rem, 5vh, 4rem);
+  }
+
+  .kinetic-hero__topline {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-5);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .kinetic-hero__topline p {
+    color: inherit;
+  }
+
+  .kinetic-hero__location {
+    text-align: right;
+  }
+
+  .kinetic-hero__stage {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: 0;
+    padding-block: clamp(3rem, 8vh, 6rem);
+  }
+
+  .kinetic-hero__name {
+    position: relative;
+    width: 100%;
+    transform: rotate(var(--hero-angle));
+    transform-origin: 50% 52%;
+    will-change: transform;
+  }
+
+  .kinetic-hero__title {
+    display: grid;
+    font-size: clamp(5.4rem, 15.8vw, 14rem);
+    font-weight: var(--font-weight-heavy);
+    line-height: 0.72;
+    letter-spacing: -0.09em;
+    text-transform: uppercase;
+  }
+
+  .kinetic-hero__word {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .kinetic-hero__word--om {
+    position: relative;
+    z-index: 1;
+    justify-self: start;
+    padding-left: 0.01em;
+  }
+
+  .kinetic-hero__word--anand {
+    position: relative;
+    justify-self: end;
+    margin-right: -0.015em;
+  }
+
+  .kinetic-hero__axis {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 54%;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+  }
+
+  .kinetic-hero__axis-line {
+    width: 100%;
+    height: 1px;
+    background:
+      linear-gradient(
+        90deg,
+        transparent,
+        var(--color-accent) 8%,
+        var(--color-accent) 92%,
+        transparent
+      );
+    transform-origin: center;
+  }
+
+  .kinetic-hero__axis-origin {
+    position: absolute;
+    left: 50%;
+    width: 0.55rem;
+    height: 0.55rem;
+    border: 1px solid var(--color-accent);
+    background: var(--color-carbon);
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .kinetic-hero__bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 40rem) auto;
+    gap: var(--space-7);
+    align-items: end;
+  }
+
+  .kinetic-hero__summary {
+    max-width: 40rem;
+    color: var(--color-text-soft);
+    font-size: clamp(1rem, 1.7vw, 1.25rem);
+    line-height: 1.5;
+  }
+
+  .kinetic-hero__scroll {
+    display: grid;
+    justify-items: end;
+    gap: var(--space-3);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .kinetic-hero__scroll-line {
+    position: relative;
+    width: 7rem;
+    height: 1px;
+    overflow: hidden;
+    background: var(--color-border);
+  }
+
+  .kinetic-hero__scroll-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-accent);
+    transform: translateX(-100%);
+    animation:
+      hero-scroll-line
+      2.4s
+      var(--ease-sharp)
+      infinite;
+  }
+
+  @keyframes hero-scroll-line {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    45%,
+    55% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .kinetic-hero__title {
+      font-size: clamp(5rem, 18vw, 10rem);
+      line-height: 0.74;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .kinetic-hero {
+      padding-top: 4.5rem;
+    }
+
+    .kinetic-hero__inner {
+      padding-block: 1.25rem 2rem;
+    }
+
+    .kinetic-hero__topline {
+      align-items: flex-start;
+      font-size: 0.62rem;
+    }
+
+    .kinetic-hero__stage {
+      align-items: center;
+      padding-block: 4rem;
+    }
+
+    .kinetic-hero__title {
+      font-size: clamp(4.6rem, 23vw, 8rem);
+      line-height: 0.77;
+    }
+
+    .kinetic-hero__word--anand {
+      justify-self: start;
+    }
+
+    .kinetic-hero__axis {
+      top: 53%;
+    }
+
+    .kinetic-hero__bottom {
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+
+    .kinetic-hero__scroll {
+      justify-items: start;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .kinetic-hero__location {
+      max-width: 9rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kinetic-hero__name {
+      transform: none !important;
+    }
+
+    .kinetic-hero__scroll-line::after {
+      animation: none;
+      transform: none;
+    }
+  }
+</style>

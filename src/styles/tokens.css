@@ -1,0 +1,134 @@
+:root {
+    /* Core palette */
+
+    --color-carbon: #090a0a;
+    --color-carbon-raised: #111314;
+    --color-carbon-soft: #181a1b;
+
+    --color-cold-white: #f1f1ed;
+    --color-soft-white: #d7d8d3;
+    --color-machine-grey: #777b7d;
+    --color-line: #242627;
+
+    --color-signal-red: #e52b2f;
+    --color-deep-red: #8f171a;
+    --color-red-soft: rgba(229, 43, 47, 0.12);
+
+    /* Semantic tokens */
+
+    --color-page: var(--color-carbon);
+    --color-surface: var(--color-carbon-raised);
+    --color-surface-soft: var(--color-carbon-soft);
+
+    --color-text: var(--color-cold-white);
+    --color-text-soft: var(--color-soft-white);
+    --color-text-muted: var(--color-machine-grey);
+
+    --color-border: var(--color-line);
+    --color-accent: var(--color-signal-red);
+    --color-accent-deep: var(--color-deep-red);
+
+    /* Typography */
+
+    --font-display:
+        "Arial Narrow",
+        "Helvetica Neue Condensed",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+
+    --font-body:
+        Inter,
+        "Helvetica Neue",
+        Helvetica,
+        Arial,
+        sans-serif;
+
+    --font-mono:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        Menlo,
+        monospace;
+
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-heavy: 800;
+
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.375rem;
+    --text-2xl: clamp(1.8rem, 3vw, 2.8rem);
+    --text-3xl: clamp(2.8rem, 6vw, 5.2rem);
+    --text-hero: clamp(5rem, 14vw, 12rem);
+
+    --tracking-tight: -0.05em;
+    --tracking-display: -0.075em;
+    --tracking-wide: 0.12em;
+
+    --leading-tight: 0.92;
+    --leading-heading: 1;
+    --leading-body: 1.65;
+
+    /* Layout */
+
+    --container-width: 1180px;
+    --container-narrow: 760px;
+    --page-gutter: clamp(1.25rem, 4vw, 3rem);
+
+    --section-space-sm: 4rem;
+    --section-space-md: 6rem;
+    --section-space-lg: 9rem;
+    --section-space-xl: 12rem;
+
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
+    --space-9: 6rem;
+    --space-10: 8rem;
+
+    /* Borders and radius */
+
+    --radius-sm: 0.35rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1.25rem;
+    --radius-pill: 999px;
+
+    --border-thin: 1px solid var(--color-border);
+
+    /* Motion */
+
+    --duration-fast: 160ms;
+    --duration-base: 280ms;
+    --duration-slow: 600ms;
+    --duration-hero: 900ms;
+
+    --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-sharp: cubic-bezier(0.76, 0, 0.24, 1);
+    --ease-settle: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    /* Layering */
+
+    --z-base: 0;
+    --z-content: 10;
+    --z-header: 50;
+    --z-overlay: 100;
+    --z-cursor: 200;
+
+    /* Effects */
+
+    --shadow-soft:
+        0 18px 60px rgba(0, 0, 0, 0.28);
+
+    --shadow-strong:
+        0 28px 90px rgba(0, 0, 0, 0.42);
+}

@@ -1,0 +1,214 @@
+---
+import SectionIntro from "../layout/SectionIntro.astro";
+
+const aboutPoints = [
+  {
+    index: "01",
+    title: "Technical focus",
+    text:
+      "My work often begins with a technical question I want to understand properly. That has taken me across robotics, controls, embedded systems, algorithms, and numerical methods, with the problem itself usually deciding where I go next."
+  },
+  {
+    index: "02",
+    title: "My approach",
+    text:
+      "If I don't understand how something works, my first instinct is usually to break it down and try building it myself. I like testing ideas, seeing where they fail, and changing things until I actually understand what is going on."
+  },
+  {
+    index: "03",
+    title: "Direction",
+    text:
+      "I am moving deeper into robotics, especially where perception, control, embedded systems, and autonomy come together. That is where I want my technical work to keep heading, while still leaving room to build something simply because I find it interesting."
+  }
+];
+---
+
+<section
+  class="home-section"
+  id="about"
+  aria-labelledby="about-heading"
+>
+  <div class="page-frame">
+    <div class="about-section__header">
+      <div data-reveal="left">
+        <SectionIntro
+          index="01"
+          eyebrow="About"
+          title="A focused engineering portfolio."
+          id="about-heading"
+        />
+      </div>
+
+      <div class="about-section__statement" data-reveal>
+        <p>
+          I am a Computer Science and Mathematics student at Pennsylvania
+          State University, working across robotics, embedded systems,
+          algorithms, and technical research.
+        </p>
+      </div>
+    </div>
+
+    <div class="about-section__list">
+      {
+        aboutPoints.map((item) => (
+          <article class="about-section__row" data-reveal>
+            <div class="about-section__meta">
+              <span class="about-section__index">
+                {item.index}
+              </span>
+
+              <h3>
+                {item.title}
+              </h3>
+            </div>
+
+            <p class="about-section__row-copy">
+              {item.text}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-section__header {
+    display: grid;
+    grid-template-columns:
+      minmax(16rem, 0.72fr)
+      minmax(0, 1.28fr);
+    gap: clamp(3rem, 8vw, 8rem);
+    align-items: start;
+    margin-bottom: clamp(4rem, 9vw, 8rem);
+  }
+
+  .about-section__statement {
+    max-width: 56rem;
+  }
+
+  .about-section__statement p {
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(2.1rem, 4.7vw, 5rem);
+    font-weight: var(--font-weight-heavy);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+  }
+
+  .about-section__list {
+    border-top: var(--border-thin);
+  }
+
+  .about-section__row {
+    position: relative;
+    display: grid;
+    grid-template-columns:
+      minmax(12rem, 0.42fr)
+      minmax(0, 1.58fr);
+    gap: clamp(2rem, 7vw, 7rem);
+    align-items: start;
+    padding-block: clamp(2.2rem, 5vw, 4.2rem);
+    border-bottom: var(--border-thin);
+    overflow: hidden;
+  }
+
+  .about-section__row::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(229, 43, 47, 0.11),
+        transparent 46%
+      );
+    opacity: 0;
+    transform: translateX(-2rem);
+    transition:
+      opacity var(--duration-base) var(--ease-standard),
+      transform var(--duration-slow) var(--ease-standard);
+    pointer-events: none;
+  }
+
+  .about-section__row:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .about-section__meta,
+  .about-section__row-copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .about-section__meta {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  .about-section__index {
+    padding-top: 0.2rem;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+  }
+
+  .about-section__meta h3 {
+    color: var(--color-accent);
+    font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+    letter-spacing: 0.01em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .about-section__row-copy {
+    max-width: 54rem;
+    color: var(--color-text-soft);
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3.3vw, 3.4rem);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+
+  @media (max-width: 980px) {
+    .about-section__header {
+      grid-template-columns: 1fr;
+      gap: var(--space-7);
+    }
+
+    .about-section__row {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    .about-section__meta {
+      max-width: 20rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .about-section__header {
+      margin-bottom: var(--space-8);
+    }
+
+    .about-section__row {
+      padding-block: var(--space-7);
+    }
+
+    .about-section__row-copy {
+      font-size: clamp(1.5rem, 7vw, 2.2rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-section__row::before {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>
