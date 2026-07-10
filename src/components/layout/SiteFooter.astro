@@ -1,0 +1,58 @@
+---
+import { links, profile } from "../../data/siteContent";
+
+const year = new Date().getFullYear();
+
+const footerLinks = [
+  {
+    label: "GitHub",
+    href: links.github
+  },
+  {
+    label: "LinkedIn",
+    href: links.linkedin
+  },
+  {
+    label: "Resume",
+    href: links.resume
+  },
+  {
+    label: "Email",
+    href: links.email
+  }
+];
+---
+
+<footer class="site-footer">
+  <div class="page-frame">
+    <div class="site-footer__top">
+      <div>
+        <p class="section-marker">Contact</p>
+
+        <h2 class="site-footer__name">
+          {profile.name}
+        </h2>
+      </div>
+
+      <nav class="site-footer__links" aria-label="Footer links">
+        {
+          footerLinks.map((link) => (
+            <a
+              class="site-footer__link"
+              href={link.href}
+              target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+              rel={link.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+            >
+              {link.label}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+
+    <div class="site-footer__bottom">
+      <span>© {year} Om Anand</span>
+      <span>Computer Science + Mathematics</span>
+    </div>
+  </div>
+</footer>
