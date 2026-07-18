@@ -17,6 +17,10 @@ const footerLinks = [
     href: links.resume
   },
   {
+    label: "Interests",
+    href: "/interests/"
+  },
+  {
     label: "Email",
     href: links.email
   }
@@ -39,9 +43,13 @@ const footerLinks = [
             <a
               class="site-footer__link"
               href={link.href}
-              target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+              target={
+                link.href.startsWith("mailto:") || link.href.startsWith("/")
+                  ? undefined
+                  : "_blank"
+              }
               rel={
-                link.href.startsWith("mailto:")
+                link.href.startsWith("mailto:") || link.href.startsWith("/")
                   ? undefined
                   : "noopener noreferrer"
               }
@@ -55,7 +63,7 @@ const footerLinks = [
 
     <div class="site-footer__bottom">
       <span>© {year} Om Anand</span>
-      <span>Computer Science &amp; Mathematics</span>
+      <span>Robotics · Controls · Embedded</span>
     </div>
   </div>
 </footer>

@@ -8,7 +8,7 @@ const revealImmediately = (element: Element) => {
 
 const createRevealObserver = () => {
     const revealElements = document.querySelectorAll<HTMLElement>(
-        "[data-reveal], [data-stagger], .motion-clip, .motion-line, .media-reveal"
+        "[data-reveal], [data-stagger], .motion-line, .media-reveal"
     );
 
     if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {

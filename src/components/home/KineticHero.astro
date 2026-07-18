@@ -1,5 +1,5 @@
 ---
-import { profile } from "../../data/siteContent";
+import { links, profile } from "../../data/siteContent";
 ---
 
 <section
@@ -10,11 +10,11 @@ import { profile } from "../../data/siteContent";
   <div class="page-frame kinetic-hero__inner">
     <div class="kinetic-hero__topline" data-reveal>
       <p class="kinetic-hero__discipline">
-        Computer Science &amp; Mathematics
+        {profile.role}
       </p>
 
       <p class="kinetic-hero__location">
-        Pennsylvania State University
+        {profile.location}
       </p>
     </div>
 
@@ -42,9 +42,29 @@ import { profile } from "../../data/siteContent";
     </div>
 
     <div class="kinetic-hero__bottom">
-      <p class="kinetic-hero__summary" data-reveal>
-        {profile.signature}
-      </p>
+      <div class="kinetic-hero__intro" data-reveal>
+        <p class="kinetic-hero__summary">
+          {profile.signature}
+        </p>
+
+        <p class="kinetic-hero__seeking">
+          {profile.seeking}
+        </p>
+
+        <div class="kinetic-hero__actions">
+          <a class="button button--primary" href={links.resume} target="_blank" rel="noopener noreferrer">
+            Résumé
+          </a>
+
+          <a class="button" href="#work">
+            View work
+          </a>
+
+          <a class="text-link" href={links.email}>
+            Email
+          </a>
+        </div>
+      </div>
 
       <a class="kinetic-hero__scroll" href="#about">
         <span>Scroll to explore</span>
@@ -161,9 +181,9 @@ import { profile } from "../../data/siteContent";
   .kinetic-hero__title {
     display: grid;
     font-size: clamp(5.4rem, 15.8vw, 14rem);
-    font-weight: var(--font-weight-heavy);
-    line-height: 0.72;
-    letter-spacing: -0.09em;
+    font-weight: var(--font-weight-bold);
+    line-height: 0.84;
+    letter-spacing: -0.04em;
     text-transform: uppercase;
   }
 
@@ -226,11 +246,31 @@ import { profile } from "../../data/siteContent";
     align-items: end;
   }
 
+  .kinetic-hero__intro {
+    display: grid;
+    gap: var(--space-5);
+  }
+
   .kinetic-hero__summary {
     max-width: 40rem;
     color: var(--color-text-soft);
     font-size: clamp(1rem, 1.7vw, 1.25rem);
     line-height: 1.5;
+  }
+
+  .kinetic-hero__seeking {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .kinetic-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
   }
 
   .kinetic-hero__scroll {
@@ -332,6 +372,15 @@ import { profile } from "../../data/siteContent";
   @media (max-width: 480px) {
     .kinetic-hero__location {
       max-width: 9rem;
+    }
+
+    .kinetic-hero__actions {
+      width: 100%;
+    }
+
+    .kinetic-hero__actions .button {
+      flex: 1 1 auto;
+      justify-content: center;
     }
   }
 

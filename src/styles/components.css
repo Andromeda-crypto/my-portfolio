@@ -438,11 +438,15 @@ body.menu-open {
     aspect-ratio: 4 / 3;
 }
 
+.project-feature__diagram,
+.project-feature__placeholder {
+    width: 100%;
+    height: 100%;
+}
+
 .project-feature__placeholder {
     display: grid;
     place-items: center;
-    width: 100%;
-    height: 100%;
     padding: var(--space-6);
     background:
         linear-gradient(135deg,
@@ -486,6 +490,41 @@ body.menu-open {
 
 .lab-preview__copy {
     margin-top: var(--space-4);
+}
+
+/* Upcoming */
+
+.upcoming-list {
+    display: grid;
+    border-top: 1px dashed rgba(229, 43, 47, 0.35);
+}
+
+.upcoming-item {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    padding-block: clamp(1.8rem, 4vw, 3rem);
+    border-bottom: 1px dashed rgba(229, 43, 47, 0.28);
+}
+
+.upcoming-item__index {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+}
+
+.upcoming-item__content {
+    display: grid;
+    gap: var(--space-3);
+}
+
+.upcoming-item__title {
+    font-size: clamp(1.6rem, 3vw, 2.5rem);
+    text-transform: uppercase;
+}
+
+.upcoming-item__description {
+    max-width: 48rem;
 }
 
 /* Research */

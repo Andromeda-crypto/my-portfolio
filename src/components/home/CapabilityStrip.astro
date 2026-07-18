@@ -1,0 +1,72 @@
+---
+import { capabilities } from "../../data/siteContent";
+---
+
+<section
+  class="capability-strip"
+  aria-label="Technical capabilities"
+>
+  <div class="page-frame capability-strip__inner" data-stagger>
+    {
+      capabilities.map((capability) => (
+        <span class="capability-strip__item">
+          {capability}
+        </span>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .capability-strip {
+    border-bottom: var(--border-thin);
+    background: var(--color-surface);
+  }
+
+  .capability-strip__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-6);
+    padding-block: clamp(1.1rem, 2.5vw, 1.6rem);
+  }
+
+  .capability-strip__item {
+    position: relative;
+    color: var(--color-text-soft);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .capability-strip__item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: calc(var(--space-6) / -2);
+    width: 1px;
+    height: 0.75rem;
+    background: var(--color-border);
+    transform: translate(50%, -50%);
+  }
+
+  @media (max-width: 700px) {
+    .capability-strip__inner {
+      gap: var(--space-3) var(--space-5);
+    }
+
+    .capability-strip__item:not(:last-child)::after {
+      display: none;
+    }
+
+    .capability-strip__item {
+      padding-right: var(--space-3);
+      border-right: var(--border-thin);
+    }
+
+    .capability-strip__item:last-child {
+      border-right: 0;
+    }
+  }
+</style>
