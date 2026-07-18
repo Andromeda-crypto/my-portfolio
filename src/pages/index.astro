@@ -2,33 +2,39 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 import KineticHero from "../components/home/KineticHero.astro";
+import CapabilityStrip from "../components/home/CapabilityStrip.astro";
 import AboutSection from "../components/home/AboutSection.astro";
+import FeaturedWork from "../components/home/FeaturedWork.astro";
 import ExperienceSection from "../components/home/ExperienceSection.astro";
-import ProjectsSection from "../components/home/ProjectsSection.astro";
+import UpcomingSection from "../components/home/UpcomingSection.astro";
 import LabPreview from "../components/home/LabPreview.astro";
 import ResearchSection from "../components/home/ResearchSection.astro";
-import InterestsPreview from "../components/home/InterestsPreview.astro";
+import StackSection from "../components/home/StackSection.astro";
 import ContactSection from "../components/home/ContactSection.astro";
 ---
 
 <BaseLayout
-  title="Om Anand | Engineering Portfolio"
-  description="Portfolio of Om Anand, a Computer Science and Mathematics student working across robotics, embedded systems, algorithms, and technical research."
+  title="Om Anand | Robotics & Controls"
+  description="Portfolio of Om Anand — robotics, embedded systems, and closed-loop control. CS & Mathematics student seeking internships in robotics and controls."
   bodyClass="home-page"
 >
   <KineticHero />
+
+  <CapabilityStrip />
 
   <AboutSection />
 
   <ExperienceSection />
 
-  <ProjectsSection />
+  <FeaturedWork />
+
+  <UpcomingSection />
 
   <LabPreview />
 
   <ResearchSection />
 
-  <InterestsPreview />
+  <StackSection />
 
   <ContactSection />
 </BaseLayout>

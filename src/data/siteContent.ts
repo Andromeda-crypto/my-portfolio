@@ -1,16 +1,58 @@
+export type ProjectPriority = "featured" | "secondary";
+export type ProjectStatus = "active" | "complete";
+
+export type ProjectMedia =
+  | {
+      type: "image" | "video";
+      src: string;
+      alt: string;
+    }
+  | null;
+
+export type ProjectLink = {
+  label: string;
+  href: string;
+};
+
+export type Project = {
+  slug: string;
+  title: string;
+  type: string;
+  description: string;
+  origin?: string;
+  note?: string | null;
+  tags: string[];
+  links: ProjectLink[];
+  priority: ProjectPriority;
+  status: ProjectStatus;
+  outcomes: string[];
+  pipeline: string[];
+  media: ProjectMedia;
+};
+
 export const profile = {
   name: "Om Anand",
-  role: "Computer Science & Mathematics student",
+  role: "Robotics & Controls · CS & Mathematics",
   headline: "Om Anand",
   summary:
-    "Robotics, embedded systems, controls, and algorithmic engineering.",
+    "Building robots, control systems, and embedded software under real-world constraints.",
   location: "Pennsylvania State University",
   focus: "Robotics · Embedded Systems · Controls · Algorithms",
   currently:
-    "Building across robotics, embedded systems, and technical research.",
+    "Research intern at IIT BHU — vision, edge perception, and UAV closed-loop targeting.",
+  seeking: "Open to robotics and controls internships.",
   signature:
-    "I build systems where software, hardware, sensing, and numerical methods have to work together under real-world constraints."
+    "Still figuring out how software, hardware, sensing, and control hold together once the system is real."
 };
+
+export const capabilities = [
+  "Closed-loop control",
+  "Embedded firmware",
+  "SLAM & navigation",
+  "Sensor fusion",
+  "Motion planning",
+  "Numerical methods"
+];
 
 export const links = {
   github: "https://github.com/Andromeda-crypto",
@@ -28,63 +70,113 @@ export const experience = [
     period: "June 2026 — Present",
     location: "Varanasi, India",
     description:
-      "Working at the intersection of machine learning, IoT, and autonomous systems for smart agriculture.",
+      "Computer vision, edge deployment, and closed-loop autonomy for agricultural perception and UAV targeting.",
     highlights: [
-      "Training and evaluating machine-learning models for perception-oriented agricultural applications.",
-      "Integrating intelligent perception solutions into IoT-based agricultural systems.",
-      "Researching UAV platforms and autonomous aerial systems for agriculture-focused deployment."
+      "Built a dual-branch morphological consistency model in PyTorch that reduced background shortcut learning on a 12-class IP102 subset — 91.46% accuracy, Macro F₁ 0.8704 (p = 0.0357), ahead of fusion and ensemble baselines.",
+      "Optimized an EfficientNet-B0 perception pipeline for edge platforms (Jetson / Raspberry Pi) to cut inference latency for real-time target identification.",
+      "Connected visual state estimation to a ROS2 workspace as the tracking input for autonomous UAV precision targeting and motion planning."
     ],
     link: "https://www.iitbhu.ac.in/"
   }
 ];
 
-export const projects = [
+export const about = {
+  intro:
+    "Student in CS & Mathematics at Penn State, working toward robotics, embedded systems, and closed-loop control.",
+  body:
+    "Most of my projects sit somewhere between firmware and autonomy — estimating state, closing loops, and seeing how the pieces behave once they have to run together. This summer I'm a research intern at IIT BHU on vision, edge deployment, and UAV targeting."
+};
+
+export const upcoming = [
   {
+    title: "Quadruple Inverted Pendulum on a Cart",
+    status: "Next",
+    description:
+      "A real-hardware controls build on a motorized linear rail — joint encoders, nonlinear dynamics, state estimation, and LQR/LQG, with a path toward MPC. Intended as the next flagship dynamics-and-controls project.",
+    tags: [
+      "Controls",
+      "LQR / LQG",
+      "State Estimation",
+      "Nonlinear Dynamics",
+      "Hardware"
+    ]
+  },
+  {
+    title: "Autonomous Drone Precision Landing",
+    status: "Deferred",
+    description:
+      "AprilTag pose estimation and visual servoing for autonomous landing and docking. V1 on a DJI Tello prototype, then V2 on a custom Pixhawk platform after returning to campus. Deferred for summer cost and hardware constraints — not abandoned.",
+    tags: [
+      "Visual Servoing",
+      "AprilTag",
+      "UAV",
+      "Pose Estimation",
+      "Pixhawk"
+    ]
+  }
+];
+
+export const projects: Project[] = [
+  {
+    slug: "balbot",
+    title: "BALBOT",
+    type: "Embedded Control",
+    description:
+      "A two-wheeled self-balancing robot built around embedded C++ and closed-loop control. Attitude estimation, encoder feedback, motor actuation, and telemetry come together on physical hardware, where timing, noise, and mechanics become part of the problem.",
+    origin:
+      "I was curious what balancing looks like once the equations leave the page — when the IMU is noisy, the motors lag, and the frame is something you designed yourself.",
+    tags: [
+      "Embedded Systems",
+      "IMU",
+      "Control Systems",
+      "Firmware",
+      "Telemetry",
+      "CAD"
+    ],
+    links: [],
+    priority: "featured",
+    status: "active",
+    outcomes: [
+      "Designed the mechanical assembly in CAD and built a physical prototype that balances on hardware.",
+      "Implemented attitude estimation and closed-loop PID control from scratch in embedded C++, wiring IMU and encoder feedback into motor actuation.",
+      "Tuned the controller against real sensor noise, latency, and mechanical coupling until the robot held a stable balance."
+    ],
+    pipeline: ["Estimate", "Control", "Actuate", "Telemetry"],
+    media: null
+  },
+  {
+    slug: "autonomous-robot-navigation",
     title: "Autonomous Robot Navigation",
     type: "Autonomous Systems",
     description:
-      "A from-scratch C++ navigation system bringing perception, mapping, motion planning, and control into a single simulation. Built to explore what changes when individual robotics algorithms have to operate as one connected pipeline.",
+      "A from-scratch C++ navigation system bringing perception, mapping, motion planning, and control into a single simulation. Built to explore what changes when robotics algorithms have to operate as one connected pipeline.",
     origin:
-      "I wanted to understand how perception, planning, and control behave when they have to work together in one system.",
-    tags: [
-      "C++17",
-      "Robotics",
-      "Motion Planning",
-      "LIDAR",
-      "Mapping"
-    ],
+      "I wanted to see what happens when perception, planning, and control share one loop instead of living in separate demos.",
+    tags: ["C++17", "Robotics", "Motion Planning", "LIDAR", "Mapping"],
     links: [
       {
         label: "GitHub",
         href: "https://github.com/Andromeda-crypto/Autonomous-Robot-Navigation"
       }
     ],
-    media: null
-  },
-  {
-    title: "BALBOT",
-    type: "Embedded Control",
-    description:
-      "A two-wheeled self-balancing robot built around embedded C++ and closed-loop control. Attitude estimation, encoder feedback, motor actuation, and telemetry come together on physical hardware, where timing, noise, and mechanics become part of the problem.",
-    origin:
-      "I wanted to take control theory out of simulation and deal with what changes when the system becomes physical.",
-    tags: [
-      "Embedded Systems",
-      "IMU",
-      "Control Systems",
-      "Firmware",
-      "Telemetry"
+    priority: "featured",
+    status: "active",
+    outcomes: [
+      "Built a connected C++ pipeline for LIDAR sensing, occupancy mapping, motion planning, and control in one simulation loop.",
+      "Implemented path planning and closed-loop tracking so planning outputs drive continuous robot motion, not isolated demos.",
+      "Structured the stack so perception, map updates, and control can be swapped or stress-tested independently."
     ],
-    links: [],
+    pipeline: ["Sense", "Map", "Plan", "Control"],
     media: null
   },
   {
+    slug: "options-pricing-engine",
     title: "Options Pricing Engine",
     type: "Computational Finance",
     description:
       "A C++ derivatives pricing engine built to study financial models through implementation. Black–Scholes, Monte Carlo methods, variance reduction, Greeks, and implied volatility are treated as numerical systems to build, test, and reason about.",
     origin:
-      "I built it to understand the models through implementation rather than only through their equations.",
+      "I learn quantitative models fastest by building them — pricing, simulation, and Greeks as code I can test.",
     tags: [
       "C++17",
       "Quantitative Finance",
@@ -98,15 +190,24 @@ export const projects = [
         href: "https://github.com/Andromeda-crypto/options-pricing-engine"
       }
     ],
+    priority: "secondary",
+    status: "complete",
+    outcomes: [
+      "Implemented Black–Scholes and Monte Carlo pricing with variance-reduction techniques in C++.",
+      "Computed Greeks and implied volatility as numerical checks against analytical baselines.",
+      "Organized the engine so models, simulation, and Greeks share a common evaluation path."
+    ],
+    pipeline: ["Model", "Simulate", "Price", "Greeks"],
     media: null
   },
   {
+    slug: "poker-cfr-solver",
     title: "Poker CFR Solver",
     type: "Game Theory",
     description:
       "An implementation of Counterfactual Regret Minimization for imperfect-information games. Built out of an interest in how strategies evolve when decisions must be made with incomplete information and against an adapting opponent.",
     origin:
-      "Poker made decision-making under incomplete information interesting enough to implement and test.",
+      "I was curious how a strategy settles when every decision is made with incomplete information.",
     tags: [
       "Python",
       "Game Theory",
@@ -120,9 +221,25 @@ export const projects = [
         href: "https://github.com/Andromeda-crypto/poker-cfr-solver"
       }
     ],
+    priority: "secondary",
+    status: "complete",
+    outcomes: [
+      "Implemented Counterfactual Regret Minimization for imperfect-information game trees.",
+      "Tracked regret accumulation and strategy updates across iterations to converge toward equilibrium play.",
+      "Used poker as a testbed for decision-making under incomplete information and adaptive opponents."
+    ],
+    pipeline: ["State", "Regret", "Update", "Strategy"],
     media: null
   }
 ];
+
+export const featuredProjects = projects.filter(
+  (project) => project.priority === "featured"
+);
+
+export const secondaryProjects = projects.filter(
+  (project) => project.priority === "secondary"
+);
 
 export const research = [
   {
@@ -130,24 +247,14 @@ export const research = [
     status: "Implemented",
     description:
       "A from-scratch C++ implementation of FastSLAM 1.0, combining particle-based robot-pose estimation with independent landmark extended Kalman filters. The implementation includes range-bearing observations, particle weighting, landmark updates, and systematic resampling.",
-    tags: [
-      "C++17",
-      "SLAM",
-      "Particle Filters",
-      "EKF"
-    ]
+    tags: ["C++17", "SLAM", "Particle Filters", "EKF"]
   },
   {
     title: "FastSLAM 2.0",
     status: "In Progress",
     description:
       "An implementation of FastSLAM 2.0 focused on incorporating the latest observation into the particle proposal distribution. The work is currently centred on understanding the paper, structuring the algorithm, and translating the updated proposal step into a reliable implementation.",
-    tags: [
-      "C++17",
-      "SLAM",
-      "Particle Filters",
-      "Research Implementation"
-    ]
+    tags: ["C++17", "SLAM", "Particle Filters", "Research Implementation"]
   }
 ];
 
@@ -159,26 +266,20 @@ export const labItems = [
       "A completed reverse-engineering experiment combining an embedded telemetry loop, IMU attitude estimation, serial communication, Processing 4 rendering, and live control-feedback visualization.",
     result:
       "The final prototype rendered a live three-dimensional aircraft model from pitch and roll measurements, displayed sensor telemetry, and visualized motor-control error in real time.",
-    tags: [
-      "IoT",
-      "IMU",
-      "Sensor Fusion",
-      "Telemetry",
-      "Processing 4"
-    ],
+    tags: ["IoT", "IMU", "Sensor Fusion", "Telemetry", "Processing 4"],
     media: [
       {
-        type: "video",
+        type: "video" as const,
         src: "/media/lab/attitude-dashboard/demo.mp4",
         alt: "Flight attitude dashboard responding to live IMU movement"
       },
       {
-        type: "image",
+        type: "image" as const,
         src: "/media/lab/attitude-dashboard/dashboard.png",
         alt: "Full Processing 4 flight attitude dashboard"
       },
       {
-        type: "image",
+        type: "image" as const,
         src: "/media/lab/attitude-dashboard/circuitry.jpg",
         alt: "Embedded circuitry and wiring used for the attitude dashboard"
       }
@@ -192,53 +293,53 @@ export const cadStudies = [
     stage: "Beginner study",
     description:
       "A tutorial-led exercise used to practise sketch constraints, mounting geometry, hole placement, dimensions, and basic mechanical clearances.",
-    tags: [
-      "CAD",
-      "Part Modelling",
-      "Motor Mount"
-    ]
+    tags: ["CAD", "Part Modelling", "Motor Mount"],
+    pipeline: ["Sketch", "Extrude", "Mount", "Clearance"]
   },
   {
     title: "Standoff Practice",
     stage: "Beginner study",
     description:
       "A small tutorial-led part used to practise constrained sketches, extrusion, dimensions, and simple mechanical reference geometry.",
-    tags: [
-      "CAD",
-      "Standoff",
-      "Mechanical Design"
-    ]
+    tags: ["CAD", "Standoff", "Mechanical Design"],
+    pipeline: ["Sketch", "Constraint", "Extrude", "Dimension"]
   }
 ];
 
-export const skills = [
+export const stack = [
   {
-    title: "Robotics & Control",
-    description:
-      "Planning, mapping, simulation, PID control, state estimation, and robotics architecture."
+    title: "Languages",
+    items: ["C++17", "Python", "Embedded C++"]
+  },
+  {
+    title: "Robotics & Controls",
+    items: [
+      "Motion planning",
+      "SLAM / FastSLAM",
+      "PID & closed-loop control",
+      "State estimation",
+      "LIDAR mapping"
+    ]
   },
   {
     title: "Embedded Systems",
-    description:
-      "Sensor bring-up, IMU pipelines, firmware structure, telemetry, debugging, and hardware integration."
-  },
-  {
-    title: "Algorithmic Engineering",
-    description:
-      "Graph algorithms, numerical methods, simulation, optimisation, and implementation from first principles."
+    items: [
+      "IMU pipelines",
+      "Sensor fusion",
+      "Firmware structure",
+      "Serial telemetry",
+      "Hardware bring-up"
+    ]
   },
   {
     title: "Tools & Workflow",
-    description:
-      "C++, Python, Git, Linux, CMake, PlatformIO, testing, debugging, and iterative development."
+    items: ["Git", "Linux", "CMake", "PlatformIO", "Debugging & testing"]
   }
 ];
 
 export const interests = {
   reading: {
-    current: [
-      "The Confidence Game by Maria Konnikova"
-    ],
+    current: ["The Confidence Game by Maria Konnikova"],
     favorites: [
       "Man’s Search for Meaning by Viktor Frankl",
       "Meditations by Marcus Aurelius",

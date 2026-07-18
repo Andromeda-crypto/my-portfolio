@@ -1,68 +1,67 @@
 ---
 import SectionIntro from "../layout/SectionIntro.astro";
-import { research } from "../../data/siteContent";
+import { upcoming } from "../../data/siteContent";
 
-const safeResearch = Array.isArray(research) ? research : [];
+const safeUpcoming = Array.isArray(upcoming) ? upcoming : [];
 ---
 
 <section
   class="home-section"
-  id="research"
-  aria-labelledby="research-heading"
+  id="upcoming"
+  aria-labelledby="upcoming-heading"
 >
   <div class="page-frame home-section__grid">
     <div class="home-section__aside" data-reveal="left">
       <SectionIntro
-        index="05"
-        eyebrow="Research"
-        title="SLAM implementations."
-        description="Paper implementations developed by working through the underlying method and translating it into functioning code."
-        id="research-heading"
+        index="03"
+        eyebrow="Upcoming"
+        title="What's next."
+        description="Controls and autonomy projects queued after current research and hardware work."
+        id="upcoming-heading"
       />
     </div>
 
     <div class="home-section__content">
-      <div class="research-list">
+      <div class="upcoming-list">
         {
-          safeResearch.map((item, index) => (
-            <article class="research-item" data-reveal>
-              <span class="research-item__index">
+          safeUpcoming.map((item, index) => (
+            <article class="upcoming-item" data-reveal>
+              <span class="upcoming-item__index">
                 {String(index + 1).padStart(2, "0")}
               </span>
 
-              <div class="research-item__content">
-                <div class="research-item__heading">
-                  <h3 class="research-item__title">
+              <div class="upcoming-item__content">
+                <div class="upcoming-item__heading">
+                  <h3 class="upcoming-item__title">
                     {item.title}
                   </h3>
 
                   <span
                     class:list={[
-                      "research-item__status",
-                      item.status === "In Progress" &&
-                        "research-item__status--active"
+                      "upcoming-item__status",
+                      item.status === "Next" &&
+                        "upcoming-item__status--next",
+                      item.status === "Deferred" &&
+                        "upcoming-item__status--deferred"
                     ]}
                   >
                     {item.status}
                   </span>
                 </div>
 
-                <p class="research-item__description">
+                <p class="upcoming-item__description">
                   {item.description}
                 </p>
 
                 {
-                  Array.isArray(item.tags) &&
-                  item.tags.length > 0 && (
+                  Array.isArray(item.tags) && item.tags.length > 0 && (
                     <ul
                       class="tag-list"
                       aria-label={`${item.title} topics`}
                     >
-                      {
-                        item.tags.map((tag) => (
-                          <li class="tag">{tag}</li>
-                        ))
-                      }
+                      {item.tags.map((tag) => (
+                        <li class="tag">{tag}</li>
+                      ))}
                     </ul>
                   )
                 }
@@ -76,20 +75,20 @@ const safeResearch = Array.isArray(research) ? research : [];
 </section>
 
 <style>
-  .research-item__heading {
+  .upcoming-item__heading {
     display: flex;
     justify-content: space-between;
     gap: var(--space-5);
     align-items: flex-start;
   }
 
-  .research-item__status {
+  .upcoming-item__status {
     flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
     min-height: 1.9rem;
     padding-inline: 0.7rem;
-    border: 1px solid var(--color-border);
+    border: 1px dashed rgba(229, 43, 47, 0.45);
     color: var(--color-text-muted);
     font-family: var(--font-mono);
     font-size: 0.66rem;
@@ -97,13 +96,20 @@ const safeResearch = Array.isArray(research) ? research : [];
     text-transform: uppercase;
   }
 
-  .research-item__status--active {
+  .upcoming-item__status--next {
+    border-style: solid;
     border-color: rgba(229, 43, 47, 0.55);
     color: var(--color-accent);
   }
 
+  .upcoming-item__status--deferred {
+    border-color: var(--color-border);
+    border-style: dashed;
+    color: var(--color-text-muted);
+  }
+
   @media (max-width: 640px) {
-    .research-item__heading {
+    .upcoming-item__heading {
       align-items: flex-start;
       flex-direction: column;
       gap: var(--space-3);

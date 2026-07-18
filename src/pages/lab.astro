@@ -5,18 +5,18 @@ import { cadStudies, labItems } from "../data/siteContent";
 
 <BaseLayout
   title="Om Anand | Engineering Lab"
-  description="Engineering experiments, hardware work, visual demonstrations, and early CAD studies by Om Anand."
+  description="Hardware experiments, IMU telemetry, control-feedback prototypes, and early CAD studies by Om Anand."
   bodyClass="lab-page"
 >
   <section class="subpage-hero">
     <div class="page-frame subpage-hero__inner">
       <p class="section-kicker">Engineering Lab</p>
 
-      <h1>Experiments and smaller builds.</h1>
+      <h1>Hardware &amp; experiments.</h1>
 
       <p>
-        Completed prototypes, hardware experiments, visual demonstrations,
-        and early mechanical-design work.
+        Completed prototypes, IMU telemetry, control-feedback visualization,
+        and early mechanical-design studies for robotics work.
       </p>
     </div>
   </section>
@@ -85,47 +85,72 @@ import { cadStudies, labItems } from "../data/siteContent";
     <div class="page-frame">
       <div class="cad-header">
         <div>
-          <p class="section-kicker">CAD & mechanical design</p>
+          <p class="section-kicker">CAD &amp; mechanical design</p>
           <h2>Early CAD studies.</h2>
         </div>
 
         <p>
-          I am building foundational CAD skills through small,
-          tutorial-led part models. This section will expand into original
-          mounts, assemblies, chassis concepts, and robotics-oriented
-          mechanical designs as my ability develops.
+          Foundational CAD skills through tutorial-led part models. This
+          section expands into mounts, assemblies, and robotics-oriented
+          mechanical designs as the practice deepens. Drop renders into
+          <code>public/media/cad/</code> when ready.
         </p>
       </div>
 
       <div class="cad-grid">
         {
           cadStudies.map((item) => (
-            <article class="content-card cad-card">
-              <p class="mono-label">{item.stage}</p>
+            <article class="cad-study">
+              <div
+                class="cad-study__media media-frame"
+                role="img"
+                aria-label={`${item.title} modelling pipeline`}
+              >
+                <div class="cad-study__diagram">
+                  <span class="cad-study__diagram-kicker">
+                    Modelling pipeline
+                  </span>
 
-              <h3>{item.title}</h3>
+                  <ol class="cad-study__pipeline">
+                    {item.pipeline.map((stage, stageIndex) => (
+                      <li>
+                        <span>
+                          {String(stageIndex + 1).padStart(2, "0")}
+                        </span>
+                        <span>{stage}</span>
+                      </li>
+                    ))}
+                  </ol>
 
-              <p>{item.description}</p>
+                  <p class="cad-study__caption">Render forthcoming</p>
+                </div>
+              </div>
 
-              <ul class="tag-list">
-                {item.tags.map((tag) => (
-                  <li class="tag">{tag}</li>
-                ))}
-              </ul>
+              <div class="cad-study__body">
+                <p class="mono-label">{item.stage}</p>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+
+                <ul class="tag-list">
+                  {item.tags.map((tag) => (
+                    <li class="tag">{tag}</li>
+                  ))}
+                </ul>
+              </div>
             </article>
           ))
         }
 
-        <article class="content-card cad-card cad-card--future">
-          <p class="mono-label">Future additions</p>
-
-          <h3>Design work in progress.</h3>
-
-          <p>
-            Future entries will include original parts, design iterations,
-            exported renders, assemblies, and mechanical work connected to
-            physical robotics projects.
-          </p>
+        <article class="cad-study cad-study--future">
+          <div class="cad-study__body">
+            <p class="mono-label">Future additions</p>
+            <h3>Design work in progress.</h3>
+            <p>
+              Future entries will include original parts, design iterations,
+              exported renders, assemblies, and mechanical work connected to
+              physical robotics projects.
+            </p>
+          </div>
         </article>
       </div>
     </div>
@@ -163,7 +188,7 @@ import { cadStudies, labItems } from "../data/siteContent";
   }
 
   .subpage-hero h1 {
-    max-width: 10ch;
+    max-width: 12ch;
     margin-top: var(--space-4);
     font-size: clamp(4rem, 11vw, 10rem);
     line-height: 0.86;
@@ -231,28 +256,105 @@ import { cadStudies, labItems } from "../data/siteContent";
     margin-bottom: var(--space-8);
   }
 
+  .cad-header code {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+
   .cad-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-top: var(--border-thin);
-    border-left: var(--border-thin);
-  }
-
-  .cad-card {
-    display: grid;
-    align-content: start;
     gap: var(--space-5);
-    min-height: 22rem;
-    border-top: 0;
-    border-left: 0;
   }
 
-  .cad-card h3 {
-    font-size: var(--text-2xl);
+  .cad-study {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    border: var(--border-thin);
+    background: var(--color-surface);
+  }
+
+  .cad-study__media {
+    aspect-ratio: 4 / 3;
+    border: 0;
+    border-bottom: var(--border-thin);
+  }
+
+  .cad-study__diagram {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--space-4);
+    height: 100%;
+    padding: var(--space-5);
+    background:
+      linear-gradient(
+        135deg,
+        rgba(229, 43, 47, 0.1),
+        transparent 42%
+      ),
+      var(--color-surface);
+  }
+
+  .cad-study__diagram-kicker {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
 
-  .cad-card--future {
+  .cad-study__pipeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    align-content: center;
+  }
+
+  .cad-study__pipeline li {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-3);
+    border: 1px solid var(--color-border);
+    background: rgba(9, 10, 10, 0.5);
+  }
+
+  .cad-study__pipeline li span:first-child {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+  }
+
+  .cad-study__pipeline li span:last-child {
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .cad-study__caption {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .cad-study__body {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+    padding: clamp(1.2rem, 2.5vw, 1.6rem);
+  }
+
+  .cad-study__body h3 {
+    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+    text-transform: uppercase;
+  }
+
+  .cad-study--future {
     background:
       linear-gradient(
         135deg,
@@ -260,6 +362,11 @@ import { cadStudies, labItems } from "../data/siteContent";
         transparent 60%
       ),
       var(--color-surface);
+  }
+
+  .cad-study--future .cad-study__body {
+    min-height: 100%;
+    padding: clamp(1.6rem, 3vw, 2.2rem);
   }
 
   @media (max-width: 900px) {
@@ -272,7 +379,7 @@ import { cadStudies, labItems } from "../data/siteContent";
       grid-template-columns: 1fr 1fr;
     }
 
-    .cad-card--future {
+    .cad-study--future {
       grid-column: 1 / -1;
     }
   }
@@ -284,7 +391,7 @@ import { cadStudies, labItems } from "../data/siteContent";
     }
 
     .lab-entry__media-item--primary,
-    .cad-card--future {
+    .cad-study--future {
       grid-column: auto;
     }
 

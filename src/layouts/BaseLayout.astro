@@ -1,6 +1,7 @@
 ---
 import SiteHeader from "../components/layout/SiteHeader.astro";
 import SiteFooter from "../components/layout/SiteFooter.astro";
+import { links, profile } from "../data/siteContent";
 
 import "../styles/base.css";
 import "../styles/layout.css";
@@ -18,13 +19,38 @@ interface Props {
 const {
   title,
   description,
-  image = "/favicon.svg",
+  image = "/og-image.svg",
   bodyClass = "",
   hideFooter = false
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 const socialImageURL = new URL(image, Astro.site ?? Astro.url.origin);
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  mainEntity: {
+    "@type": "Person",
+    name: profile.name,
+    jobTitle: profile.role,
+    description: profile.summary,
+    url: Astro.site?.href ?? canonicalURL.origin,
+    email: "anandom.dev@gmail.com",
+    alumniOf: {
+      "@type": "CollegeOrUniversity",
+      name: "Pennsylvania State University"
+    },
+    knowsAbout: [
+      "Robotics",
+      "Embedded systems",
+      "Control systems",
+      "SLAM",
+      "Motion planning"
+    ],
+    sameAs: [links.github, links.linkedin]
+  }
+};
 ---
 
 <!doctype html>
@@ -38,21 +64,35 @@ const socialImageURL = new URL(image, Astro.site ?? Astro.url.origin);
     />
 
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#090a0a" />
+    <meta name="theme-color" content="#070809" />
+    <meta name="author" content={profile.name} />
 
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={socialImageURL} />
+    <meta property="og:site_name" content="Om Anand" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageURL} />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
 
     <title>{title}</title>
   </head>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Om Anand — Robotics and Controls">
+  <rect width="1200" height="630" fill="#070809"/>
+  <rect x="0" y="0" width="1200" height="5" fill="#e52b2f"/>
+  <text x="72" y="118" fill="#777b7d" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="20" letter-spacing="3.5">ROBOTICS · CONTROLS · EMBEDDED</text>
+  <text x="72" y="290" fill="#f1f1ed" font-family="Space Grotesk, Helvetica Neue, Arial, sans-serif" font-size="108" font-weight="700" letter-spacing="-3">OM ANAND</text>
+  <line x1="72" y1="340" x2="420" y2="340" stroke="#e52b2f" stroke-width="1.5"/>
+  <text x="72" y="410" fill="#d7d8d3" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="26">Curious about systems where software, hardware,</text>
+  <text x="72" y="448" fill="#d7d8d3" font-family="IBM Plex Sans, Helvetica Neue, Arial, sans-serif" font-size="26">sensing, and control hold together under constraint.</text>
+  <text x="72" y="560" fill="#777b7d" font-family="IBM Plex Mono, SFMono-Regular, Menlo, monospace" font-size="18" letter-spacing="1.5">om-anand.vercel.app</text>
+</svg>

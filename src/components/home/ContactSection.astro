@@ -15,13 +15,22 @@ import { links } from "../../data/siteContent";
         </p>
 
         <h2 class="contact-panel__title" id="contact-heading">
-          Let’s talk about the work.
+          Contact.
         </h2>
       </div>
 
       <div class="contact-panel__links" data-stagger>
         <a class="button button--primary" href={links.email}>
           Email
+        </a>
+
+        <a
+          class="button"
+          href={links.resume}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Résumé
         </a>
 
         <a
@@ -40,15 +49,6 @@ import { links } from "../../data/siteContent";
           rel="noopener noreferrer"
         >
           GitHub
-        </a>
-
-        <a
-          class="text-link"
-          href={links.resume}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Résumé
         </a>
       </div>
     </div>

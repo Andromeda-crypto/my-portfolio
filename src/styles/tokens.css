@@ -1,18 +1,20 @@
 :root {
     /* Core palette */
 
-    --color-carbon: #090a0a;
-    --color-carbon-raised: #111314;
-    --color-carbon-soft: #181a1b;
+    --color-carbon: #070809;
+    --color-carbon-raised: #0e1012;
+    --color-carbon-soft: #15181a;
 
     --color-cold-white: #f1f1ed;
     --color-soft-white: #d7d8d3;
     --color-machine-grey: #777b7d;
-    --color-line: #242627;
+    --color-line: #222528;
 
     --color-signal-red: #e52b2f;
     --color-deep-red: #8f171a;
     --color-red-soft: rgba(229, 43, 47, 0.12);
+    --color-ember: rgba(229, 43, 47, 0.14);
+    --color-steel: rgba(150, 170, 180, 0.06);
 
     /* Semantic tokens */
 
@@ -31,20 +33,22 @@
     /* Typography */
 
     --font-display:
-        "Arial Narrow",
-        "Helvetica Neue Condensed",
+        "Space Grotesk",
+        "IBM Plex Sans",
         "Helvetica Neue",
+        Helvetica,
         Arial,
         sans-serif;
 
     --font-body:
-        Inter,
+        "IBM Plex Sans",
         "Helvetica Neue",
         Helvetica,
         Arial,
         sans-serif;
 
     --font-mono:
+        "IBM Plex Mono",
         "SFMono-Regular",
         Consolas,
         "Liberation Mono",
@@ -66,8 +70,8 @@
     --text-3xl: clamp(2.8rem, 6vw, 5.2rem);
     --text-hero: clamp(5rem, 14vw, 12rem);
 
-    --tracking-tight: -0.05em;
-    --tracking-display: -0.075em;
+    --tracking-tight: -0.035em;
+    --tracking-display: -0.04em;
     --tracking-wide: 0.12em;
 
     --leading-tight: 0.92;

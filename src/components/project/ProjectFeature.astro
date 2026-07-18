@@ -20,6 +20,9 @@ interface Props {
   tags?: string[];
   links?: ProjectLink[];
   media?: ProjectMedia | null;
+  pipeline?: string[];
+  outcomes?: string[];
+  status?: string;
 }
 
 const {
@@ -31,20 +34,40 @@ const {
   note = null,
   tags = [],
   links = [],
-  media = null
+  media = null,
+  pipeline = [],
+  outcomes = [],
+  status
 } = Astro.props;
 
 const safeTags = Array.isArray(tags) ? tags : [];
 const safeLinks = Array.isArray(links) ? links : [];
+const safePipeline = Array.isArray(pipeline) ? pipeline : [];
+const safeOutcomes = Array.isArray(outcomes) ? outcomes : [];
 
 const formattedIndex = String(index + 1).padStart(2, "0");
 ---
 
 <article class="project-feature">
   <div class="project-feature__content" data-reveal="left">
-    <span class="project-feature__index">
-      {formattedIndex}
-    </span>
+    <div class="project-feature__topline">
+      <span class="project-feature__index">
+        {formattedIndex}
+      </span>
+
+      {
+        status && (
+          <span
+            class:list={[
+              "project-feature__status",
+              status === "active" && "project-feature__status--active"
+            ]}
+          >
+            {status}
+          </span>
+        )
+      }
+    </div>
 
     <p class="project-feature__type">
       {type}
@@ -64,6 +87,19 @@ const formattedIndex = String(index + 1).padStart(2, "0");
           <span>Why —</span>
           <p>{origin}</p>
         </div>
+      )
+    }
+
+    {
+      safeOutcomes.length > 0 && (
+        <ul
+          class="project-feature__outcomes"
+          aria-label={`${title} outcomes`}
+        >
+          {safeOutcomes.map((outcome) => (
+            <li>{outcome}</li>
+          ))}
+        </ul>
       )
     }
 
@@ -127,10 +163,50 @@ const formattedIndex = String(index + 1).padStart(2, "0");
           loading="lazy"
         />
       ) : (
-        <div class="project-feature__placeholder">
-          <span>
-            Project media and case-study material will be added here.
-          </span>
+        <div
+          class="project-feature__diagram"
+          role="img"
+          aria-label={`${title} system pipeline diagram`}
+        >
+          <div class="project-feature__diagram-header">
+            <span class="project-feature__diagram-kicker">
+              System pipeline
+            </span>
+            <span class="project-feature__diagram-title">
+              {title}
+            </span>
+          </div>
+
+          {
+            safePipeline.length > 0 ? (
+              <ol class="project-feature__pipeline">
+                {safePipeline.map((stage, stageIndex) => (
+                  <li class="project-feature__pipeline-stage">
+                    <span class="project-feature__pipeline-index">
+                      {String(stageIndex + 1).padStart(2, "0")}
+                    </span>
+                    <span class="project-feature__pipeline-label">
+                      {stage}
+                    </span>
+                    {stageIndex < safePipeline.length - 1 && (
+                      <span
+                        class="project-feature__pipeline-arrow"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p class="project-feature__diagram-fallback">
+                Technical diagram
+              </p>
+            )
+          }
+
+          <p class="project-feature__diagram-caption">
+            Demo media forthcoming
+          </p>
         </div>
       )
     }
@@ -138,6 +214,31 @@ const formattedIndex = String(index + 1).padStart(2, "0");
 </article>
 
 <style>
+  .project-feature__topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .project-feature__status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.7rem;
+    padding-inline: 0.65rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .project-feature__status--active {
+    border-color: rgba(229, 43, 47, 0.55);
+    color: var(--color-accent);
+  }
+
   .project-feature__origin {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
@@ -162,6 +263,28 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     line-height: 1.5;
   }
 
+  .project-feature__outcomes {
+    display: grid;
+    gap: var(--space-3);
+    max-width: 38rem;
+  }
+
+  .project-feature__outcomes li {
+    position: relative;
+    padding-left: 1.1rem;
+    color: var(--color-text-soft);
+  }
+
+  .project-feature__outcomes li::before {
+    content: "";
+    position: absolute;
+    top: 0.72em;
+    left: 0;
+    width: 0.35rem;
+    height: 1px;
+    background: var(--color-accent);
+  }
+
   .project-feature__note {
     max-width: 17rem;
     margin-top: var(--space-5);
@@ -173,6 +296,101 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     transform: rotate(-1.5deg);
   }
 
+  .project-feature__diagram {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--space-6);
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    padding: clamp(1.4rem, 3vw, 2.2rem);
+    background:
+      linear-gradient(
+        135deg,
+        rgba(229, 43, 47, 0.1),
+        transparent 40%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.02),
+        transparent 30%
+      ),
+      var(--color-surface);
+  }
+
+  .project-feature__diagram-header {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .project-feature__diagram-kicker {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .project-feature__diagram-title {
+    color: var(--color-text);
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-weight: var(--font-weight-heavy);
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+
+  .project-feature__pipeline {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+    gap: var(--space-3);
+    align-content: center;
+  }
+
+  .project-feature__pipeline-stage {
+    position: relative;
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-3);
+    border: 1px solid var(--color-border);
+    background: rgba(9, 10, 10, 0.55);
+  }
+
+  .project-feature__pipeline-index {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+  }
+
+  .project-feature__pipeline-label {
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .project-feature__pipeline-arrow {
+    display: none;
+  }
+
+  .project-feature__diagram-fallback {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .project-feature__diagram-caption {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
   @media (max-width: 640px) {
     .project-feature__origin {
       grid-template-columns: 1fr;
@@ -181,6 +399,10 @@ const formattedIndex = String(index + 1).padStart(2, "0");
 
     .project-feature__note {
       margin-left: 0;
+    }
+
+    .project-feature__pipeline {
+      grid-template-columns: 1fr 1fr;
     }
   }
 </style>

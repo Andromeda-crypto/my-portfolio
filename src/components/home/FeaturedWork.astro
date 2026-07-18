@@ -1,0 +1,236 @@
+---
+import SectionIntro from "../layout/SectionIntro.astro";
+import ProjectFeature from "../project/ProjectFeature.astro";
+import {
+  featuredProjects,
+  secondaryProjects
+} from "../../data/siteContent";
+---
+
+<section
+  class="home-section"
+  id="work"
+  aria-labelledby="work-heading"
+>
+  <div class="page-frame">
+    <div class="featured-work__intro" data-reveal>
+      <SectionIntro
+        index="02"
+        eyebrow="Work"
+        title="Featured robotics & control systems."
+        description="Systems where sensing, estimation, planning, and actuation have to hold together — in simulation and on hardware."
+        id="work-heading"
+      />
+    </div>
+
+    <div class="project-list">
+      {
+        featuredProjects.map((project, index) => (
+          <ProjectFeature
+            index={index}
+            title={project.title}
+            type={project.type}
+            description={project.description}
+            origin={project.origin}
+            note={project.note}
+            tags={project.tags}
+            links={project.links}
+            media={project.media}
+            pipeline={project.pipeline}
+            outcomes={project.outcomes}
+            status={project.status}
+          />
+        ))
+      }
+    </div>
+
+    {
+      secondaryProjects.length > 0 && (
+        <div class="featured-work__secondary" id="also-built">
+          <div class="featured-work__secondary-header" data-reveal>
+            <p class="section-kicker">Also built</p>
+            <h3 class="featured-work__secondary-title">
+              Algorithmic systems.
+            </h3>
+            <p class="featured-work__secondary-copy">
+              Numerical and decision systems that sharpen how I implement
+              models from first principles.
+            </p>
+          </div>
+
+          <div class="secondary-project-list" data-stagger>
+            {secondaryProjects.map((project) => (
+              <article class="secondary-project">
+                <div class="secondary-project__meta">
+                  <p class="secondary-project__type">{project.type}</p>
+                  <h4 class="secondary-project__title">{project.title}</h4>
+                </div>
+
+                <div class="secondary-project__body">
+                  <p class="secondary-project__description">
+                    {project.description}
+                  </p>
+
+                  {
+                    project.outcomes.length > 0 && (
+                      <ul
+                        class="secondary-project__outcomes"
+                        aria-label={`${project.title} outcomes`}
+                      >
+                        {project.outcomes.map((outcome) => (
+                          <li>{outcome}</li>
+                        ))}
+                      </ul>
+                    )
+                  }
+                </div>
+
+                <div class="secondary-project__footer">
+                  <ul
+                    class="tag-list"
+                    aria-label={`${project.title} technologies`}
+                  >
+                    {project.tags.slice(0, 4).map((tag) => (
+                      <li class="tag">{tag}</li>
+                    ))}
+                  </ul>
+
+                  {project.links.length > 0 && (
+                    <div class="secondary-project__links">
+                      {project.links.map((link) => (
+                        <a
+                          class="text-link"
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {link.label}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .featured-work__intro {
+    max-width: 60rem;
+    margin-bottom: var(--section-space-md);
+  }
+
+  :global(#work.home-section) {
+    padding-bottom: 0;
+  }
+
+  .featured-work__secondary {
+    padding-block: var(--section-space-lg);
+    border-top: var(--border-thin);
+  }
+
+  .featured-work__secondary-header {
+    display: grid;
+    gap: var(--space-4);
+    max-width: 42rem;
+    margin-bottom: var(--space-8);
+  }
+
+  .featured-work__secondary-title {
+    font-size: clamp(2rem, 4vw, 3.6rem);
+    text-transform: uppercase;
+  }
+
+  .featured-work__secondary-copy {
+    max-width: 36rem;
+  }
+
+  .secondary-project-list {
+    display: grid;
+    gap: 0;
+    border-top: var(--border-thin);
+  }
+
+  .secondary-project {
+    display: grid;
+    grid-template-columns:
+      minmax(12rem, 0.45fr)
+      minmax(0, 1fr)
+      minmax(12rem, 0.55fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+    padding-block: clamp(1.8rem, 4vw, 2.8rem);
+    border-bottom: var(--border-thin);
+  }
+
+  .secondary-project__type {
+    margin-bottom: var(--space-3);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .secondary-project__title {
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    text-transform: uppercase;
+  }
+
+  .secondary-project__description {
+    max-width: 40rem;
+    font-size: var(--text-base);
+  }
+
+  .secondary-project__body {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .secondary-project__outcomes {
+    display: grid;
+    gap: var(--space-2);
+    max-width: 40rem;
+  }
+
+  .secondary-project__outcomes li {
+    position: relative;
+    padding-left: 1.1rem;
+    color: var(--color-text-soft);
+    font-size: var(--text-sm);
+  }
+
+  .secondary-project__outcomes li::before {
+    content: "";
+    position: absolute;
+    top: 0.72em;
+    left: 0;
+    width: 0.35rem;
+    height: 1px;
+    background: var(--color-accent);
+  }
+
+  .secondary-project__footer {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+  }
+
+  .secondary-project__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+
+  @media (max-width: 900px) {
+    .secondary-project {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+  }
+</style>
