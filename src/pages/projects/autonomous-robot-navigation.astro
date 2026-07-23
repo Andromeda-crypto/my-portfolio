@@ -1,0 +1,663 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const stages = [
+  {
+    number: "01",
+    title: "Sense",
+    body: "A simulated 2D LIDAR casts rays around the robot and adds Gaussian noise to the returned range measurements."
+  },
+  {
+    number: "02",
+    title: "Map",
+    body: "Each scan updates a log-odds occupancy grid that represents free, occupied, and unexplored space."
+  },
+  {
+    number: "03",
+    title: "Plan",
+    body: "A goal-biased RRT searches the current free space, followed by shortcut smoothing to remove unnecessary waypoints."
+  },
+  {
+    number: "04",
+    title: "Control",
+    body: "Separate heading and velocity controllers guide the differential-drive robot through the planned waypoints."
+  }
+];
+
+const engineeringDecisions = [
+  {
+    title: "Keep one shared simulation loop",
+    body: "Sensing, map updates, planning, and control run within the same update cycle. This keeps the data flow visible and makes it easier to trace how a change in one subsystem affects the others."
+  },
+  {
+    title: "Model imperfect measurements",
+    body: "Gaussian noise is applied to the LIDAR ranges before they reach the mapping stage. The occupancy grid therefore has to build confidence from repeated measurements rather than receive exact obstacle locations."
+  },
+  {
+    title: "Separate planning from path cleanup",
+    body: "RRT is used to find a valid route, not necessarily a smooth one. A separate shortcut pass removes redundant segments before the waypoints are sent to the controller."
+  }
+];
+
+const stack = [
+  "C++17",
+  "SFML 3",
+  "Differential-drive kinematics",
+  "Simulated LIDAR",
+  "Log-odds occupancy grid",
+  "RRT",
+  "Path smoothing",
+  "Dual-loop PID"
+];
+---
+
+<BaseLayout
+  title="Autonomous Robot Navigation | Om Anand"
+  description="A C++ robot navigation simulator I built to connect LIDAR sensing, occupancy mapping, RRT planning, and closed-loop control."
+  image="/media/projects/autonomous-robot-navigation/navigation-path.png"
+  bodyClass="project-case-study"
+>
+  <section class="case-hero">
+    <div class="page-frame case-hero__inner">
+      <a class="case-back" href="/#work">← Selected work</a>
+
+      <div class="case-hero__meta">
+        <p class="section-kicker">Autonomous systems · Case study</p>
+        <p class="case-hero__status">Active</p>
+      </div>
+
+      <h1>Autonomous<br />Robot Navigation</h1>
+
+      <div class="case-hero__summary">
+        <p>
+          A C++ simulation of a differential-drive robot using noisy LIDAR
+          measurements, occupancy-grid mapping, RRT path planning, and
+          closed-loop waypoint tracking.
+        </p>
+
+        <a
+          class="button button--primary"
+          href="https://github.com/Andromeda-crypto/Autonomous-Robot-Navigation"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View source <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-demo">
+    <div class="page-frame">
+      <figure class="case-demo__frame media-frame">
+        <video
+          src="/media/projects/autonomous-robot-navigation/Robot-Navigation-Demo.mp4"
+          aria-label="Autonomous robot navigating through the simulator while updating LIDAR readings"
+          controls
+          muted
+          playsinline
+          preload="metadata"
+        />
+        <figcaption>
+          Closed-loop navigation · simulated LIDAR · live path tracking
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame case-intro">
+      <p class="case-section__label">01 · Objective</p>
+
+      <div class="case-intro__body">
+        <h2>Connect the main parts of autonomous navigation in one system.</h2>
+        <p>
+          The project combines sensing, mapping, planning, and control instead
+          of testing each algorithm in isolation. The robot scans its
+          surroundings, updates a map, plans toward a selected goal, and follows
+          the resulting route while the simulation continues to update.
+        </p>
+        <p>
+          The focus is the interaction between the subsystems. Sensor noise
+          affects the occupancy grid, the grid affects collision checking, and
+          the planned waypoints determine the commands produced by the
+          controller.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">02 · System</p>
+        <h2>Sense → Map → Plan → Control</h2>
+      </div>
+
+      <ol class="system-grid">
+        {
+          stages.map((stage) => (
+            <li class="system-card">
+              <span>{stage.number}</span>
+              <h3>{stage.title}</h3>
+              <p>{stage.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">03 · Implementation</p>
+        <h2>Implementation details.</h2>
+      </div>
+
+      <div class="technical-grid">
+        <article>
+          <p class="technical-grid__index">A</p>
+          <h3>Perception &amp; mapping</h3>
+          <p>
+            The simulator casts LIDAR rays against the obstacle geometry and
+            adds Gaussian noise to each range. Cells crossed by a ray receive
+            free-space evidence, while the endpoint receives occupied-space
+            evidence. Log-odds updates allow repeated scans to strengthen or
+            correct earlier observations.
+          </p>
+        </article>
+
+        <article>
+          <p class="technical-grid__index">B</p>
+          <h3>Motion planning</h3>
+          <p>
+            A goal-biased RRT expands through cells currently considered free.
+            Each proposed edge is checked for collisions before it is added to
+            the tree. After reaching the goal, shortcut smoothing tests longer
+            connections between waypoints and removes intermediate points when
+            the direct segment is clear.
+          </p>
+        </article>
+
+        <article>
+          <p class="technical-grid__index">C</p>
+          <h3>Closed-loop control</h3>
+          <p>
+            The controller calculates heading error and distance to the active
+            waypoint. Separate PID loops produce angular and forward velocity
+            commands, which are converted into differential wheel motion. Once
+            the robot enters the waypoint tolerance, the next waypoint becomes
+            active.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">04 · Simulation output</p>
+        <h2>Route generation and sensor updates.</h2>
+      </div>
+
+      <div class="evidence-grid">
+        <figure class="evidence-card media-frame">
+          <img
+            src="/media/projects/autonomous-robot-navigation/navigation-path.png"
+            alt="Robot simulator showing an RRT-planned route from the robot to its target"
+            loading="lazy"
+          />
+          <figcaption>
+            RRT route generation and the target position
+          </figcaption>
+        </figure>
+
+        <figure class="evidence-card media-frame">
+          <img
+            src="/media/projects/autonomous-robot-navigation/lidar-navigation.png"
+            alt="Robot navigating while simulated LIDAR rays scan the obstacle field"
+            loading="lazy"
+          />
+          <figcaption>
+            Range sensing during closed-loop motion
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame decisions-layout">
+      <div>
+        <p class="case-section__label">05 · Design choices</p>
+        <h2>How the pipeline is organized.</h2>
+      </div>
+
+      <div class="decision-list">
+        {
+          engineeringDecisions.map((decision, index) => (
+            <article>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <div>
+                <h3>{decision.title}</h3>
+                <p>{decision.body}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame result-layout">
+      <div>
+        <p class="case-section__label">06 · Current state</p>
+        <h2>What currently works.</h2>
+      </div>
+
+      <div class="result-layout__body">
+        <p>
+          The robot can scan the environment, update its occupancy grid, plan a
+          collision-free route, smooth the route, and track the resulting
+          waypoints. These stages run together in the same simulation rather
+          than as separate programs. The subsystem boundaries are kept clear so
+          the mapper, planner, or controller can be changed independently.
+        </p>
+
+        <div class="case-callout">
+          <p class="mono-label">Current boundary</p>
+          <p>
+            The simulator provides the robot’s pose, so this is not a complete
+            SLAM implementation. It does not yet estimate pose uncertainty,
+            recover from localization drift, or replan around moving
+            obstacles. Those are separate extensions rather than features of
+            the current system.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">07 · Stack</p>
+        <h2>Tools and methods.</h2>
+      </div>
+
+      <ul class="tag-list case-stack" aria-label="Project technologies">
+        {stack.map((item) => <li class="tag">{item}</li>)}
+      </ul>
+
+      <div class="case-footer">
+        <p>Source code and build instructions.</p>
+        <a
+          class="button button--primary"
+          href="https://github.com/Andromeda-crypto/Autonomous-Robot-Navigation"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initializeScrollAnimations } from "../../components/motion/scrollAnimations";
+
+  const initializePage = () => {
+    document.body.classList.add("is-ready");
+    initializeScrollAnimations();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializePage, {
+      once: true
+    });
+  } else {
+    initializePage();
+  }
+</script>
+
+<style>
+  .case-hero {
+    padding-top: 8rem;
+    border-bottom: var(--border-thin);
+  }
+
+  .case-hero__inner {
+    padding-bottom: clamp(4rem, 9vw, 8rem);
+  }
+
+  .case-back {
+    display: inline-flex;
+    margin-bottom: var(--space-8);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .case-back:hover,
+  .case-back:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .case-hero__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .case-hero__status {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid rgba(229, 43, 47, 0.55);
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .case-hero h1 {
+    max-width: 12ch;
+    margin-top: var(--space-5);
+    font-size: clamp(3.6rem, 10vw, 9.5rem);
+    line-height: 0.84;
+    letter-spacing: var(--tracking-display);
+    text-transform: uppercase;
+  }
+
+  .case-hero__summary {
+    display: grid;
+    grid-template-columns: minmax(0, 42rem) auto;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-7);
+    margin-top: var(--space-8);
+  }
+
+  .case-hero__summary p {
+    color: var(--color-text-soft);
+    font-size: clamp(1.15rem, 2vw, 1.55rem);
+    line-height: 1.55;
+  }
+
+  .case-demo {
+    padding-block: var(--section-space-md);
+  }
+
+  .case-demo__frame {
+    aspect-ratio: 16 / 9;
+  }
+
+  .case-demo__frame video,
+  .evidence-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .case-demo__frame figcaption,
+  .evidence-card figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 0.55rem 0.75rem;
+    background: rgba(7, 8, 9, 0.88);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .case-section {
+    padding-block: var(--section-space-lg);
+    border-top: var(--border-thin);
+  }
+
+  .case-section--surface {
+    background: var(--color-surface);
+  }
+
+  .case-section__label {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .case-section__header {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+    margin-bottom: var(--space-8);
+  }
+
+  .case-section h2 {
+    max-width: 16ch;
+    font-size: clamp(2.4rem, 5vw, 5.4rem);
+    line-height: 0.95;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .case-intro {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+
+  .case-intro__body {
+    max-width: 50rem;
+  }
+
+  .case-intro__body > p {
+    max-width: 44rem;
+    margin-top: var(--space-6);
+    color: var(--color-text-soft);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+  }
+
+  .system-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: var(--border-thin);
+    border-left: var(--border-thin);
+  }
+
+  .system-card {
+    min-height: 21rem;
+    padding: var(--space-6);
+    border-right: var(--border-thin);
+    border-bottom: var(--border-thin);
+  }
+
+  .system-card > span,
+  .technical-grid__index,
+  .decision-list article > span {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+  }
+
+  .system-card h3 {
+    margin-top: var(--space-8);
+    font-size: clamp(1.7rem, 2.5vw, 2.5rem);
+    text-transform: uppercase;
+  }
+
+  .system-card p {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .technical-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-7);
+  }
+
+  .technical-grid article {
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-accent);
+  }
+
+  .technical-grid h3 {
+    margin-top: var(--space-6);
+    font-size: var(--text-xl);
+  }
+
+  .technical-grid article > p:last-child {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+
+  .evidence-card {
+    aspect-ratio: 4 / 3;
+  }
+
+  .decisions-layout,
+  .result-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+
+  .decisions-layout > div:first-child h2,
+  .result-layout > div:first-child h2 {
+    margin-top: var(--space-5);
+  }
+
+  .decision-list {
+    border-top: var(--border-thin);
+  }
+
+  .decision-list article {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+    border-bottom: var(--border-thin);
+  }
+
+  .decision-list h3 {
+    font-size: var(--text-xl);
+  }
+
+  .decision-list p {
+    margin-top: var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  .result-layout__body > p {
+    color: var(--color-text-soft);
+    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  }
+
+  .case-callout {
+    margin-top: var(--space-7);
+    padding: var(--space-6);
+    border-left: 2px solid var(--color-accent);
+    background: var(--color-carbon);
+  }
+
+  .case-callout p:last-child {
+    margin-top: var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  .case-stack {
+    max-width: 54rem;
+  }
+
+  .case-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    margin-top: var(--space-9);
+    padding-top: var(--space-7);
+    border-top: var(--border-thin);
+  }
+
+  .case-footer p {
+    font-size: var(--text-xl);
+  }
+
+  @media (max-width: 900px) {
+    .case-hero__summary,
+    .case-intro,
+    .case-section__header,
+    .decisions-layout,
+    .result-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .system-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .technical-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .system-card {
+      min-height: 17rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .case-hero {
+      padding-top: 6.5rem;
+    }
+
+    .case-hero h1 {
+      font-size: clamp(3.1rem, 17vw, 5rem);
+    }
+
+    .case-hero__summary .button,
+    .case-footer .button {
+      width: 100%;
+    }
+
+    .case-demo__frame {
+      aspect-ratio: 4 / 3;
+    }
+
+    .system-grid,
+    .evidence-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .system-card {
+      min-height: auto;
+    }
+
+    .system-card h3 {
+      margin-top: var(--space-6);
+    }
+
+    .case-footer {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  }
+</style>

@@ -5,6 +5,7 @@ export type ProjectMedia = {
   type: "image" | "video";
   src: string;
   alt: string;
+  caption?: string;
 };
 
 export type ProjectLink = {
@@ -131,7 +132,16 @@ export const projects: Project[] = [
       "Telemetry",
       "CAD"
     ],
-    links: [],
+    links: [
+      {
+        label: "Explore project",
+        href: "/projects/balbot"
+      },
+      {
+        label: "View source",
+        href: "https://github.com/Andromeda-crypto/BALBOT"
+      }
+    ],
     priority: "featured",
     status: "active",
     outcomes: [
@@ -153,7 +163,11 @@ export const projects: Project[] = [
     tags: ["C++17", "Robotics", "Motion Planning", "LIDAR", "Mapping"],
     links: [
       {
-        label: "GitHub",
+        label: "Explore project",
+        href: "/projects/autonomous-robot-navigation"
+      },
+      {
+        label: "View source",
         href: "https://github.com/Andromeda-crypto/Autonomous-Robot-Navigation"
       }
     ],
@@ -169,17 +183,20 @@ export const projects: Project[] = [
       {
         type: "video",
         src: "/media/projects/autonomous-robot-navigation/Robot-Navigation-Demo.mp4",
-        alt: "Autonomous robot following an RRT-planned route while updating simulated LIDAR readings"
+        alt: "Autonomous robot navigating diagonally across the simulator while updating LIDAR readings and following an RRT-planned path",
+        caption: "Closed-loop navigation"
       },
       {
         type: "image",
         src: "/media/projects/autonomous-robot-navigation/navigation-path.png",
-        alt: "Robot simulator showing the complete planned route to the navigation target"
+        alt: "Robot simulator showing a long planned route between the robot and its navigation target",
+        caption: "RRT path and target"
       },
       {
         type: "image",
         src: "/media/projects/autonomous-robot-navigation/lidar-navigation.png",
-        alt: "Robot navigating while simulated LIDAR scans the surrounding obstacle field"
+        alt: "Robot approaching a target while its simulated LIDAR scans the surrounding obstacle field",
+        caption: "LIDAR-guided motion"
       }
     ]
   },

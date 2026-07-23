@@ -388,6 +388,7 @@ body.menu-open {
     padding-block: var(--section-space-lg);
     border-top: var(--border-thin);
     align-items: center;
+    overflow: hidden;
 }
 
 .project-feature:first-child {
@@ -398,17 +399,18 @@ body.menu-open {
     display: grid;
     align-content: center;
     gap: var(--space-5);
-    min-width: 0;
-}
-
-.project-feature__description,
-.project-feature__origin,
-.project-feature__outcomes,
-.project-feature__outcomes li {
+    width: 100%;
     min-width: 0;
     max-width: 100%;
-    overflow-wrap: anywhere;
+    overflow: hidden;
 }
+
+.project-feature__content>* {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+}
+
 .project-feature__index {
     color: var(--color-accent);
     font-family: var(--font-mono);
@@ -416,12 +418,12 @@ body.menu-open {
 }
 
 .project-feature__title {
-    max-width: 10ch;
-    font-size: clamp(3rem, 7vw, 6.8rem);
-    line-height: 0.9;
+    max-width: 12ch;
+    font-size: clamp(2.6rem, 5.2vw, 5.4rem);
+    line-height: 0.92;
+    text-wrap: balance;
     text-transform: uppercase;
 }
-
 .project-feature__type {
     color: var(--color-text-muted);
     font-family: var(--font-mono);
@@ -431,8 +433,10 @@ body.menu-open {
 }
 
 .project-feature__description {
-    max-width: 38rem;
+    width: 100%;
+    max-width: 100%;
     font-size: var(--text-lg);
+    overflow-wrap: anywhere;
 }
 
 .project-feature__actions {
@@ -444,6 +448,9 @@ body.menu-open {
 
 .project-feature__media {
     position: relative;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
     aspect-ratio: 4 / 3;
 }
 
@@ -629,14 +636,16 @@ body.menu-open {
 
 /* Responsive */
 
-@media (max-width: 980px) {
+@media (max-width: 1200px) {
     .project-feature {
         grid-template-columns: 1fr;
         min-height: auto;
     }
 
     .project-feature__title {
-        max-width: 14ch;
+        max-width: 18ch;
+        font-size: clamp(2.75rem, 5.5vw, 4.8rem);
+        line-height: 0.94;
     }
 
     .project-feature__media {
@@ -664,6 +673,11 @@ body.menu-open {
 
     .project-feature {
         padding-block: var(--section-space-md);
+    }
+
+    .project-feature__title {
+            max-width: 12ch;
+            font-size: clamp(2.4rem, 12vw, 4.2rem);
     }
 
     .project-feature__description {

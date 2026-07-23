@@ -8,6 +8,7 @@ interface ProjectMedia {
   type: "image" | "video";
   src: string;
   alt: string;
+  caption?: string;
 }
 
 interface Props {
@@ -19,7 +20,7 @@ interface Props {
   note?: string | null;
   tags?: string[];
   links?: ProjectLink[];
-  media?: ProjectMedia | null;
+  media?: ProjectMedia | ProjectMedia[] | null;
   pipeline?: string[];
   outcomes?: string[];
   status?: string;
@@ -44,16 +45,18 @@ const safeTags = Array.isArray(tags) ? tags : [];
 const safeLinks = Array.isArray(links) ? links : [];
 const safePipeline = Array.isArray(pipeline) ? pipeline : [];
 const safeOutcomes = Array.isArray(outcomes) ? outcomes : [];
+const safeMedia = Array.isArray(media) ? media : media ? [media] : [];
 
+// The homepage deliberately shows one strong visual. Supporting media belongs
+// on the dedicated project page rather than competing with the summary.
+const primaryMedia = safeMedia[0];
 const formattedIndex = String(index + 1).padStart(2, "0");
 ---
 
 <article class="project-feature">
   <div class="project-feature__content" data-reveal="left">
     <div class="project-feature__topline">
-      <span class="project-feature__index">
-        {formattedIndex}
-      </span>
+      <span class="project-feature__index">{formattedIndex}</span>
 
       {
         status && (
@@ -69,17 +72,9 @@ const formattedIndex = String(index + 1).padStart(2, "0");
       }
     </div>
 
-    <p class="project-feature__type">
-      {type}
-    </p>
-
-    <h3 class="project-feature__title">
-      {title}
-    </h3>
-
-    <p class="project-feature__description">
-      {description}
-    </p>
+    <p class="project-feature__type">{type}</p>
+    <h3 class="project-feature__title">{title}</h3>
+    <p class="project-feature__description">{description}</p>
 
     {
       origin && (
@@ -105,10 +100,7 @@ const formattedIndex = String(index + 1).padStart(2, "0");
 
     {
       safeTags.length > 0 && (
-        <ul
-          class="tag-list"
-          aria-label={`${title} technologies`}
-        >
+        <ul class="tag-list" aria-label={`${title} technologies`}>
           {safeTags.map((tag) => (
             <li class="tag">{tag}</li>
           ))}
@@ -119,27 +111,33 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     {
       safeLinks.length > 0 && (
         <div class="project-feature__actions">
-          {safeLinks.map((link) => (
-            <a
-              class="text-link"
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {link.label}
-            </a>
-          ))}
+          {safeLinks.map((link, linkIndex) => {
+            const isExternal = /^https?:\/\//.test(link.href);
+
+            return (
+              <a
+                class:list={[
+                  linkIndex === 0 ? "button button--primary" : "text-link",
+                  !isExternal && linkIndex !== 0 && "text-link--internal"
+                ]}
+                href={link.href}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+              >
+                {link.label}
+                {linkIndex === 0 && (
+                  <span aria-hidden="true">
+                    {isExternal ? "↗" : "→"}
+                  </span>
+                )}
+              </a>
+            );
+          })}
         </div>
       )
     }
 
-    {
-      note && (
-        <p class="project-feature__note">
-          ↗ {note}
-        </p>
-      )
-    }
+    {note && <p class="project-feature__note">↗ {note}</p>}
   </div>
 
   <div
@@ -147,21 +145,17 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     data-parallax-media
   >
     {
-      media?.type === "video" ? (
+      primaryMedia?.type === "video" ? (
         <video
-          src={media.src}
-          aria-label={media.alt}
+          src={primaryMedia.src}
+          aria-label={primaryMedia.alt}
           controls
           muted
           playsinline
           preload="metadata"
         />
-      ) : media?.type === "image" ? (
-        <img
-          src={media.src}
-          alt={media.alt}
-          loading="lazy"
-        />
+      ) : primaryMedia?.type === "image" ? (
+        <img src={primaryMedia.src} alt={primaryMedia.alt} loading="lazy" />
       ) : (
         <div
           class="project-feature__diagram"
@@ -172,9 +166,7 @@ const formattedIndex = String(index + 1).padStart(2, "0");
             <span class="project-feature__diagram-kicker">
               System pipeline
             </span>
-            <span class="project-feature__diagram-title">
-              {title}
-            </span>
+            <span class="project-feature__diagram-title">{title}</span>
           </div>
 
           {
@@ -188,12 +180,6 @@ const formattedIndex = String(index + 1).padStart(2, "0");
                     <span class="project-feature__pipeline-label">
                       {stage}
                     </span>
-                    {stageIndex < safePipeline.length - 1 && (
-                      <span
-                        class="project-feature__pipeline-arrow"
-                        aria-hidden="true"
-                      />
-                    )}
                   </li>
                 ))}
               </ol>
@@ -205,7 +191,7 @@ const formattedIndex = String(index + 1).padStart(2, "0");
           }
 
           <p class="project-feature__diagram-caption">
-            Demo media forthcoming
+            Technical media forthcoming
           </p>
         </div>
       )
@@ -243,6 +229,7 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: var(--space-4);
+    width: 100%;
     max-width: 42rem;
     padding-block: var(--space-5);
     border-top: var(--border-thin);
@@ -258,14 +245,17 @@ const formattedIndex = String(index + 1).padStart(2, "0");
   }
 
   .project-feature__origin p {
+    min-width: 0;
     color: var(--color-text);
     font-size: clamp(1rem, 1.6vw, 1.2rem);
     line-height: 1.5;
+    overflow-wrap: anywhere;
   }
 
   .project-feature__outcomes {
     display: grid;
     gap: var(--space-3);
+    width: 100%;
     max-width: 38rem;
   }
 
@@ -283,6 +273,30 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     width: 0.35rem;
     height: 1px;
     background: var(--color-accent);
+  }
+
+  .project-feature__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-5);
+    margin-top: var(--space-2);
+  }
+
+  .project-feature__actions .button {
+    min-width: 10.5rem;
+    z-index: 0;
+  }
+
+  .project-feature__actions .button span {
+    position: relative;
+    z-index: 1;
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .project-feature__actions .button:hover span,
+  .project-feature__actions .button:focus-visible span {
+    transform: translateX(0.2rem);
   }
 
   .project-feature__note {
@@ -305,16 +319,8 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     min-height: 100%;
     padding: clamp(1.4rem, 3vw, 2.2rem);
     background:
-      linear-gradient(
-        135deg,
-        rgba(229, 43, 47, 0.1),
-        transparent 40%
-      ),
-      linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.02),
-        transparent 30%
-      ),
+      linear-gradient(135deg, rgba(229, 43, 47, 0.1), transparent 40%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 30%),
       var(--color-surface);
   }
 
@@ -348,7 +354,6 @@ const formattedIndex = String(index + 1).padStart(2, "0");
   }
 
   .project-feature__pipeline-stage {
-    position: relative;
     display: grid;
     gap: var(--space-2);
     padding: var(--space-4) var(--space-3);
@@ -371,18 +376,7 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     text-transform: uppercase;
   }
 
-  .project-feature__pipeline-arrow {
-    display: none;
-  }
-
-  .project-feature__diagram-fallback {
-    color: var(--color-text-muted);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
+  .project-feature__diagram-fallback,
   .project-feature__diagram-caption {
     color: var(--color-text-muted);
     font-family: var(--font-mono);
@@ -395,6 +389,15 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     .project-feature__origin {
       grid-template-columns: 1fr;
       gap: var(--space-2);
+    }
+
+    .project-feature__actions {
+      align-items: stretch;
+      gap: var(--space-4);
+    }
+
+    .project-feature__actions .button {
+      width: 100%;
     }
 
     .project-feature__note {

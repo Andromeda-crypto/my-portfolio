@@ -1,0 +1,378 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const stages = [
+  {
+    number: "01",
+    title: "Estimate",
+    body: "Read the IMU and wheel encoders, then estimate the robot’s tilt and motion."
+  },
+  {
+    number: "02",
+    title: "Control",
+    body: "Use the estimated state to calculate the motor command required to correct the robot’s balance."
+  },
+  {
+    number: "03",
+    title: "Actuate",
+    body: "Convert the control output into left and right motor commands through the motor driver."
+  },
+  {
+    number: "04",
+    title: "Observe",
+    body: "Send live sensor and controller data to a telemetry interface for testing and tuning."
+  }
+];
+
+const plannedSections = [
+  "Mechanical design and component layout",
+  "IMU calibration and attitude estimation",
+  "Motor control and encoder feedback",
+  "Controller design and tuning",
+  "Telemetry and debugging workflow",
+  "Test results, limitations, and next revisions"
+];
+
+const stack = [
+  "C++",
+  "ESP32",
+  "MPU-6050",
+  "Wheel encoders",
+  "PID control",
+  "Differential drive",
+  "Motor drivers",
+  "Telemetry"
+];
+---
+
+<BaseLayout
+  title="BALBOT | Om Anand"
+  description="An engineering case study for BALBOT, a two-wheeled self-balancing robot built around embedded control, state estimation, and physical hardware."
+  bodyClass="project-case-study"
+>
+  <section class="case-hero">
+    <div class="page-frame case-hero__inner">
+      <a class="case-back" href="/#work">← Selected work</a>
+
+      <div class="case-hero__meta">
+        <p class="section-kicker">Embedded control · Case study</p>
+        <p class="case-hero__status">In progress</p>
+      </div>
+
+      <h1>BALBOT</h1>
+
+      <div class="case-hero__summary">
+        <p>
+          A two-wheeled self-balancing robot built around embedded C++, IMU
+          sensing, encoder feedback, motor control, and live telemetry.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-status">
+    <div class="page-frame case-status__inner">
+      <p class="case-section__label">Documentation status</p>
+
+      <div>
+        <h2>The engineering review is being prepared.</h2>
+        <p>
+          The project page is in place, but the detailed write-up, photographs,
+          controller results, and design revisions will be added after the
+          project material is organized.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">01 · System outline</p>
+        <h2>Estimate → Control → Actuate → Observe</h2>
+      </div>
+
+      <ol class="system-grid">
+        {
+          stages.map((stage) => (
+            <li class="system-card">
+              <span>{stage.number}</span>
+              <h3>{stage.title}</h3>
+              <p>{stage.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame documentation-layout">
+      <div>
+        <p class="case-section__label">02 · Planned review</p>
+        <h2>What the full page will cover.</h2>
+      </div>
+
+      <ol class="documentation-list">
+        {
+          plannedSections.map((section, index) => (
+            <li>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <p>{section}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">03 · Stack</p>
+        <h2>Current hardware and software.</h2>
+      </div>
+
+      <ul class="tag-list case-stack" aria-label="Project technologies">
+        {stack.map((item) => <li class="tag">{item}</li>)}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initializeScrollAnimations } from "../../components/motion/scrollAnimations";
+
+  const initializePage = () => {
+    document.body.classList.add("is-ready");
+    initializeScrollAnimations();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializePage, {
+      once: true
+    });
+  } else {
+    initializePage();
+  }
+</script>
+
+<style>
+  .case-hero {
+    min-height: 78svh;
+    padding-top: 8rem;
+    border-bottom: var(--border-thin);
+  }
+
+  .case-hero__inner {
+    padding-bottom: clamp(4rem, 9vw, 8rem);
+  }
+
+  .case-back {
+    display: inline-flex;
+    margin-bottom: var(--space-8);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .case-back:hover,
+  .case-back:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .case-hero__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .case-hero__status {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid rgba(229, 43, 47, 0.55);
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .case-hero h1 {
+    margin-top: var(--space-5);
+    font-size: clamp(5rem, 18vw, 14rem);
+    line-height: 0.82;
+    letter-spacing: var(--tracking-display);
+    text-transform: uppercase;
+  }
+
+  .case-hero__summary {
+    max-width: 44rem;
+    margin-top: var(--space-8);
+  }
+
+  .case-hero__summary p {
+    color: var(--color-text-soft);
+    font-size: clamp(1.15rem, 2vw, 1.55rem);
+    line-height: 1.55;
+  }
+
+  .case-status {
+    padding-block: var(--section-space-md);
+    border-bottom: var(--border-thin);
+  }
+
+  .case-status__inner {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+
+  .case-status__inner > div {
+    max-width: 48rem;
+  }
+
+  .case-status h2,
+  .case-section h2 {
+    max-width: 16ch;
+    font-size: clamp(2.4rem, 5vw, 5.4rem);
+    line-height: 0.95;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .case-status__inner > div p {
+    max-width: 42rem;
+    margin-top: var(--space-5);
+    color: var(--color-text-muted);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+  }
+
+  .case-section {
+    padding-block: var(--section-space-lg);
+    border-top: var(--border-thin);
+  }
+
+  .case-section--surface {
+    background: var(--color-surface);
+  }
+
+  .case-section__label {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .case-section__header {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+    margin-bottom: var(--space-8);
+  }
+
+  .system-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: var(--border-thin);
+    border-left: var(--border-thin);
+  }
+
+  .system-card {
+    min-height: 21rem;
+    padding: var(--space-6);
+    border-right: var(--border-thin);
+    border-bottom: var(--border-thin);
+  }
+
+  .system-card > span,
+  .documentation-list span {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+  }
+
+  .system-card h3 {
+    margin-top: var(--space-8);
+    font-size: clamp(1.7rem, 2.5vw, 2.5rem);
+    text-transform: uppercase;
+  }
+
+  .system-card p {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .documentation-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+
+  .documentation-layout > div h2 {
+    margin-top: var(--space-5);
+  }
+
+  .documentation-list {
+    border-top: var(--border-thin);
+  }
+
+  .documentation-list li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: var(--space-5);
+    padding-block: var(--space-5);
+    border-bottom: var(--border-thin);
+  }
+
+  .documentation-list p {
+    color: var(--color-text-soft);
+  }
+
+  .case-stack {
+    max-width: 54rem;
+  }
+
+  @media (max-width: 900px) {
+    .case-status__inner,
+    .case-section__header,
+    .documentation-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .system-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .system-card {
+      min-height: 17rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .case-hero {
+      min-height: auto;
+      padding-top: 6.5rem;
+    }
+
+    .case-hero h1 {
+      font-size: clamp(4.5rem, 26vw, 7rem);
+    }
+
+    .system-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .system-card {
+      min-height: auto;
+    }
+
+    .system-card h3 {
+      margin-top: var(--space-6);
+    }
+  }
+</style>
