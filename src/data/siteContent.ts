@@ -34,14 +34,13 @@ export const profile = {
   role: "Robotics & Controls · CS & Mathematics",
   headline: "Om Anand",
   summary:
-    "Building robots, control systems, and embedded software under real-world constraints.",
+    "Building robots, control systems, and embedded software.",
   location: "Pennsylvania State University",
   focus: "Robotics · Embedded Systems · Controls · Algorithms",
   currently:
     "Research intern at IIT BHU — vision, edge perception, and UAV closed-loop targeting.",
-  seeking: "Open to robotics and controls internships.",
   signature:
-    "Still figuring out how software, hardware, sensing, and control hold together once the system is real."
+    "Still figuring out how software, hardware, sensing, and control work together."
 };
 
 export const capabilities = [
