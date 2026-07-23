@@ -167,7 +167,11 @@ export const projects: Project[] = [
       "Structured the stack so perception, map updates, and control can be swapped or stress-tested independently."
     ],
     pipeline: ["Sense", "Map", "Plan", "Control"],
-    media: null
+    media: {
+      type: "video",
+      src: "/media/projects/autonomous-robot-navigation/Robot-Navigation-Demo.mp4",
+      alt: "Autonomous robot following an RRT-planned route while updating LIDAR readings"
+    }
   },
   {
     slug: "options-pricing-engine",
