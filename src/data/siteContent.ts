@@ -1,13 +1,11 @@
 export type ProjectPriority = "featured" | "secondary";
 export type ProjectStatus = "active" | "complete";
 
-export type ProjectMedia =
-  | {
-      type: "image" | "video";
-      src: string;
-      alt: string;
-    }
-  | null;
+export type ProjectMedia = {
+  type: "image" | "video";
+  src: string;
+  alt: string;
+};
 
 export type ProjectLink = {
   label: string;
@@ -27,7 +25,7 @@ export type Project = {
   status: ProjectStatus;
   outcomes: string[];
   pipeline: string[];
-  media: ProjectMedia;
+  media: ProjectMedia[] | null;
 };
 
 export const profile = {
@@ -167,11 +165,23 @@ export const projects: Project[] = [
       "Structured the stack so perception, map updates, and control can be swapped or stress-tested independently."
     ],
     pipeline: ["Sense", "Map", "Plan", "Control"],
-    media: {
-      type: "video",
-      src: "/media/projects/autonomous-robot-navigation/Robot-Navigation-Demo.mp4",
-      alt: "Autonomous robot following an RRT-planned route while updating LIDAR readings"
-    }
+    media: [
+      {
+        type: "video",
+        src: "/media/projects/autonomous-robot-navigation/Robot-Navigation-Demo.mp4",
+        alt: "Autonomous robot following an RRT-planned route while updating simulated LIDAR readings"
+      },
+      {
+        type: "image",
+        src: "/media/projects/autonomous-robot-navigation/navigation-path.png",
+        alt: "Robot simulator showing the complete planned route to the navigation target"
+      },
+      {
+        type: "image",
+        src: "/media/projects/autonomous-robot-navigation/lidar-navigation.png",
+        alt: "Robot navigating while simulated LIDAR scans the surrounding obstacle field"
+      }
+    ]
   },
   {
     slug: "options-pricing-engine",

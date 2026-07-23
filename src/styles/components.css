@@ -398,8 +398,17 @@ body.menu-open {
     display: grid;
     align-content: center;
     gap: var(--space-5);
+    min-width: 0;
 }
 
+.project-feature__description,
+.project-feature__origin,
+.project-feature__outcomes,
+.project-feature__outcomes li {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
 .project-feature__index {
     color: var(--color-accent);
     font-family: var(--font-mono);
