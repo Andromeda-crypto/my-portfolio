@@ -1,5 +1,8 @@
 ---
-import { about, profile } from "../../data/siteContent";
+import {
+  about,
+  profile
+} from "../../data/siteContent";
 ---
 
 <section
@@ -8,11 +11,17 @@ import { about, profile } from "../../data/siteContent";
   aria-labelledby="about-heading"
 >
   <div class="page-frame about-section">
-    <h2 class="about-section__label" id="about-heading">
+    <h2
+      class="about-section__label"
+      id="about-heading"
+    >
       About
     </h2>
 
-    <div class="about-section__content" data-reveal>
+    <div
+      class="about-section__content"
+      data-reveal
+    >
       <p class="about-section__intro">
         {about.intro}
       </p>
@@ -29,6 +38,11 @@ import { about, profile } from "../../data/siteContent";
 </section>
 
 <style>
+  /*
+   * Original dark-mode appearance.
+   * These values remain untouched.
+   */
+
   .about-band {
     position: relative;
     overflow: hidden;
@@ -63,16 +77,38 @@ import { about, profile } from "../../data/siteContent";
         transparent 1px
       );
     background-size: 48px 48px;
-    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.55), transparent 70%);
+    mask-image:
+      linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.55),
+        transparent 70%
+      );
+  }
+
+  /*
+   * Light mode uses one continuous silver surface.
+   * No dark wash, spotlight or fading grid.
+   */
+
+  :global(html[data-theme="light"]) .about-band {
+    background: var(--color-carbon-soft);
+  }
+
+  :global(html[data-theme="light"])
+    .about-band::before {
+    display: none;
   }
 
   .about-section {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 0.4fr) minmax(0, 1.6fr);
+    grid-template-columns:
+      minmax(0, 0.4fr)
+      minmax(0, 1.6fr);
     gap: clamp(1.5rem, 5vw, 5rem);
     align-items: start;
-    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+    padding-block:
+      clamp(3.5rem, 7vw, 5.5rem);
   }
 
   .about-section__label {
@@ -115,7 +151,17 @@ import { about, profile } from "../../data/siteContent";
     }
 
     .about-band::before {
-      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.4), transparent 75%);
+      mask-image:
+        linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.4),
+          transparent 75%
+        );
+    }
+
+    :global(html[data-theme="light"])
+      .about-band::before {
+      display: none;
     }
   }
 </style>

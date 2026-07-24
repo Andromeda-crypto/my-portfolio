@@ -1,0 +1,326 @@
+<div
+  class="scroll-backdrop"
+  data-scroll-backdrop
+  data-visible="false"
+  aria-hidden="true"
+>
+  <div class="scroll-backdrop__grid"></div>
+  <div class="scroll-backdrop__signal"></div>
+
+  <div class="scroll-backdrop__rail">
+    <span class="scroll-backdrop__track"></span>
+    <span class="scroll-backdrop__fill"></span>
+    <span class="scroll-backdrop__marker"></span>
+  </div>
+
+  <div class="scroll-backdrop__readout">
+    <span data-scroll-section-index>
+      00
+    </span>
+
+    <span aria-hidden="true">/</span>
+
+    <span data-scroll-section-total>
+      00
+    </span>
+  </div>
+
+  <span
+    class="scroll-backdrop__label"
+    data-scroll-section-label
+  >
+    Intro
+  </span>
+</div>
+
+<style>
+  .scroll-backdrop {
+    --scroll-progress: 0;
+    --scroll-velocity: 0;
+    --section-progress: 0;
+
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      opacity 700ms var(--ease-standard);
+  }
+
+  .scroll-backdrop[data-visible="true"] {
+    opacity: 1;
+  }
+
+  /*
+   * Dark-mode engineering grid.
+   */
+
+  .scroll-backdrop__grid {
+    position: absolute;
+    inset: -4rem;
+    opacity: 0.32;
+    background-image:
+      linear-gradient(
+        rgba(255, 255, 255, 0.024) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.024) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        rgba(229, 43, 47, 0.028) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        rgba(229, 43, 47, 0.028) 1px,
+        transparent 1px
+      );
+    background-size:
+      4rem 4rem,
+      4rem 4rem,
+      16rem 16rem,
+      16rem 16rem;
+    transform:
+      translate3d(
+        0,
+        calc(
+          var(--scroll-velocity) * -0.8rem
+        ),
+        0
+      );
+    transition: transform 120ms linear;
+    mask-image:
+      linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.85),
+        rgba(0, 0, 0, 0.2) 46%,
+        transparent 78%
+      );
+  }
+
+  /*
+   * Light mode gets a restrained graphite grid.
+   * There is no faded white or coloured region.
+   */
+
+  :global(html[data-theme="light"])
+    .scroll-backdrop__grid {
+    opacity: 0.2;
+    background-image:
+      linear-gradient(
+        rgba(23, 32, 33, 0.07) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        rgba(23, 32, 33, 0.07) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        rgba(17, 123, 128, 0.045) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        rgba(17, 123, 128, 0.045) 1px,
+        transparent 1px
+      );
+    mask-image:
+      linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.72),
+        rgba(0, 0, 0, 0.16) 46%,
+        transparent 78%
+      );
+  }
+
+  .scroll-backdrop__signal {
+    position: absolute;
+    left: -12rem;
+    top:
+      calc(
+        18% +
+        (var(--section-progress) * 54%)
+      );
+    width: 38rem;
+    height: 38rem;
+    border-radius: 50%;
+    opacity: 0.16;
+    background:
+      radial-gradient(
+        circle,
+        rgba(229, 43, 47, 0.18),
+        transparent 67%
+      );
+    transform:
+      translate3d(
+        calc(
+          var(--scroll-velocity) * 1.2rem
+        ),
+        -50%,
+        0
+      );
+    transition:
+      top 500ms var(--ease-standard),
+      transform 120ms linear;
+  }
+
+  /*
+   * Remove the ambient coloured wash in light
+   * mode. The silver theme stays uniform.
+   */
+
+  :global(html[data-theme="light"])
+    .scroll-backdrop__signal {
+    display: none;
+  }
+
+  .scroll-backdrop__rail {
+    position: absolute;
+    top: 7.5rem;
+    right:
+      clamp(
+        0.65rem,
+        1.35vw,
+        1.4rem
+      );
+    bottom: 6.5rem;
+    width: 1rem;
+  }
+
+  .scroll-backdrop__track,
+  .scroll-backdrop__fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    transform: translateX(-50%);
+  }
+
+  .scroll-backdrop__track {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  :global(html[data-theme="light"])
+    .scroll-backdrop__track {
+    background: var(--color-border);
+  }
+
+  .scroll-backdrop__fill {
+    background: var(--color-accent);
+    transform:
+      translateX(-50%)
+      scaleY(var(--scroll-progress));
+    transform-origin: top;
+  }
+
+  .scroll-backdrop__marker {
+    position: absolute;
+    top:
+      calc(
+        var(--scroll-progress) * 100%
+      );
+    left: 50%;
+    width: 0.58rem;
+    height: 0.58rem;
+    border:
+      1px solid
+      var(--color-accent);
+    background: var(--color-carbon);
+    transform:
+      translate(-50%, -50%)
+      rotate(45deg);
+    box-shadow:
+      0 0 0 4px
+      rgba(229, 43, 47, 0.06);
+  }
+
+  :global(html[data-theme="light"])
+    .scroll-backdrop__marker {
+    box-shadow:
+      0 0 0 4px
+      rgba(17, 123, 128, 0.08);
+  }
+
+  .scroll-backdrop__readout {
+    position: absolute;
+    right:
+      clamp(
+        0.55rem,
+        1.25vw,
+        1.3rem
+      );
+    bottom: 3.75rem;
+    display: flex;
+    width: max-content;
+    gap: 0.28rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    transform: translateX(0.15rem);
+  }
+
+  .scroll-backdrop__readout
+    span:first-child {
+    color: var(--color-accent);
+  }
+
+  .scroll-backdrop__label {
+    position: absolute;
+    top: 7.5rem;
+    right:
+      clamp(
+        1.7rem,
+        2.5vw,
+        3rem
+      );
+    max-width: 10rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-align: right;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+
+  @media (max-width: 900px) {
+    .scroll-backdrop__grid {
+      opacity: 0.2;
+      background-size:
+        3rem 3rem,
+        3rem 3rem,
+        12rem 12rem,
+        12rem 12rem;
+    }
+
+    .scroll-backdrop__rail,
+    .scroll-backdrop__readout,
+    .scroll-backdrop__label {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-backdrop {
+      transition: none;
+    }
+
+    .scroll-backdrop__grid,
+    .scroll-backdrop__signal {
+      transform: none;
+      transition: none;
+    }
+
+    .scroll-backdrop__signal {
+      display: none;
+    }
+  }
+</style>

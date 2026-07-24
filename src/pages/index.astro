@@ -11,6 +11,7 @@ import LabPreview from "../components/home/LabPreview.astro";
 import ResearchSection from "../components/home/ResearchSection.astro";
 import StackSection from "../components/home/StackSection.astro";
 import ContactSection from "../components/home/ContactSection.astro";
+import ScrollBackdrop from "../components/motion/ScrollBackdrop.astro";
 ---
 
 <BaseLayout
@@ -18,6 +19,8 @@ import ContactSection from "../components/home/ContactSection.astro";
   description="Portfolio of Om Anand — robotics, embedded systems, and closed-loop control. CS & Mathematics student seeking internships in robotics and controls."
   bodyClass="home-page"
 >
+  <ScrollBackdrop />
+
   <KineticHero />
 
   <CapabilityStrip />

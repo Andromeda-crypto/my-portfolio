@@ -24,8 +24,15 @@ const {
   hideFooter = false
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
-const socialImageURL = new URL(image, Astro.site ?? Astro.url.origin);
+const canonicalURL = new URL(
+  Astro.url.pathname,
+  Astro.site ?? Astro.url.origin
+);
+
+const socialImageURL = new URL(
+  image,
+  Astro.site ?? Astro.url.origin
+);
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -54,7 +61,7 @@ const structuredData = {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
 
@@ -64,14 +71,46 @@ const structuredData = {
     />
 
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#070809" />
+
+    <meta
+      name="theme-color"
+      content="#070809"
+      data-theme-color
+    />
+
     <meta name="author" content={profile.name} />
 
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    <!--
+      Apply a previously selected light theme before the page renders.
+      Dark remains the default when no preference has been saved.
+    -->
+    <script is:inline>
+      (() => {
+        try {
+          const savedTheme =
+            window.localStorage.getItem("portfolio-theme");
+
+          if (savedTheme === "light") {
+            document.documentElement.dataset.theme = "light";
+          } else {
+            document.documentElement.dataset.theme = "dark";
+          }
+        } catch {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+
     <link
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
@@ -84,10 +123,22 @@ const structuredData = {
     <meta property="og:image" content={socialImageURL} />
     <meta property="og:site_name" content="Om Anand" />
 
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:card"
+      content="summary_large_image"
+    />
+
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={socialImageURL} />
+
+    <meta
+      name="twitter:description"
+      content={description}
+    />
+
+    <meta
+      name="twitter:image"
+      content={socialImageURL}
+    />
 
     <script
       type="application/ld+json"
@@ -116,7 +167,8 @@ const structuredData = {
       document.documentElement.classList.add("js");
 
       window.addEventListener("pageshow", () => {
-        document.body.classList.remove("is-transitioning");
+        <script is:inline>
+      document.documentElement.classList document.body.classList.remove("is-transitioning");
       });
     </script>
   </body>

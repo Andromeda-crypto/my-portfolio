@@ -43,27 +43,43 @@ const {
 
 const safeTags = Array.isArray(tags) ? tags : [];
 const safeLinks = Array.isArray(links) ? links : [];
-const safePipeline = Array.isArray(pipeline) ? pipeline : [];
-const safeOutcomes = Array.isArray(outcomes) ? outcomes : [];
-const safeMedia = Array.isArray(media) ? media : media ? [media] : [];
+const safePipeline = Array.isArray(pipeline)
+  ? pipeline
+  : [];
+const safeOutcomes = Array.isArray(outcomes)
+  ? outcomes
+  : [];
+const safeMedia = Array.isArray(media)
+  ? media
+  : media
+    ? [media]
+    : [];
 
-// The homepage deliberately shows one strong visual. Supporting media belongs
-// on the dedicated project page rather than competing with the summary.
 const primaryMedia = safeMedia[0];
-const formattedIndex = String(index + 1).padStart(2, "0");
+
+const formattedIndex = String(index + 1).padStart(
+  2,
+  "0"
+);
 ---
 
 <article class="project-feature">
-  <div class="project-feature__content" data-reveal="left">
+  <div
+    class="project-feature__content"
+    data-reveal="left"
+  >
     <div class="project-feature__topline">
-      <span class="project-feature__index">{formattedIndex}</span>
+      <span class="project-feature__index">
+        {formattedIndex}
+      </span>
 
       {
         status && (
           <span
             class:list={[
               "project-feature__status",
-              status === "active" && "project-feature__status--active"
+              status === "active" &&
+                "project-feature__status--active"
             ]}
           >
             {status}
@@ -72,9 +88,17 @@ const formattedIndex = String(index + 1).padStart(2, "0");
       }
     </div>
 
-    <p class="project-feature__type">{type}</p>
-    <h3 class="project-feature__title">{title}</h3>
-    <p class="project-feature__description">{description}</p>
+    <p class="project-feature__type">
+      {type}
+    </p>
+
+    <h3 class="project-feature__title">
+      {title}
+    </h3>
+
+    <p class="project-feature__description">
+      {description}
+    </p>
 
     {
       origin && (
@@ -100,7 +124,10 @@ const formattedIndex = String(index + 1).padStart(2, "0");
 
     {
       safeTags.length > 0 && (
-        <ul class="tag-list" aria-label={`${title} technologies`}>
+        <ul
+          class="tag-list"
+          aria-label={`${title} technologies`}
+        >
           {safeTags.map((tag) => (
             <li class="tag">{tag}</li>
           ))}
@@ -112,19 +139,33 @@ const formattedIndex = String(index + 1).padStart(2, "0");
       safeLinks.length > 0 && (
         <div class="project-feature__actions">
           {safeLinks.map((link, linkIndex) => {
-            const isExternal = /^https?:\/\//.test(link.href);
+            const isExternal =
+              /^https?:\/\//.test(link.href);
 
             return (
               <a
                 class:list={[
-                  linkIndex === 0 ? "button button--primary" : "text-link",
-                  !isExternal && linkIndex !== 0 && "text-link--internal"
+                  linkIndex === 0
+                    ? "button button--primary"
+                    : "text-link",
+                  !isExternal &&
+                    linkIndex !== 0 &&
+                    "text-link--internal"
                 ]}
                 href={link.href}
-                target={isExternal ? "_blank" : undefined}
-                rel={isExternal ? "noopener noreferrer" : undefined}
+                target={
+                  isExternal
+                    ? "_blank"
+                    : undefined
+                }
+                rel={
+                  isExternal
+                    ? "noopener noreferrer"
+                    : undefined
+                }
               >
                 {link.label}
+
                 {linkIndex === 0 && (
                   <span aria-hidden="true">
                     {isExternal ? "↗" : "→"}
@@ -137,7 +178,13 @@ const formattedIndex = String(index + 1).padStart(2, "0");
       )
     }
 
-    {note && <p class="project-feature__note">↗ {note}</p>}
+    {
+      note && (
+        <p class="project-feature__note">
+          ↗ {note}
+        </p>
+      )
+    }
   </div>
 
   <div
@@ -155,7 +202,11 @@ const formattedIndex = String(index + 1).padStart(2, "0");
           preload="metadata"
         />
       ) : primaryMedia?.type === "image" ? (
-        <img src={primaryMedia.src} alt={primaryMedia.alt} loading="lazy" />
+        <img
+          src={primaryMedia.src}
+          alt={primaryMedia.alt}
+          loading="lazy"
+        />
       ) : (
         <div
           class="project-feature__diagram"
@@ -166,22 +217,30 @@ const formattedIndex = String(index + 1).padStart(2, "0");
             <span class="project-feature__diagram-kicker">
               System pipeline
             </span>
-            <span class="project-feature__diagram-title">{title}</span>
+
+            <span class="project-feature__diagram-title">
+              {title}
+            </span>
           </div>
 
           {
             safePipeline.length > 0 ? (
               <ol class="project-feature__pipeline">
-                {safePipeline.map((stage, stageIndex) => (
-                  <li class="project-feature__pipeline-stage">
-                    <span class="project-feature__pipeline-index">
-                      {String(stageIndex + 1).padStart(2, "0")}
-                    </span>
-                    <span class="project-feature__pipeline-label">
-                      {stage}
-                    </span>
-                  </li>
-                ))}
+                {safePipeline.map(
+                  (stage, stageIndex) => (
+                    <li class="project-feature__pipeline-stage">
+                      <span class="project-feature__pipeline-index">
+                        {String(
+                          stageIndex + 1
+                        ).padStart(2, "0")}
+                      </span>
+
+                      <span class="project-feature__pipeline-label">
+                        {stage}
+                      </span>
+                    </li>
+                  )
+                )}
               </ol>
             ) : (
               <p class="project-feature__diagram-fallback">
@@ -225,9 +284,16 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     color: var(--color-accent);
   }
 
+  :global(html[data-theme="light"])
+    .project-feature__status--active {
+    border-color: var(--color-accent);
+  }
+
   .project-feature__origin {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns:
+      auto
+      minmax(0, 1fr);
     gap: var(--space-4);
     width: 100%;
     max-width: 42rem;
@@ -291,11 +357,18 @@ const formattedIndex = String(index + 1).padStart(2, "0");
   .project-feature__actions .button span {
     position: relative;
     z-index: 1;
-    transition: transform var(--duration-fast) var(--ease-standard);
+    transition:
+      transform
+      var(--duration-fast)
+      var(--ease-standard);
   }
 
-  .project-feature__actions .button:hover span,
-  .project-feature__actions .button:focus-visible span {
+  .project-feature__actions
+    .button:hover
+    span,
+  .project-feature__actions
+    .button:focus-visible
+    span {
     transform: translateX(0.2rem);
   }
 
@@ -310,18 +383,43 @@ const formattedIndex = String(index + 1).padStart(2, "0");
     transform: rotate(-1.5deg);
   }
 
+  /*
+   * Original dark-mode diagram.
+   */
+
   .project-feature__diagram {
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows:
+      auto
+      1fr
+      auto;
     gap: var(--space-6);
     width: 100%;
     height: 100%;
     min-height: 100%;
     padding: clamp(1.4rem, 3vw, 2.2rem);
     background:
-      linear-gradient(135deg, rgba(229, 43, 47, 0.1), transparent 40%),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 30%),
+      linear-gradient(
+        135deg,
+        rgba(229, 43, 47, 0.1),
+        transparent 40%
+      ),
+      linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.02),
+        transparent 30%
+      ),
       var(--color-surface);
+  }
+
+  /*
+   * Light mode uses one uninterrupted silver
+   * panel with no red or white wash.
+   */
+
+  :global(html[data-theme="light"])
+    .project-feature__diagram {
+    background: var(--color-surface);
   }
 
   .project-feature__diagram-header {
@@ -348,7 +446,11 @@ const formattedIndex = String(index + 1).padStart(2, "0");
 
   .project-feature__pipeline {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+    grid-template-columns:
+      repeat(
+        auto-fit,
+        minmax(5.5rem, 1fr)
+      );
     gap: var(--space-3);
     align-content: center;
   }
@@ -356,9 +458,26 @@ const formattedIndex = String(index + 1).padStart(2, "0");
   .project-feature__pipeline-stage {
     display: grid;
     gap: var(--space-2);
-    padding: var(--space-4) var(--space-3);
+    padding:
+      var(--space-4)
+      var(--space-3);
     border: 1px solid var(--color-border);
     background: rgba(9, 10, 10, 0.55);
+  }
+
+  /*
+   * Solid metallic blocks in light mode.
+   * No transparency means the surrounding
+   * background cannot bleed through them.
+   */
+
+  :global(html[data-theme="light"])
+    .project-feature__pipeline-stage {
+    border-color: #9fadaa;
+    background: #b9c2c0;
+    box-shadow:
+      inset 0 1px 0
+        rgba(255, 255, 255, 0.32);
   }
 
   .project-feature__pipeline-index {

@@ -127,10 +127,23 @@ import { links, profile } from "../../data/siteContent";
         90deg,
         transparent 0,
         transparent calc(50% - 0.5px),
-        rgba(255, 255, 255, 0.025) calc(50% - 0.5px),
-        rgba(255, 255, 255, 0.025) calc(50% + 0.5px),
+        var(--color-grid-line) calc(50% - 0.5px),
+        var(--color-grid-line) calc(50% + 0.5px),
         transparent calc(50% + 0.5px)
       );
+  }
+
+    :global(html[data-theme="light"])
+    .kinetic-hero {
+    background: var(--color-page);
+  }
+
+  :global(html[data-theme="light"])
+    .kinetic-hero__axis-origin {
+    background: var(--color-page);
+    box-shadow:
+      0 0 0 4px
+      rgba(17, 123, 128, 0.06);
   }
 
   .kinetic-hero__inner {

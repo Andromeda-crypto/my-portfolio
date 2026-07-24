@@ -1,14 +1,36 @@
 ---
 const currentPath = Astro.url.pathname;
+const isHomePage = currentPath === "/";
 
 const navigation = [
-  { label: "Experience", href: "/#experience" },
-  { label: "Work", href: "/#work" },
-  { label: "Upcoming", href: "/#upcoming" },
-  { label: "Lab", href: "/lab/" },
-  { label: "Research", href: "/#research" },
-  { label: "Stack", href: "/#stack" },
-  { label: "Contact", href: "/#contact" }
+  {
+    label: "Experience",
+    href: "/#experience"
+  },
+  {
+    label: "Work",
+    href: "/#work"
+  },
+  {
+    label: "Upcoming",
+    href: "/#upcoming"
+  },
+  {
+    label: "Lab",
+    href: "/lab/"
+  },
+  {
+    label: "Research",
+    href: "/#research"
+  },
+  {
+    label: "Stack",
+    href: "/#stack"
+  },
+  {
+    label: "Contact",
+    href: "/#contact"
+  }
 ];
 
 const isCurrentPage = (href: string) => {
@@ -24,10 +46,22 @@ const isCurrentPage = (href: string) => {
 };
 ---
 
-<header class="site-header" data-site-header data-scrolled="false">
+<header
+  class="site-header"
+  data-site-header
+  data-scrolled="false"
+>
   <div class="page-frame site-header__inner">
-    <a class="site-brand" href="/" aria-label="Om Anand home">
-      <span class="site-brand__mark" aria-hidden="true"></span>
+    <a
+      class="site-brand"
+      href="/"
+      aria-label="Om Anand home"
+    >
+      <span
+        class="site-brand__mark"
+        aria-hidden="true"
+      ></span>
+
       <span>OA</span>
     </a>
 
@@ -39,7 +73,12 @@ const isCurrentPage = (href: string) => {
               <a
                 class="site-nav__link"
                 href={item.href}
-                aria-current={isCurrentPage(item.href) ? "page" : undefined}
+                data-scroll-nav={item.label.toLowerCase()}
+                aria-current={
+                  isCurrentPage(item.href)
+                    ? "page"
+                    : undefined
+                }
               >
                 {item.label}
               </a>
@@ -49,18 +88,49 @@ const isCurrentPage = (href: string) => {
       </ul>
     </nav>
 
-    <button
-      class="site-menu-button"
-      type="button"
-      aria-label="Open navigation"
-      aria-expanded="false"
-      aria-controls="mobile-navigation"
-      data-menu-button
-    >
-      <span class="site-menu-button__line"></span>
-      <span class="site-menu-button__line"></span>
-    </button>
+    <div class="site-header__controls">
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label="Switch to light mode"
+        title="Switch to light mode"
+        data-theme-toggle
+      >
+        <span
+          class="theme-toggle__icon theme-toggle__icon--sun"
+          aria-hidden="true"
+        ></span>
+
+        <span
+          class="theme-toggle__icon theme-toggle__icon--moon"
+          aria-hidden="true"
+        ></span>
+      </button>
+
+      <button
+        class="site-menu-button"
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="mobile-navigation"
+        data-menu-button
+      >
+        <span class="site-menu-button__line"></span>
+        <span class="site-menu-button__line"></span>
+      </button>
+    </div>
   </div>
+
+  {
+    isHomePage && (
+      <div
+        class="site-header__progress"
+        aria-hidden="true"
+      >
+        <span data-header-progress></span>
+      </div>
+    )
+  }
 
   <div
     class="mobile-navigation"
@@ -68,7 +138,10 @@ const isCurrentPage = (href: string) => {
     aria-hidden="true"
     data-mobile-navigation
   >
-    <nav class="mobile-navigation__inner" aria-label="Mobile navigation">
+    <nav
+      class="mobile-navigation__inner"
+      aria-label="Mobile navigation"
+    >
       <ul class="mobile-navigation__list">
         {
           navigation.map((item, index) => (
@@ -76,7 +149,11 @@ const isCurrentPage = (href: string) => {
               <a
                 class="mobile-navigation__link"
                 href={item.href}
-                aria-current={isCurrentPage(item.href) ? "page" : undefined}
+                aria-current={
+                  isCurrentPage(item.href)
+                    ? "page"
+                    : undefined
+                }
               >
                 <span class="mobile-navigation__index">
                   {String(index + 1).padStart(2, "0")}
@@ -92,31 +169,240 @@ const isCurrentPage = (href: string) => {
   </div>
 </header>
 
+<style>
+  .site-header__controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-3);
+  }
+
+  .theme-toggle {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    flex: 0 0 auto;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-text);
+    cursor: pointer;
+    transition:
+      border-color var(--duration-fast) var(--ease-standard),
+      background-color var(--duration-fast) var(--ease-standard),
+      color var(--duration-fast) var(--ease-standard),
+      transform var(--duration-fast) var(--ease-standard);
+  }
+
+  .theme-toggle:hover,
+  .theme-toggle:focus-visible {
+    border-color: var(--color-accent);
+    background: var(--color-surface);
+    transform: rotate(8deg);
+  }
+
+  .theme-toggle__icon {
+    position: absolute;
+    width: 0.8rem;
+    height: 0.8rem;
+    transition:
+      opacity var(--duration-fast) var(--ease-standard),
+      transform var(--duration-base) var(--ease-standard);
+  }
+
+  .theme-toggle__icon--sun {
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    box-shadow:
+      0 -0.38rem 0 -0.33rem currentColor,
+      0 0.38rem 0 -0.33rem currentColor,
+      0.38rem 0 0 -0.33rem currentColor,
+      -0.38rem 0 0 -0.33rem currentColor;
+  }
+
+  .theme-toggle__icon--moon {
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow:
+      0.22rem -0.14rem 0 0 var(--color-page);
+  }
+
+  :global(html[data-theme="dark"])
+    .theme-toggle__icon--moon,
+  :global(html[data-theme="light"])
+    .theme-toggle__icon--sun {
+    opacity: 0;
+    transform: scale(0.45) rotate(-45deg);
+  }
+
+  :global(html[data-theme="dark"])
+    .theme-toggle__icon--sun,
+  :global(html[data-theme="light"])
+    .theme-toggle__icon--moon {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+
+  .site-header__progress {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 1px;
+    overflow: hidden;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .site-header__progress span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    will-change: transform;
+  }
+
+  .site-nav__link[data-active="true"] {
+    color: var(--color-text);
+  }
+
+  .site-nav__link[data-active="true"]::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  @media (max-width: 980px) {
+    .site-header__controls {
+      grid-column: 3;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .site-header__controls {
+      gap: var(--space-2);
+    }
+
+    .theme-toggle {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-toggle,
+    .theme-toggle__icon {
+      transition: none;
+    }
+
+    .theme-toggle:hover,
+    .theme-toggle:focus-visible {
+      transform: none;
+    }
+
+    .site-header__progress span {
+      will-change: auto;
+    }
+  }
+</style>
+
 <script>
-  const header = document.querySelector<HTMLElement>("[data-site-header]");
+  const header =
+    document.querySelector<HTMLElement>(
+      "[data-site-header]"
+    );
 
   const menuButton =
-    document.querySelector<HTMLButtonElement>("[data-menu-button]");
+    document.querySelector<HTMLButtonElement>(
+      "[data-menu-button]"
+    );
 
   const mobileNavigation =
-    document.querySelector<HTMLElement>("[data-mobile-navigation]");
+    document.querySelector<HTMLElement>(
+      "[data-mobile-navigation]"
+    );
+
+  const themeToggle =
+    document.querySelector<HTMLButtonElement>(
+      "[data-theme-toggle]"
+    );
+
+  const themeColor =
+    document.querySelector<HTMLMetaElement>(
+      "[data-theme-color]"
+    );
 
   const focusableSelector =
     'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
+  const getCurrentTheme = (): "light" | "dark" => {
+    return document.documentElement.dataset.theme === "light"
+      ? "light"
+      : "dark";
+  };
+
+  const updateThemeButton = (
+    theme: "light" | "dark"
+  ) => {
+    if (!themeToggle) return;
+
+    const nextTheme =
+      theme === "dark" ? "light" : "dark";
+
+    const label = `Switch to ${nextTheme} mode`;
+
+    themeToggle.setAttribute("aria-label", label);
+    themeToggle.setAttribute("title", label);
+  };
+
+  const applyTheme = (
+    theme: "light" | "dark",
+    savePreference = false
+  ) => {
+    document.documentElement.dataset.theme = theme;
+
+    updateThemeButton(theme);
+
+    themeColor?.setAttribute(
+      "content",
+      theme === "dark" ? "#070809" : "#f2f0ea"
+    );
+
+    if (!savePreference) return;
+
+    try {
+      window.localStorage.setItem(
+        "portfolio-theme",
+        theme
+      );
+    } catch {
+      // The selected theme still works for this page
+      // if browser storage is unavailable.
+    }
+  };
+
   const updateHeaderState = () => {
     if (!header) return;
 
-    header.dataset.scrolled = window.scrollY > 24 ? "true" : "false";
+    header.dataset.scrolled =
+      window.scrollY > 24 ? "true" : "false";
   };
 
   const getFocusableElements = () => {
-    if (!mobileNavigation || !menuButton) return [];
+    if (!mobileNavigation || !menuButton) {
+      return [];
+    }
 
     return [
       menuButton,
       ...Array.from(
-        mobileNavigation.querySelectorAll<HTMLElement>(focusableSelector)
+        mobileNavigation.querySelectorAll<HTMLElement>(
+          focusableSelector
+        )
       )
     ];
   };
@@ -124,10 +410,21 @@ const isCurrentPage = (href: string) => {
   const closeMenu = () => {
     if (!menuButton || !mobileNavigation) return;
 
-    menuButton.setAttribute("aria-expanded", "false");
-    menuButton.setAttribute("aria-label", "Open navigation");
+    menuButton.setAttribute(
+      "aria-expanded",
+      "false"
+    );
 
-    mobileNavigation.setAttribute("aria-hidden", "true");
+    menuButton.setAttribute(
+      "aria-label",
+      "Open navigation"
+    );
+
+    mobileNavigation.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
     mobileNavigation.dataset.open = "false";
 
     document.body.classList.remove("menu-open");
@@ -136,23 +433,37 @@ const isCurrentPage = (href: string) => {
   const openMenu = () => {
     if (!menuButton || !mobileNavigation) return;
 
-    menuButton.setAttribute("aria-expanded", "true");
-    menuButton.setAttribute("aria-label", "Close navigation");
+    menuButton.setAttribute(
+      "aria-expanded",
+      "true"
+    );
 
-    mobileNavigation.setAttribute("aria-hidden", "false");
+    menuButton.setAttribute(
+      "aria-label",
+      "Close navigation"
+    );
+
+    mobileNavigation.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
     mobileNavigation.dataset.open = "true";
 
     document.body.classList.add("menu-open");
 
     const firstLink =
-      mobileNavigation.querySelector<HTMLAnchorElement>("a");
+      mobileNavigation.querySelector<HTMLAnchorElement>(
+        "a"
+      );
 
     firstLink?.focus();
   };
 
   const toggleMenu = () => {
     const isOpen =
-      menuButton?.getAttribute("aria-expanded") === "true";
+      menuButton?.getAttribute("aria-expanded") ===
+      "true";
 
     if (isOpen) {
       closeMenu();
@@ -162,12 +473,29 @@ const isCurrentPage = (href: string) => {
   };
 
   updateHeaderState();
+  applyTheme(getCurrentTheme());
 
-  window.addEventListener("scroll", updateHeaderState, {
-    passive: true
+  window.addEventListener(
+    "scroll",
+    updateHeaderState,
+    {
+      passive: true
+    }
+  );
+
+  themeToggle?.addEventListener("click", () => {
+    const nextTheme =
+      getCurrentTheme() === "dark"
+        ? "light"
+        : "dark";
+
+    applyTheme(nextTheme, true);
   });
 
-  menuButton?.addEventListener("click", toggleMenu);
+  menuButton?.addEventListener(
+    "click",
+    toggleMenu
+  );
 
   mobileNavigation
     ?.querySelectorAll<HTMLAnchorElement>("a")
@@ -177,7 +505,8 @@ const isCurrentPage = (href: string) => {
 
   window.addEventListener("keydown", (event) => {
     const isOpen =
-      menuButton?.getAttribute("aria-expanded") === "true";
+      menuButton?.getAttribute("aria-expanded") ===
+      "true";
 
     if (!isOpen) return;
 
@@ -200,7 +529,10 @@ const isCurrentPage = (href: string) => {
     if (event.shiftKey && active === first) {
       event.preventDefault();
       last.focus();
-    } else if (!event.shiftKey && active === last) {
+    } else if (
+      !event.shiftKey &&
+      active === last
+    ) {
       event.preventDefault();
       first.focus();
     }

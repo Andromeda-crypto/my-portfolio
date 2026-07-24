@@ -59,11 +59,10 @@
 }
 
 .site-header[data-scrolled="true"] .site-header__inner {
-    background: rgba(9, 10, 10, 0.82);
+    background: var(--color-header);
     border-bottom-color: var(--color-border);
     backdrop-filter: blur(14px);
 }
-
 .site-brand {
     display: inline-flex;
     align-items: center;

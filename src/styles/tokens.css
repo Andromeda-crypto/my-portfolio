@@ -16,7 +16,7 @@
     --color-ember: rgba(229, 43, 47, 0.14);
     --color-steel: rgba(150, 170, 180, 0.06);
 
-    /* Semantic tokens */
+    /* Semantic colors */
 
     --color-page: var(--color-carbon);
     --color-surface: var(--color-carbon-raised);
@@ -29,6 +29,13 @@
     --color-border: var(--color-line);
     --color-accent: var(--color-signal-red);
     --color-accent-deep: var(--color-deep-red);
+
+    --color-header: rgba(9, 10, 10, 0.82);
+    --color-overlay: rgba(9, 10, 10, 0.985);
+    --color-panel-translucent: rgba(9, 10, 10, 0.55);
+    --color-grid-line: rgba(255, 255, 255, 0.025);
+    --color-frame-highlight: rgba(255, 255, 255, 0.025);
+    --color-inverted-soft: rgba(9, 10, 10, 0.72);
 
     /* Typography */
 
@@ -135,4 +142,48 @@
 
     --shadow-strong:
         0 28px 90px rgba(0, 0, 0, 0.42);
+}
+
+/* Light theme */
+
+:root[data-theme="light"] {
+    color-scheme: light;
+
+    /* Brushed-silver foundation */
+
+    --color-carbon: #d6dcda;
+    --color-carbon-raised: #e3e7e6;
+    --color-carbon-soft: #c5cdcb;
+
+    /* Typography */
+
+    --color-cold-white: #172021;
+    --color-soft-white: #344143;
+    --color-machine-grey: #667476;
+    --color-line: #adb9b7;
+
+    /* Blue-green accent */
+
+    --color-signal-red: #117b80;
+    --color-deep-red: #0b555c;
+    --color-red-soft: rgba(17, 123, 128, 0.1);
+    --color-ember: transparent;
+    --color-steel: transparent;
+
+    /* Shared surfaces */
+
+    --color-header: rgba(227, 231, 230, 0.91);
+    --color-overlay: rgba(214, 220, 218, 0.985);
+    --color-panel-translucent: rgba(188, 198, 196, 0.82);
+    --color-grid-line: rgba(23, 32, 33, 0.055);
+    --color-frame-highlight: rgba(23, 32, 33, 0.08);
+    --color-inverted-soft: rgba(227, 231, 230, 0.8);
+
+    /* Cooler metallic shadows */
+
+    --shadow-soft:
+        0 18px 60px rgba(23, 39, 41, 0.1);
+
+    --shadow-strong:
+        0 28px 90px rgba(23, 39, 41, 0.16);
 }
