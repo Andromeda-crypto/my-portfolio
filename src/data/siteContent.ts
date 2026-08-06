@@ -122,7 +122,7 @@ export const projects: Project[] = [
     description:
       "A two-wheeled self-balancing robot built around embedded C++ and closed-loop control. Attitude estimation, encoder feedback, motor actuation, and telemetry come together on physical hardware, where timing, noise, and mechanics become part of the problem.",
     origin:
-      "I was curious what balancing looks like once the equations leave the page — when the IMU is noisy, the motors lag, and the frame is something you designed yourself.",
+      "What does balancing look like when the IMU is noisy, the motors lag, and the frame is something you designed yourself?",
     tags: [
       "Embedded Systems",
       "IMU",
@@ -151,6 +151,50 @@ export const projects: Project[] = [
     pipeline: ["Estimate", "Control", "Actuate", "Telemetry"],
     media: null
   },
+
+    {
+    slug: "f1tenth-mpc-controller",
+    title: "F1TENTH MPC Controller",
+    type: "Model Predictive Control",
+    description:
+      "A constrained linear time-varying MPC controller for autonomous F1TENTH path tracking, built from the vehicle model through the optimization layer and benchmarked against a tuned Pure Pursuit baseline across five circuits.",
+    origin:
+      "Does a more sophisticated predictive controller actually outperform a well-tuned geometric tracker when both are given the same vehicle, reference, and evaluation conditions?",
+    tags: [
+      "Model Predictive Control",
+      "F1TENTH",
+      "OSQP",
+      "Vehicle Dynamics",
+      "Path Tracking",
+      "Python"
+    ],
+    links: [
+      {
+        label: "Explore project",
+        href: "/projects/f1tenth-mpc-controller"
+      },
+      {
+        label: "View source",
+        href: "https://github.com/Andromeda-crypto/f1tenth-mpc-controller"
+      }
+    ],
+    priority: "featured",
+    status: "complete",
+    outcomes: [
+      "Derived and implemented an LTV-MPC controller from a kinematic bicycle model, including analytical linearization, constrained QP formulation, and receding-horizon control.",
+      "Reworked the solver path from CVXPY/OSQP to persistent native OSQP after profiling showed the prototype could not reliably sustain the intended 10 Hz control rate.",
+      "Benchmarked MPC against tuned Pure Pursuit across five validated circuits, finding lower MPC heading error but slightly faster laps and lower cross-track error from the simpler baseline."
+    ],
+    pipeline: ["Model", "Linearize", "Optimize", "Validate"],
+    media: [
+      {
+        type: "image",
+        src: "/media/projects/f1tenth-mpc-controller/silverstone_comparison.gif",
+        alt: "Synchronized comparison of the MPC and Pure Pursuit controllers completing a lap of Silverstone in F1TENTH Gym",
+        caption: "MPC vs Pure Pursuit — Silverstone"
+      }
+    ]
+  },
   {
     slug: "autonomous-robot-navigation",
     title: "Autonomous Robot Navigation",
@@ -158,7 +202,7 @@ export const projects: Project[] = [
     description:
       "A from-scratch C++ navigation system bringing perception, mapping, motion planning, and control into a single simulation. Built to explore what changes when robotics algorithms have to operate as one connected pipeline.",
     origin:
-      "I wanted to see what happens when perception, planning, and control share one loop instead of living in separate demos.",
+      "What happens when perception, planning, and control share one loop?",
     tags: ["C++17", "Robotics", "Motion Planning", "LIDAR", "Mapping"],
     links: [
       {

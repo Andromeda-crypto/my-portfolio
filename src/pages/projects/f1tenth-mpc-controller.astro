@@ -1,0 +1,1237 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const stages = [
+  {
+    number: "01",
+    title: "Model",
+    body:
+      "Represent the F1TENTH vehicle with a kinematic bicycle model and retain the nonlinear dynamics for propagation and validation."
+  },
+  {
+    number: "02",
+    title: "Linearize",
+    body:
+      "Derive analytical Jacobians and an affine time-varying approximation around the nominal trajectory at each prediction step."
+  },
+  {
+    number: "03",
+    title: "Optimize",
+    body:
+      "Solve a constrained finite-horizon quadratic program for acceleration and steering, then apply only the first control input."
+  },
+  {
+    number: "04",
+    title: "Validate",
+    body:
+      "Benchmark against tuned Pure Pursuit under matched conditions across five validated F1TENTH circuits."
+  }
+];
+
+const engineeringDecisions = [
+  {
+    title: "Use a tuned baseline",
+    body:
+      "Pure Pursuit was tuned rather than left at an arbitrary default. This made the comparison harder, but also much more useful: MPC had to justify its additional modeling and optimization cost against a competent geometric tracker."
+  },
+  {
+    title: "Keep the affine correction",
+    body:
+      "The prediction model includes the affine term produced by linearization. This keeps the local model consistent with the nonlinear dynamics at the operating point instead of using only the Jacobian matrices."
+  },
+  {
+    title: "Replace the solver path, not the controller",
+    body:
+      "Profiling showed that the original CVXPY implementation was the real-time bottleneck. The final controller therefore reuses the QP structure through persistent native OSQP while retaining CVXPY as the readable reference implementation."
+  },
+  {
+    title: "Validate the reference before judging the controller",
+    body:
+      "Candidate paths are checked against the occupancy map with a 0.20 m clearance criterion. Unsafe supplied racelines are rejected rather than allowing reference defects to appear as controller failures."
+  },
+  {
+    title: "Result reporting",
+    body:
+     "Pure Pursuit was slightly faster and produced lower cross-track error on all five tracks, while MPC preserved lower heading error and a richer constraint-aware formulation."
+  }
+];
+
+const results = [
+  {
+    track: "Silverstone",
+    mpcLap: "85.470 s",
+    ppLap: "84.740 s",
+    mpcCte: "0.0771 m",
+    ppCte: "0.0676 m"
+  },
+  {
+    track: "Spielberg",
+    mpcLap: "59.830 s",
+    ppLap: "59.150 s",
+    mpcCte: "0.0928 m",
+    ppCte: "0.0746 m"
+  },
+  {
+    track: "Monza",
+    mpcLap: "72.190 s",
+    ppLap: "71.630 s",
+    mpcCte: "0.0788 m",
+    ppCte: "0.0679 m"
+  },
+  {
+    track: "Nürburgring",
+    mpcLap: "86.110 s",
+    ppLap: "85.640 s",
+    mpcCte: "0.0795 m",
+    ppCte: "0.0665 m"
+  },
+  {
+    track: "Zandvoort",
+    mpcLap: "77.900 s",
+    ppLap: "77.880 s",
+    mpcCte: "0.0775 m",
+    ppCte: "0.0689 m"
+  }
+];
+
+const stack = [
+  "Python",
+  "F1TENTH Gym",
+  "LTV-MPC",
+  "Kinematic bicycle model",
+  "OSQP",
+  "CVXPY",
+  "NumPy",
+  "Pure Pursuit",
+  "RK4 simulation",
+  "Matplotlib"
+];
+---
+
+<BaseLayout
+  title="F1TENTH MPC Controller | Om Anand"
+  description="A constrained linear time-varying MPC controller for F1TENTH path tracking, benchmarked against tuned Pure Pursuit across five circuits."
+  image="/media/projects/f1tenth-mpc-controller/silverstone_comparison.gif"
+  bodyClass="project-case-study"
+>
+  <section class="case-hero">
+    <div class="page-frame case-hero__inner">
+      <a class="case-back" href="/#work">← Selected work</a>
+
+      <div class="case-hero__meta">
+        <p class="section-kicker">Model predictive control · Case study</p>
+        <p class="case-hero__status">Complete</p>
+      </div>
+
+      <h1>F1TENTH<br />MPC Controller</h1>
+
+      <div class="case-hero__summary">
+        <p>
+          A constrained linear time-varying Model Predictive Controller built
+          from the vehicle model through the optimization layer, then
+          benchmarked against tuned Pure Pursuit under matched experimental
+          conditions.
+        </p>
+
+        <a
+          class="button button--primary"
+          href="https://github.com/Andromeda-crypto/f1tenth-mpc-controller"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View source <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-demo">
+    <div class="page-frame">
+      <figure class="case-demo__frame media-frame">
+        <img
+          src="/media/projects/f1tenth-mpc-controller/silverstone_comparison.gif"
+          alt="Synchronized MPC and Pure Pursuit comparison completing a lap of Silverstone in F1TENTH Gym"
+        />
+        <figcaption>
+          Silverstone · MPC vs tuned Pure Pursuit · synchronized telemetry replay
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame case-intro">
+      <p class="case-section__label">01 · Objective</p>
+
+      <div class="case-intro__body">
+        <h2>Does a more sophisticated controller actually track better?</h2>
+
+        <p>
+          The project had a simple starting question: what does a
+          constrained predictive controller actually buy over a well-tuned
+          geometric tracker when both are controlling the same vehicle on the
+          same reference?
+        </p>
+
+        <p>
+          The project was built as
+          an engineering study. Both controllers receive the same vehicle
+          configuration, validated path, speed reference, initial conditions,
+          simulator, termination rules, and evaluation metrics. The lateral
+          controller is the primary variable.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">02 · System</p>
+        <h2>Model → Linearize → Optimize → Validate</h2>
+      </div>
+
+      <ol class="system-grid">
+        {
+          stages.map((stage) => (
+            <li class="system-card">
+              <span>{stage.number}</span>
+              <h3>{stage.title}</h3>
+              <p>{stage.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">03 · Control formulation</p>
+        <h2>From nonlinear vehicle dynamics to a constrained QP.</h2>
+      </div>
+
+      <div class="technical-grid">
+        <article>
+          <p class="technical-grid__index">A</p>
+          <h3>Kinematic bicycle model</h3>
+
+          <p>
+            The vehicle state is
+            <span class="inline-math">z = [x, y, v, ψ]ᵀ</span>
+            with control input
+            <span class="inline-math">u = [a, δ]ᵀ</span>.
+            Position evolves from vehicle speed and heading, while yaw rate is
+            determined by speed, wheelbase, and steering angle.
+          </p>
+
+          <div class="equation-block">
+            <span>ẋ = v cos ψ</span>
+            <span>ẏ = v sin ψ</span>
+            <span>v̇ = a</span>
+            <span>ψ̇ = (v / L) tan δ</span>
+          </div>
+
+          <p>
+            The nonlinear model remains the reference for propagation and
+            validation rather than being replaced by the MPC approximation.
+          </p>
+        </article>
+
+        <article>
+          <p class="technical-grid__index">B</p>
+          <h3>Affine LTV prediction</h3>
+
+          <p>
+            At every prediction step, the nonlinear dynamics are analytically
+            linearized about a nominal state and input. The resulting local
+            model changes along the prediction horizon.
+          </p>
+
+          <div class="equation-block equation-block--single">
+            <span>zₖ₊₁ = Aₖzₖ + Bₖuₖ + Cₖ</span>
+          </div>
+
+          <p>
+            Retaining the affine correction
+            <span class="inline-math">Cₖ</span>
+            makes the approximation reproduce the nonlinear model at the
+            operating point. The analytical Jacobians and local consistency
+            were tested before the controller entered the simulator.
+          </p>
+        </article>
+
+        <article>
+          <p class="technical-grid__index">C</p>
+          <h3>Receding-horizon MPC</h3>
+
+          <p>
+            Every 100 ms the controller rebuilds an eight-step reference,
+            linearizes along the nominal trajectory, updates the QP, solves for
+            acceleration and steering, and applies only the first optimized
+            input before repeating.
+          </p>
+
+          <p>
+            The objective balances state and terminal tracking error against
+            input effort and changes in control input. Constraints bound speed,
+            acceleration, steering angle, and steering rate.
+          </p>
+
+          <div class="parameter-grid">
+            <div>
+              <span>Horizon</span>
+              <strong>8 steps</strong>
+            </div>
+            <div>
+              <span>Control period</span>
+              <strong>100 ms</strong>
+            </div>
+            <div>
+              <span>Physics step</span>
+              <strong>10 ms</strong>
+            </div>
+            <div>
+              <span>Wheelbase</span>
+              <strong>0.3302 m</strong>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+    <figure class="case-figure">
+  <img
+    src="/media/projects/f1tenth-mpc-controller/steering_case_study.svg"
+    alt="Steering behavior comparison between MPC and Pure Pursuit"
+  />
+  <figcaption>
+    Steering response case study · MPC vs tuned Pure Pursuit
+  </figcaption>
+</figure>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">04 · Engineering process</p>
+        <h2>Validate the pieces before trusting the lap.</h2>
+      </div>
+
+      <div class="process-list">
+        <article>
+          <span>01</span>
+          <div>
+            <h3>Vehicle model</h3>
+            <p>
+              Straight-line motion, steering response, heading evolution, and
+              numerical propagation were checked before the model was used by
+              the controller.
+            </p>
+          </div>
+        </article>
+
+        <article>
+          <span>02</span>
+          <div>
+            <h3>Linearization</h3>
+            <p>
+              Analytical Jacobians, matrix dimensions, and affine consistency
+              were tested independently against the nonlinear dynamics.
+            </p>
+          </div>
+        </article>
+
+        <article>
+          <span>03</span>
+          <div>
+            <h3>Quadratic program</h3>
+            <p>
+              Feasibility, constraints, solver status, dynamics residuals, and
+              warm-solve behavior were checked before full Gym integration.
+            </p>
+          </div>
+        </article>
+
+        <article>
+          <span>04</span>
+          <div>
+            <h3>Nonlinear closed loop</h3>
+            <p>
+              MPC and Pure Pursuit were first exercised on controlled straight
+              and curved trajectories before being moved to complete circuits.
+            </p>
+          </div>
+        </article>
+
+        <article>
+          <span>05</span>
+          <div>
+            <h3>Tuning study</h3>
+            <p>
+              Eight MPC weight configurations exposed the trade between
+              cross-track error, heading error, steering activity, lap time,
+              and computation rather than producing one universally best
+              setting.
+            </p>
+          </div>
+        </article>
+
+        <article>
+          <span>06</span>
+          <div>
+            <h3>Five-track evaluation</h3>
+            <p>
+              The final controllers were frozen and evaluated on Silverstone,
+              Spielberg, Monza, Nürburgring, and Zandvoort using the same
+              telemetry and termination logic.
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">05 · Solver engineering</p>
+        <h2>The first correct implementation was not fast enough.</h2>
+      </div>
+
+      <div class="solver-layout">
+        <div class="solver-layout__body">
+          <p>
+            CVXPY with OSQP was the right place to develop the controller. It
+            kept the mathematical formulation readable and made constraints,
+            residuals, and solver status easy to inspect.
+          </p>
+
+          <p>
+            But closed-loop profiling exposed a practical problem. In the early
+            controlled comparison, the MPC update had a median runtime of
+            96.31 ms and a 95th percentile of 195.79 ms. With a 100 ms control
+            period, 44.49% of controller updates missed the intended deadline.
+          </p>
+
+          <p>
+            The solution was not to change the control law.The final
+            runtime path was then moved to persistent native OSQP, reusing the QP structure
+            between updates and refreshing only the time-varying problem data.
+            The CVXPY implementation remains in the repository as the validated
+            reference backend.
+          </p>
+        </div>
+
+        <div class="solver-metrics">
+          <div>
+            <span>Prototype median</span>
+            <strong>96.31 ms</strong>
+          </div>
+
+          <div>
+            <span>Prototype p95</span>
+            <strong>195.79 ms</strong>
+          </div>
+
+          <div>
+            <span>100 ms deadline misses</span>
+            <strong>44.49%</strong>
+          </div>
+
+          <div>
+            <span>Final architecture</span>
+            <strong>Persistent OSQP</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-callout case-callout--wide">
+        <p class="mono-label">Validation gate</p>
+        <p>
+          The native backend was accepted only after numerical agreement with
+          the CVXPY reference, a native-QP median below 5 ms, and zero 100 ms
+          deadline misses in the complete iterative-controller benchmark.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">06 · Experimental design</p>
+        <h2>Make the controller the variable.</h2>
+      </div>
+
+      <div class="experiment-grid">
+        <article>
+          <span class="technical-grid__index">A</span>
+          <h3>Matched conditions</h3>
+          <p>
+            Both controllers use the same vehicle geometry, RK4 simulator,
+            10 ms physics step, 100 ms controller period, start pose, reference
+            geometry, speed profile, collision logic, and metric definitions.
+          </p>
+        </article>
+
+        <article>
+          <span class="technical-grid__index">B</span>
+          <h3>Tuned Pure Pursuit</h3>
+          <p>
+            Six lookahead distances from 0.8 m to 2.2 m were tested during the
+            controlled comparison. The frozen baseline therefore represents a
+            tuned geometric tracker rather than a deliberately weak comparator.
+          </p>
+        </article>
+
+        <article>
+          <span class="technical-grid__index">C</span>
+          <h3>Reference validation</h3>
+          <p>
+            Candidate paths are checked against each occupancy map with a
+            0.20 m minimum-clearance rule. The supplied racelines failed this
+            criterion, so validated centerlines were used for the final
+            multi-track comparison.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame">
+      <div class="case-section__header results-header">
+        <p class="case-section__label">07 · Results</p>
+
+        <div>
+          <h2>The simpler controller stayed extremely competitive.</h2>
+          <p>
+            Both controllers completed collision-free laps across all five
+            circuits. Pure Pursuit was slightly faster and achieved lower
+            whole-lap cross-track RMSE on every final track. MPC retained the
+            stronger heading-tracking behavior seen throughout development, but
+            paid substantially more computational cost to obtain its predictive,
+            constraint-aware control structure.
+          </p>
+        </div>
+      </div>
+      <figure class="case-figure case-figure--results">
+  <img
+    src="/media/projects/f1tenth-mpc-controller/multitrack_overview.svg"
+    alt="MPC and Pure Pursuit performance comparison across five F1TENTH circuits"
+  />
+  <figcaption>
+    Five-track evaluation · final frozen MPC and Pure Pursuit configurations
+  </figcaption>
+</figure>
+      <div class="results-table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Track</th>
+              <th>MPC lap</th>
+              <th>PP lap</th>
+              <th>MPC CTE</th>
+              <th>PP CTE</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {
+              results.map((result) => (
+                <tr>
+                  <th scope="row">{result.track}</th>
+                  <td>{result.mpcLap}</td>
+                  <td class="result-best">{result.ppLap}</td>
+                  <td>{result.mpcCte}</td>
+                  <td class="result-best">{result.ppCte}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="finding-grid">
+        <article>
+          <span>01</span>
+          <h3>Pure Pursuit wins CTE</h3>
+          <p>
+            On these validated references, the simpler geometric controller
+            produced lower whole-lap cross-track RMSE on all five circuits.
+          </p>
+        </article>
+
+        <article>
+          <span>02</span>
+          <h3>MPC wins heading accuracy</h3>
+          <p>
+            MPC consistently showed the stronger heading-tracking behavior,
+            reflecting its explicit prediction and state-error weighting.
+          </p>
+        </article>
+
+        <article>
+          <span>03</span>
+          <h3>Complexity has to earn its place</h3>
+          <p>
+            Predictive control provides a richer framework for constraints and
+            future extensions, but that flexibility does not automatically
+            translate into lower tracking error or faster laps.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame decisions-layout">
+      <div>
+        <p class="case-section__label">08 · Design choices</p>
+        <h2>Decisions that shaped the study.</h2>
+      </div>
+
+      <div class="decision-list">
+        {
+          engineeringDecisions.map((decision, index) => (
+            <article>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+
+              <div>
+                <h3>{decision.title}</h3>
+                <p>{decision.body}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame result-layout">
+      <div>
+        <p class="case-section__label">09 · Boundary</p>
+        <h2>What the results do — and do not — establish.</h2>
+      </div>
+
+      <div class="result-layout__body">
+        <p>
+          The finished project demonstrates a complete model-based
+          controls-development workflow: derive the model, validate the local
+          approximation, formulate the optimization problem, profile the
+          implementation, build a fair baseline, and test the final controllers
+          under common experimental conditions.
+        </p>
+
+        <div class="case-callout">
+          <p class="mono-label">Current boundary</p>
+          <p>
+            This remains a simulation-only path-tracking study. The prediction
+            model is kinematic and does not model tire forces, lateral slip,
+            load transfer, perception uncertainty, actuator delay, dynamic
+            obstacles, or online replanning. The five tracks are deterministic,
+            and runtime measurements reflect the development machine rather
+            than embedded F1TENTH hardware.
+          </p>
+        </div>
+
+        <p class="boundary-followup">
+          The next meaningful extension is therefore to stress the assumptions: repeated trials, model
+          perturbations, higher-speed operation, a dynamic bicycle model, and
+          ultimately deployment on physical F1TENTH hardware.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">10 · Stack</p>
+        <h2>Tools and methods.</h2>
+      </div>
+
+      <ul class="tag-list case-stack" aria-label="Project technologies">
+        {stack.map((item) => <li class="tag">{item}</li>)}
+      </ul>
+
+      <div class="case-footer">
+        <p>Source, derivations, experiments, telemetry, and replay artifacts.</p>
+
+        <a
+          class="button button--primary"
+          href="https://github.com/Andromeda-crypto/f1tenth-mpc-controller"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open GitHub <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initializeScrollAnimations } from "../../components/motion/scrollAnimations";
+
+  const initializePage = () => {
+    document.body.classList.add("is-ready");
+    initializeScrollAnimations();
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializePage, {
+      once: true
+    });
+  } else {
+    initializePage();
+  }
+</script>
+
+<style>
+  .case-hero {
+    padding-top: 8rem;
+    border-bottom: var(--border-thin);
+  }
+
+  .case-hero__inner {
+    padding-bottom: clamp(4rem, 9vw, 8rem);
+  }
+
+  .case-back {
+    display: inline-flex;
+    margin-bottom: var(--space-8);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .case-back:hover,
+  .case-back:focus-visible {
+    color: var(--color-accent);
+  }
+
+  .case-hero__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .case-hero__status {
+    padding: 0.55rem 0.8rem;
+    border: 1px solid rgba(229, 43, 47, 0.55);
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .case-hero h1 {
+    max-width: 12ch;
+    margin-top: var(--space-5);
+    font-size: clamp(3.2rem, 7vw, 7rem);    line-height: 0.84;
+    letter-spacing: var(--tracking-display);
+    text-transform: uppercase;
+  }
+
+  .case-hero__summary {
+    display: grid;
+    grid-template-columns: minmax(0, 42rem) auto;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-7);
+    margin-top: var(--space-8);
+  }
+
+  .case-hero__summary p {
+    color: var(--color-text-soft);
+    font-size: clamp(1.15rem, 2vw, 1.55rem);
+    line-height: 1.55;
+  }
+
+  .case-demo {
+    padding-block: var(--section-space-md);
+  }
+
+  .case-demo__frame {
+    aspect-ratio: 16 / 9;
+  }
+
+  .case-demo__frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .case-demo__frame figcaption {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 0.55rem 0.75rem;
+    background: rgba(7, 8, 9, 0.88);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .case-section {
+    padding-block: var(--section-space-lg);
+    border-top: var(--border-thin);
+  }
+
+  .case-section--surface {
+    background: var(--color-surface);
+  }
+
+  .case-section__label {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .case-section__header {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    align-items: start;
+    margin-bottom: var(--space-8);
+  }
+
+  .case-section h2 {
+    max-width: 16ch;
+    font-size: clamp(2.4rem, 5vw, 5.4rem);
+    line-height: 0.95;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .case-intro {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+
+  .case-intro__body {
+    max-width: 52rem;
+  }
+
+  .case-intro__body > p {
+    max-width: 46rem;
+    margin-top: var(--space-6);
+    color: var(--color-text-soft);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+  }
+
+  .system-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: var(--border-thin);
+    border-left: var(--border-thin);
+  }
+
+  .system-card {
+    min-height: 21rem;
+    padding: var(--space-6);
+    border-right: var(--border-thin);
+    border-bottom: var(--border-thin);
+  }
+
+  .system-card > span,
+  .technical-grid__index,
+  .process-list article > span,
+  .decision-list article > span,
+  .finding-grid article > span {
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.08em;
+  }
+
+  .system-card h3 {
+    margin-top: var(--space-8);
+    font-size: clamp(1.7rem, 2.5vw, 2.5rem);
+    text-transform: uppercase;
+  }
+
+  .system-card p {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .technical-grid,
+  .experiment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-7);
+  }
+
+  .technical-grid article,
+  .experiment-grid article {
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-accent);
+  }
+
+  .technical-grid h3,
+  .experiment-grid h3 {
+    margin-top: var(--space-6);
+    font-size: var(--text-xl);
+  }
+
+  .technical-grid article > p,
+  .experiment-grid article > p {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+  }
+
+  .inline-math {
+    color: var(--color-text-soft);
+    font-family: var(--font-mono);
+    white-space: nowrap;
+  }
+
+  .equation-block {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+    padding: var(--space-5);
+    border: var(--border-thin);
+    background: var(--color-carbon);
+  }
+
+  .equation-block span {
+    color: var(--color-text-soft);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+
+  .equation-block--single {
+    min-height: 5.5rem;
+    place-items: center;
+  }
+
+  .equation-block--single span {
+    color: var(--color-accent);
+    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+  }
+
+  .parameter-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: var(--space-5);
+    border-top: var(--border-thin);
+    border-left: var(--border-thin);
+  }
+
+  .parameter-grid div {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    border-right: var(--border-thin);
+    border-bottom: var(--border-thin);
+  }
+
+  .parameter-grid span,
+  .solver-metrics span {
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .parameter-grid strong,
+  .solver-metrics strong {
+    color: var(--color-text-soft);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .process-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: var(--border-thin);
+    border-left: var(--border-thin);
+  }
+
+  .process-list article {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: var(--space-4);
+    padding: var(--space-6);
+    border-right: var(--border-thin);
+    border-bottom: var(--border-thin);
+  }
+
+  .process-list h3 {
+    font-size: var(--text-xl);
+  }
+
+  .process-list p {
+    margin-top: var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  .solver-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.65fr);
+    gap: var(--space-8);
+  }
+
+  .solver-layout__body {
+    max-width: 46rem;
+  }
+
+  .solver-layout__body p {
+    color: var(--color-text-soft);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+  }
+
+  .solver-layout__body p + p {
+    margin-top: var(--space-5);
+  }
+
+  .solver-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: var(--border-thin);
+    border-left: var(--border-thin);
+  }
+
+  .solver-metrics div {
+    display: grid;
+    align-content: space-between;
+    gap: var(--space-5);
+    min-height: 9rem;
+    padding: var(--space-5);
+    border-right: var(--border-thin);
+    border-bottom: var(--border-thin);
+  }
+
+  .solver-metrics strong {
+    color: var(--color-accent);
+    font-size: var(--text-lg);
+  }
+
+  .case-callout {
+    margin-top: var(--space-7);
+    padding: var(--space-6);
+    border-left: 2px solid var(--color-accent);
+    background: var(--color-carbon);
+  }
+
+  .case-callout p:last-child {
+    margin-top: var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  .case-callout--wide {
+    max-width: none;
+  }
+
+  .results-header > div > p {
+    max-width: 50rem;
+    margin-top: var(--space-6);
+    color: var(--color-text-soft);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+  }
+
+  .results-table-wrap {
+    overflow-x: auto;
+    border-top: var(--border-thin);
+  }
+
+  .results-table {
+    width: 100%;
+    min-width: 46rem;
+    border-collapse: collapse;
+  }
+
+  .results-table th,
+  .results-table td {
+    padding: 1.15rem 1rem;
+    border-bottom: var(--border-thin);
+    color: var(--color-text-soft);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-align: left;
+  }
+
+  .results-table thead th {
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .results-table tbody th {
+    color: var(--color-text);
+    font-weight: 500;
+  }
+
+  .results-table .result-best {
+    color: var(--color-accent);
+  }
+
+  .finding-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+  }
+
+  .finding-grid article {
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--color-accent);
+  }
+
+  .finding-grid h3 {
+    margin-top: var(--space-5);
+    font-size: var(--text-xl);
+  }
+
+  .finding-grid p {
+    margin-top: var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  .decisions-layout,
+  .result-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+
+  .decisions-layout > div:first-child h2,
+  .result-layout > div:first-child h2 {
+    margin-top: var(--space-5);
+  }
+
+  .decision-list {
+    border-top: var(--border-thin);
+  }
+
+  .decision-list article {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: var(--space-5);
+    padding-block: var(--space-6);
+    border-bottom: var(--border-thin);
+  }
+
+  .decision-list h3 {
+    font-size: var(--text-xl);
+  }
+
+  .decision-list p {
+    margin-top: var(--space-3);
+    color: var(--color-text-muted);
+  }
+
+  .result-layout__body > p {
+    color: var(--color-text-soft);
+    font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  }
+
+  .boundary-followup {
+    margin-top: var(--space-7);
+  }
+
+  .case-stack {
+    max-width: 58rem;
+  }
+
+  .case-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    margin-top: var(--space-9);
+    padding-top: var(--space-7);
+    border-top: var(--border-thin);
+  }
+
+  .case-footer p {
+    max-width: 38rem;
+    font-size: var(--text-xl);
+  }
+
+  @media (max-width: 900px) {
+    .case-hero__summary,
+    .case-intro,
+    .case-section__header,
+    .solver-layout,
+    .decisions-layout,
+    .result-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .system-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .technical-grid,
+    .experiment-grid,
+    .finding-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .system-card {
+      min-height: 17rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .case-hero {
+      padding-top: 6.5rem;
+    }
+
+    .case-hero h1 {
+    font-size: clamp(2.8rem, 13vw, 4.5rem);
+    }
+
+    .case-hero__summary .button,
+    .case-footer .button {
+      width: 100%;
+    }
+
+    .case-demo__frame {
+      aspect-ratio: 4 / 3;
+    }
+
+    .system-grid,
+    .process-list,
+    .solver-metrics {
+      grid-template-columns: 1fr;
+    }
+
+    .system-card {
+      min-height: auto;
+    }
+
+    .system-card h3 {
+      margin-top: var(--space-6);
+    }
+
+    .parameter-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .case-footer {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  }
+</style>
