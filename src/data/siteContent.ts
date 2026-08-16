@@ -65,7 +65,7 @@ export const experience = [
   {
     company: "Indian Institute of Technology (BHU) Varanasi",
     role: "Research Intern",
-    period: "June 2026 — Present",
+    period: "June 2026 — August 2026",
     location: "Varanasi, India",
     description:
       "Computer vision, edge deployment, and closed-loop autonomy for agricultural perception and UAV targeting.",
@@ -90,7 +90,7 @@ export const upcoming = [
     title: "Quadruple Inverted Pendulum on a Cart",
     status: "Next",
     description:
-      "A real-hardware controls build on a motorized linear rail — joint encoders, nonlinear dynamics, state estimation, and LQR/LQG, with a path toward MPC. Intended as the next flagship dynamics-and-controls project.",
+      "A controls build on a motorized linear rail consisting joint encoders, nonlinear dynamics, state estimation, and LQR/LQG, with a path toward MPC. The next upcoming dynamics-and-controls project.",
     tags: [
       "Controls",
       "LQR / LQG",
@@ -101,9 +101,9 @@ export const upcoming = [
   },
   {
     title: "Autonomous Drone Precision Landing",
-    status: "Deferred",
+    status: "Upcoming",
     description:
-      "AprilTag pose estimation and visual servoing for autonomous landing and docking. V1 on a DJI Tello prototype, then V2 on a custom Pixhawk platform after returning to campus. Deferred for summer cost and hardware constraints — not abandoned.",
+      "AprilTag pose estimation and visual servoing for autonomous landing and docking. V1 on a DJI Tello prototype, then V2 on a custom Pixhawk platform.",
     tags: [
       "Visual Servoing",
       "AprilTag",
