@@ -458,8 +458,8 @@ html[data-theme="light"] .content-card:hover {
 
 .project-feature__title {
     max-width: 11ch;
-    font-size: clamp(2.8rem, 5vw, 5.25rem);
-    line-height: 0.9;
+    font-size: clamp(2.35rem, 4.1vw, 4rem);
+    line-height: 0.94;
     overflow-wrap: normal;
     text-transform: uppercase;
 }
@@ -595,7 +595,7 @@ html[data-theme="light"] .upcoming-item {
 
 .upcoming-item__title {
     font-size:
-        clamp(1.6rem, 3vw, 2.5rem);
+        clamp(1.45rem, 2.4vw, 2.1rem);
     text-transform: uppercase;
 }
 
@@ -633,7 +633,7 @@ html[data-theme="light"] .upcoming-item {
 
 .research-item__title {
     font-size:
-        clamp(1.6rem, 3vw, 2.5rem);
+        clamp(1.45rem, 2.4vw, 2.1rem);
     text-transform: uppercase;
 }
 
@@ -709,7 +709,7 @@ html[data-theme="light"] .upcoming-item {
 
     .project-feature__title {
         max-width: 12ch;
-        font-size: clamp(2.8rem, 9vw, 5rem);
+        font-size: clamp(2.35rem, 7vw, 3.8rem);
     }
     .project-feature__media {
         order: -1;
