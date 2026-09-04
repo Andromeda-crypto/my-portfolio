@@ -1,0 +1,448 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const stages = [
+  {
+    number: "01",
+    title: "Predict",
+    body: "Propagate each particle with differential-drive odometry and sampled motion noise, preserving a separate robot trajectory hypothesis."
+  },
+  {
+    number: "02",
+    title: "Observe",
+    body: "Associate barcode observations with known landmark IDs and convert camera range-bearing measurements into the particle frame."
+  },
+  {
+    number: "03",
+    title: "Update",
+    body: "Run an independent EKF correction for every observed landmark inside every particle and accumulate the measurement likelihood."
+  },
+  {
+    number: "04",
+    title: "Resample",
+    body: "Monitor effective sample size and trigger systematic resampling only when the particle set begins to collapse."
+  }
+];
+
+const decisions = [
+  {
+    title: "Treat simulation as a gate, not the result",
+    body: "A controlled 50-step circular trajectory was used to verify the estimator and evaluation pipeline. The project was not considered complete until the same implementation ran against physical robot telemetry."
+  },
+  {
+    title: "Use circular statistics for heading",
+    body: "A weighted arithmetic mean fails at the −π/π boundary. Pose estimation therefore uses a trigonometric circular mean so nearby headings do not average into a direction that no particle represents."
+  },
+  {
+    title: "Protect covariance structure",
+    body: "Landmark covariance matrices are explicitly symmetrized after EKF correction to limit floating-point drift and preserve a valid uncertainty representation over thousands of updates."
+  },
+  {
+    title: "Resample on evidence",
+    body: "Systematic resampling is controlled by effective sample size rather than running at every step, reducing needless sample impoverishment when weights remain healthy."
+  }
+];
+
+const stack = [
+  "C++17",
+  "Eigen3",
+  "CMake",
+  "Rao-Blackwellized particle filter",
+  "Extended Kalman filters",
+  "Python",
+  "Matplotlib",
+  "HTML5 Canvas",
+  "UTIAS MR.CLAM"
+];
+---
+
+<BaseLayout
+  title="FastSLAM 1.0 | Om Anand"
+  description="A from-scratch C++17 FastSLAM 1.0 implementation validated in simulation and on the UTIAS MR.CLAM physical robot benchmark."
+  image="/media/projects/fastslam-1/fastslam-demo.gif"
+  bodyClass="project-case-study"
+>
+  <section class="case-hero">
+    <div class="page-frame case-hero__inner">
+      <a class="case-back" href="/#work">← Selected work</a>
+
+      <div class="case-hero__meta">
+        <p class="section-kicker">State estimation & SLAM · Case study</p>
+        <p class="case-hero__status">Complete</p>
+      </div>
+
+      <h1>FastSLAM<br />1.0</h1>
+
+      <div class="case-hero__summary">
+        <p>
+          A from-scratch C++17 implementation of Rao-Blackwellized
+          particle-filter SLAM, taken from mathematical derivation through a
+          synthetic testbed and into 6,000 steps of physical robot telemetry.
+        </p>
+
+        <div class="case-hero__actions">
+          <a
+            class="button button--primary"
+            href="https://andromeda-crypto.github.io/fastslam-1.0/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Launch live demo <span aria-hidden="true">↗</span>
+          </a>
+          <a
+            class="text-link"
+            href="https://github.com/Andromeda-crypto/fastslam-1.0"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View source
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-demo">
+    <div class="page-frame">
+      <figure class="case-demo__frame media-frame">
+        <img
+          src="/media/projects/fastslam-1/fastslam-demo.gif"
+          alt="FastSLAM playback showing the robot estimate, particle cloud, mapped landmarks, and covariance ellipses"
+        />
+        <figcaption>
+          Physical robot benchmark · particles, pose estimate, landmarks, and 95% covariance ellipses
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame case-intro">
+      <p class="case-section__label">01 · Objective</p>
+
+      <div class="case-intro__body">
+        <h2>Move beyond an algorithm that only works in its own simulator.</h2>
+        <p>
+          The first version proved the FastSLAM 1.0 mechanics on synthetic
+          range-bearing observations. The upgraded project asks a harder
+          question: can that estimator remain numerically stable and produce a
+          defensible trajectory when odometry, timestamps, and observations
+          come from a real mobile robot?
+        </p>
+        <p>
+          The same C++ estimator now runs on both a controlled synthetic world
+          and the University of Toronto UTIAS MR.CLAM Dataset 1. Evaluation is
+          performed against analytical ground truth in simulation and
+          millimeter-accurate Vicon motion capture for the physical run.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">02 · Estimator loop</p>
+        <h2>Predict → Observe → Update → Resample</h2>
+      </div>
+
+      <ol class="system-grid">
+        {stages.map((stage) => (
+          <li class="system-card">
+            <span>{stage.number}</span>
+            <h3>{stage.title}</h3>
+            <p>{stage.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">03 · Formulation</p>
+        <h2>One path hypothesis, many small maps.</h2>
+      </div>
+
+      <div class="factorization">
+        <p class="factorization__equation">
+          p(x₁:ₜ, m | z₁:ₜ, u₁:ₜ) = p(x₁:ₜ | z₁:ₜ, u₁:ₜ)
+          <span>∏ⱼ p(mⱼ | x₁:ₜ, z₁:ₜ)</span>
+        </p>
+        <p>
+          Conditioning on a robot trajectory makes the landmark estimates
+          independent. FastSLAM uses that factorization to replace one large
+          joint SLAM filter with a particle filter over trajectories and a bank
+          of compact landmark EKFs inside each particle.
+        </p>
+      </div>
+
+      <div class="technical-grid">
+        <article>
+          <p class="technical-grid__index">A</p>
+          <h3>Particle trajectory</h3>
+          <p>
+            Each particle stores a pose hypothesis [x, y, θ], an importance
+            weight, and its own landmark map. Wheel-encoder odometry supplies
+            the control input for motion propagation.
+          </p>
+        </article>
+        <article>
+          <p class="technical-grid__index">B</p>
+          <h3>Landmark EKFs</h3>
+          <p>
+            Range-bearing observations initialize or correct independent 2D
+            landmark Gaussians. Analytical Jacobians connect sensor-space
+            innovations to map-space covariance updates.
+          </p>
+        </article>
+        <article>
+          <p class="technical-grid__index">C</p>
+          <h3>Particle evidence</h3>
+          <p>
+            Gaussian observation likelihoods update and normalize the particle
+            weights. The weighted pose estimate uses a circular mean for
+            heading, then ESS determines whether resampling is justified.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame dataset-layout">
+      <div>
+        <p class="case-section__label">04 · Real-world validation</p>
+        <h2>Ten minutes of robot motion, synchronized into one estimator stream.</h2>
+      </div>
+
+      <div class="dataset-layout__body">
+        <p>
+          UTIAS MR.CLAM records wheel-encoder odometry, monocular-camera
+          detections of barcoded cylindrical landmarks, and Vicon ground truth
+          on separate timestamped streams. A Python conversion pipeline aligns
+          those sources into uniform 0.1 s frames before replaying them through
+          the estimator.
+        </p>
+
+        <div class="parameter-grid">
+          <div><span>Duration</span><strong>10 min</strong></div>
+          <div><span>Estimator steps</span><strong>6,000</strong></div>
+          <div><span>Arena</span><strong>15 × 8 m</strong></div>
+          <div><span>Landmarks</span><strong>15</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame">
+      <div class="case-section__header results-header">
+        <p class="case-section__label">05 · Results</p>
+        <div>
+          <h2>Two benchmarks with very different meanings.</h2>
+          <p>
+            The synthetic result verifies the implementation under controlled
+            assumptions. The MR.CLAM result measures the complete pipeline on
+            physical telemetry, where wheel slip, observation sparsity, sensor
+            noise, and imperfect synchronization all enter the estimate.
+          </p>
+        </div>
+      </div>
+
+      <div class="results-table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr><th>Metric</th><th>Synthetic</th><th>UTIAS MR.CLAM</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Trajectory RMSE</th><td>0.119 m</td><td>0.944 m</td></tr>
+            <tr><th scope="row">Run length</th><td>50 steps</td><td>6,000 steps</td></tr>
+            <tr><th scope="row">Average ESS</th><td>84.99 / 100</td><td>90.33 / 100</td></tr>
+            <tr><th scope="row">Resampling events</th><td>16</td><td>546</td></tr>
+            <tr><th scope="row">Ground truth</th><td>Analytical</td><td>Vicon motion capture</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="finding-grid">
+        <article>
+          <span>01</span>
+          <h3>Real data changes the claim</h3>
+          <p>The project now demonstrates dataset ingestion and estimator robustness, not only convergence in a world designed around the filter.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>ESS stays observable</h3>
+          <p>Particle degeneracy is measured throughout the run, making resampling behavior part of the reported result rather than a hidden implementation detail.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Error is reported honestly</h3>
+          <p>The 0.944 m physical-run RMSE is not disguised by the cleaner 0.119 m simulation score; the gap identifies where modeling and sensor assumptions matter.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame decisions-layout">
+      <div>
+        <p class="case-section__label">06 · Engineering decisions</p>
+        <h2>Stability is part of the algorithm.</h2>
+      </div>
+      <div class="decision-list">
+        {decisions.map((decision, index) => (
+          <article>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <div><h3>{decision.title}</h3><p>{decision.body}</p></div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section demo-cta-section">
+    <div class="page-frame demo-cta">
+      <div>
+        <p class="case-section__label">07 · Interactive visualizer</p>
+        <h2>Inspect the estimate, not just the final score.</h2>
+        <p>
+          The zero-dependency HTML5 Canvas visualizer replays both datasets at
+          1×–10× speed with scrubbing, particle clouds, robot heading,
+          covariance ellipses, landmark estimates, and live telemetry.
+        </p>
+      </div>
+      <a class="button button--primary" href="https://andromeda-crypto.github.io/fastslam-1.0/" target="_blank" rel="noopener noreferrer">
+        Open interactive demo <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="case-section case-section--surface">
+    <div class="page-frame boundary-layout">
+      <div>
+        <p class="case-section__label">08 · Boundary</p>
+        <h2>What this implementation establishes.</h2>
+      </div>
+      <div class="boundary-layout__body">
+        <p>
+          This is a validated FastSLAM 1.0 implementation with known landmark
+          IDs, not a claim of production-ready autonomous mapping. The MR.CLAM
+          benchmark adds real sensing and motion, while still providing
+          structured barcode-based data association.
+        </p>
+        <p>
+          The next meaningful extensions are unknown-correspondence data
+          association, outlier gating, broader parameter sensitivity studies,
+          and comparison against an alternative SLAM baseline. FastSLAM 2.0 is
+          being developed separately so the improved proposal distribution can
+          be evaluated as an algorithmic change rather than folded invisibly
+          into this result.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section">
+    <div class="page-frame">
+      <div class="case-section__header">
+        <p class="case-section__label">09 · Stack</p>
+        <h2>Estimator, evaluation, and playback.</h2>
+      </div>
+      <ul class="stack-list" aria-label="Project technologies">
+        {stack.map((item) => <li>{item}</li>)}
+      </ul>
+      <div class="case-footer-actions">
+        <a class="button button--primary" href="https://github.com/Andromeda-crypto/fastslam-1.0" target="_blank" rel="noopener noreferrer">View repository <span aria-hidden="true">↗</span></a>
+        <a class="text-link" href="/#work">Back to selected work</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .case-hero { padding: clamp(8.5rem, 14vw, 12rem) 0 clamp(4rem, 8vw, 7rem); }
+    .case-hero__inner { display: grid; gap: clamp(2rem, 5vw, 4rem); }
+    .case-back, .case-section__label, .case-hero__status { color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .08em; text-transform: uppercase; }
+    .case-back { width: fit-content; transition: color var(--duration-fast) var(--ease-standard); }
+    .case-back:hover { color: var(--color-accent); }
+    .case-hero__meta { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); padding-top: var(--space-5); border-top: var(--border-thin); }
+    .case-hero__status { color: var(--color-accent); }
+    .case-hero h1 { max-width: 9ch; font-size: clamp(3rem, 6vw, 6.25rem); line-height: .9; letter-spacing: -.055em; text-transform: uppercase; }
+    .case-hero__summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-8); align-items: end; margin-left: auto; width: min(100%, 58rem); }
+    .case-hero__summary > p { max-width: 42rem; font-size: clamp(1.05rem, 1.5vw, 1.3rem); }
+    .case-hero__actions { display: grid; gap: var(--space-4); justify-items: start; }
+    .case-demo { padding-bottom: clamp(4rem, 9vw, 8rem); }
+    .case-demo__frame { max-width: 62rem; margin-inline: auto; }
+    .case-demo__frame img { width: 100%; aspect-ratio: 5 / 4; object-fit: cover; }
+    .case-demo__frame figcaption { padding: var(--space-3) var(--space-4); color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; }
+    .case-section { padding-block: clamp(4.5rem, 9vw, 8rem); border-top: var(--border-thin); }
+    .case-section--surface { background: var(--color-surface); }
+    .case-section__header { display: grid; grid-template-columns: minmax(10rem, .35fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); align-items: start; margin-bottom: clamp(3rem, 7vw, 5rem); }
+    .case-section h2 { max-width: 15ch; font-size: clamp(2.1rem, 4vw, 4.1rem); line-height: .94; letter-spacing: -.045em; text-transform: uppercase; }
+    .case-intro, .dataset-layout, .decisions-layout, .boundary-layout { display: grid; grid-template-columns: minmax(10rem, .35fr) minmax(0, 1fr); gap: clamp(2rem, 6vw, 6rem); align-items: start; }
+    .case-intro__body { display: grid; gap: var(--space-5); }
+    .case-intro__body h2 { margin-bottom: var(--space-3); }
+    .case-intro__body p, .dataset-layout__body > p, .boundary-layout__body p, .demo-cta p { max-width: 50rem; font-size: clamp(1rem, 1.15vw, 1.125rem); }
+    .system-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: var(--border-thin); }
+    .system-card { min-width: 0; padding: clamp(1.4rem, 3vw, 2.2rem); border-right: var(--border-thin); }
+    .system-card:last-child { border-right: 0; }
+    .system-card > span, .technical-grid__index, .finding-grid > article > span, .decision-list > article > span { color: var(--color-accent); font-family: var(--font-mono); font-size: var(--text-xs); }
+    .system-card h3, .technical-grid h3, .finding-grid h3, .decision-list h3 { margin: var(--space-5) 0 var(--space-3); font-size: clamp(1.15rem, 1.6vw, 1.45rem); text-transform: uppercase; }
+    .system-card p, .technical-grid article > p:last-child, .finding-grid p, .decision-list p { color: var(--color-text-soft); font-size: var(--text-sm); }
+    .factorization { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(18rem, .85fr); gap: clamp(2rem, 6vw, 6rem); align-items: center; padding: clamp(2rem, 5vw, 4rem); margin-bottom: var(--space-8); border: var(--border-thin); }
+    .factorization__equation { display: grid; gap: var(--space-3); color: var(--color-text); font-family: var(--font-mono); font-size: clamp(.95rem, 1.8vw, 1.35rem); line-height: 1.7; }
+    .factorization > p:last-child { color: var(--color-text-soft); }
+    .technical-grid, .finding-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: var(--border-thin); border-bottom: var(--border-thin); }
+    .technical-grid article, .finding-grid article { padding: clamp(1.7rem, 3vw, 2.5rem); border-right: var(--border-thin); }
+    .technical-grid article:last-child, .finding-grid article:last-child { border-right: 0; }
+    .dataset-layout__body { display: grid; gap: var(--space-8); }
+    .parameter-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: var(--border-thin); }
+    .parameter-grid div { display: grid; gap: var(--space-2); padding: var(--space-5); border-right: var(--border-thin); }
+    .parameter-grid div:last-child { border-right: 0; }
+    .parameter-grid span { color: var(--color-text-muted); font-family: var(--font-mono); font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; }
+    .parameter-grid strong { font-size: clamp(1.15rem, 2vw, 1.5rem); }
+    .results-header > div { display: grid; gap: var(--space-5); }
+    .results-header p:last-child { max-width: 48rem; }
+    .results-table-wrap { overflow-x: auto; margin-bottom: var(--space-8); border: var(--border-thin); }
+    .results-table { width: 100%; min-width: 42rem; border-collapse: collapse; }
+    .results-table th, .results-table td { padding: 1rem 1.25rem; border-right: var(--border-thin); border-bottom: var(--border-thin); text-align: left; }
+    .results-table tr:last-child th, .results-table tr:last-child td { border-bottom: 0; }
+    .results-table th:last-child, .results-table td:last-child { border-right: 0; }
+    .results-table thead th { color: var(--color-text-muted); font-family: var(--font-mono); font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; }
+    .results-table tbody th { font-weight: 500; }
+    .results-table tbody td { color: var(--color-accent); font-family: var(--font-mono); }
+    .decision-list { border-top: var(--border-thin); }
+    .decision-list article { display: grid; grid-template-columns: 3rem minmax(0, 1fr); gap: var(--space-5); padding-block: var(--space-6); border-bottom: var(--border-thin); }
+    .decision-list h3 { margin: 0 0 var(--space-3); }
+    .demo-cta-section { background: var(--color-text); color: var(--color-page); }
+    .demo-cta { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 6rem); align-items: end; }
+    .demo-cta > div { display: grid; gap: var(--space-5); }
+    .demo-cta .case-section__label { color: rgba(255,255,255,.55); }
+    .demo-cta h2 { max-width: 13ch; }
+    .demo-cta p { color: rgba(255,255,255,.72); }
+    .boundary-layout__body { display: grid; gap: var(--space-5); }
+    .stack-list { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+    .stack-list li { padding: .7rem .9rem; border: var(--border-thin); color: var(--color-text-soft); font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; }
+    .case-footer-actions { display: flex; flex-wrap: wrap; gap: var(--space-6); align-items: center; margin-top: var(--space-8); }
+    @media (max-width: 900px) {
+      .case-hero__summary, .case-section__header, .case-intro, .dataset-layout, .decisions-layout, .boundary-layout, .demo-cta, .factorization { grid-template-columns: 1fr; }
+      .system-grid, .parameter-grid { grid-template-columns: repeat(2, 1fr); }
+      .system-card:nth-child(2), .parameter-grid div:nth-child(2) { border-right: 0; }
+      .system-card:nth-child(-n+2), .parameter-grid div:nth-child(-n+2) { border-bottom: var(--border-thin); }
+      .technical-grid, .finding-grid { grid-template-columns: 1fr; }
+      .technical-grid article, .finding-grid article { border-right: 0; border-bottom: var(--border-thin); }
+      .technical-grid article:last-child, .finding-grid article:last-child { border-bottom: 0; }
+    }
+    @media (max-width: 640px) {
+      .case-hero { padding-top: 7.5rem; }
+      .case-hero h1 { font-size: clamp(2.7rem, 11vw, 4.15rem); }
+      .case-hero__summary .button, .demo-cta .button { width: 100%; }
+      .system-grid, .parameter-grid { grid-template-columns: 1fr; }
+      .system-card, .system-card:nth-child(2), .parameter-grid div, .parameter-grid div:nth-child(2) { border-right: 0; border-bottom: var(--border-thin); }
+      .system-card:last-child, .parameter-grid div:last-child { border-bottom: 0; }
+      .case-demo__frame { margin-inline: calc(var(--page-gutter) * -1); border-inline: 0; }
+    }
+  </style>
+</BaseLayout>
