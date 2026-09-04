@@ -38,7 +38,7 @@ export const profile = {
   location: "Pennsylvania State University",
   focus: "Robotics · Embedded Systems · Controls · Algorithms",
   currently:
-    "Research intern at IIT BHU — vision, edge perception, and UAV closed-loop targeting.",
+    "Building and validating robotics systems in state estimation, control, and autonomous navigation.",
   signature:
     "Still figuring out how software, hardware, sensing, and control work together."
 };
@@ -82,7 +82,7 @@ export const about = {
   intro:
     "Student in CS & Mathematics at Penn State, working toward robotics, embedded systems, and closed-loop control.",
   body:
-    "Most of my projects sit somewhere between firmware and autonomy — estimating state, closing loops, and seeing how the pieces behave once they have to run together. This summer I'm a research intern at IIT BHU on vision, edge deployment, and UAV targeting."
+    "Most of my projects sit somewhere between firmware and autonomy — estimating state, closing loops, and seeing how the pieces behave once they have to run together. Recent work includes an IIT BHU research internship in vision, edge deployment, and UAV targeting."
 };
 
 export const upcoming = [
@@ -192,6 +192,53 @@ export const projects: Project[] = [
         src: "/media/projects/f1tenth-mpc-controller/silverstone_comparison.gif",
         alt: "Synchronized comparison of the MPC and Pure Pursuit controllers completing a lap of Silverstone in F1TENTH Gym",
         caption: "MPC vs Pure Pursuit — Silverstone"
+      }
+    ]
+  },
+  {
+    slug: "fastslam-1",
+    title: "FastSLAM 1.0",
+    type: "State Estimation & SLAM",
+    description:
+      "A from-scratch C++17 implementation of Rao-Blackwellized particle-filter SLAM, validated first in simulation and then on 10 minutes of physical robot telemetry from the UTIAS MR.CLAM benchmark.",
+    origin:
+      "Can a paper implementation survive the jump from a clean synthetic world to noisy, asynchronously recorded robot data?",
+    tags: [
+      "C++17",
+      "FastSLAM",
+      "Particle Filters",
+      "Extended Kalman Filters",
+      "State Estimation",
+      "Eigen"
+    ],
+    links: [
+      {
+        label: "Explore project",
+        href: "/projects/fastslam-1"
+      },
+      {
+        label: "Launch live demo",
+        href: "https://andromeda-crypto.github.io/fastslam-1.0/"
+      },
+      {
+        label: "View source",
+        href: "https://github.com/Andromeda-crypto/fastslam-1.0"
+      }
+    ],
+    priority: "featured",
+    status: "complete",
+    outcomes: [
+      "Implemented the Rao-Blackwellized particle filter and per-landmark EKFs from scratch in C++17, including measurement-likelihood weighting and ESS-triggered systematic resampling.",
+      "Validated the estimator on a 6,000-step UTIAS MR.CLAM run with wheel-encoder odometry, camera range-bearing observations, and Vicon ground truth, achieving 0.944 m trajectory RMSE.",
+      "Built a zero-dependency browser visualizer with dataset switching, scrubbable playback, particle clouds, covariance ellipses, and live estimator telemetry."
+    ],
+    pipeline: ["Predict", "Observe", "Update", "Resample"],
+    media: [
+      {
+        type: "image",
+        src: "/media/projects/fastslam-1/fastslam-demo.gif",
+        alt: "FastSLAM playback showing the estimated robot pose, particle cloud, mapped landmarks, and covariance ellipses",
+        caption: "UTIAS MR.CLAM · FastSLAM state-estimation playback"
       }
     ]
   },
@@ -316,13 +363,6 @@ export const secondaryProjects = projects.filter(
 );
 
 export const research = [
-  {
-    title: "FastSLAM 1.0",
-    status: "Implemented",
-    description:
-      "A from-scratch C++ implementation of FastSLAM 1.0, combining particle-based robot-pose estimation with independent landmark extended Kalman filters. The implementation includes range-bearing observations, particle weighting, landmark updates, and systematic resampling.",
-    tags: ["C++17", "SLAM", "Particle Filters", "EKF"]
-  },
   {
     title: "FastSLAM 2.0",
     status: "In Progress",
