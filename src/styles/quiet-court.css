@@ -828,3 +828,17 @@ html[data-theme] body .theme-toggle__icon--moon {
   background: transparent;
   box-shadow: inset -4px -2px 0 0 currentColor;
 }
+
+/* The lab preview preserves the entire dashboard rather than cropping its readouts. */
+.court-lab .court-workbench img {
+  aspect-ratio: 1918 / 993;
+  object-fit: contain;
+}
+.court-lab {
+  align-items: center;
+}
+@media (min-width: 981px) {
+  .court-lab {
+    grid-template-columns: 1fr 2.2fr 0.8fr;
+  }
+}

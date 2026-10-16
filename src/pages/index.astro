@@ -12,7 +12,14 @@ import {
 
 const notes: Record<
   string,
-  { question: string; summary: string; image?: string; alt?: string }
+  {
+    question: string;
+    summary: string;
+    image?: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+  }
 > = {
   balbot: {
     question: "A question of balance.",
@@ -23,8 +30,10 @@ const notes: Record<
     question: "A better model. A better result?",
     summary:
       "A predictive controller measured against a tuned geometric baseline. A comparison of what improves, what doesn’t, and whether the added complexity earns its place.",
-    image: "/media/projects/f1tenth-mpc-controller/multitrack_overview.svg",
-    alt: "Results from MPC and Pure Pursuit across five F1TENTH circuits",
+    image: "/media/projects/f1tenth-mpc-controller/silverstone_comparison.gif",
+    alt: "Side-by-side playback of MPC and Pure Pursuit completing a Silverstone lap",
+    width: 960,
+    height: 540,
   },
   "fastslam-1": {
     question: "Learning to trust an estimate.",
@@ -32,6 +41,8 @@ const notes: Record<
       "A particle-filter SLAM implementation, taken from clean simulation to real robot telemetry. An exercise in making uncertainty visible—and testing an estimate against ground truth.",
     image: "/media/projects/fastslam-1/fastslam-demo.gif",
     alt: "FastSLAM playback showing robot trajectories, landmarks, and uncertainty",
+    width: 750,
+    height: 600,
   },
   "autonomous-robot-navigation": {
     question: "Finding a way through.",
@@ -39,8 +50,20 @@ const notes: Record<
       "Sensing, mapping, planning, and control in one connected simulation. Following a path is a different problem when every part of the loop has to work together.",
     image: "/media/projects/autonomous-robot-navigation/navigation-path.png",
     alt: "A planned route through obstacles in the autonomous navigation simulator",
+    width: 1582,
+    height: 1236,
   },
 };
+
+const projectOrder = [
+  "f1tenth-mpc-controller",
+  "fastslam-1",
+  "balbot",
+  "autonomous-robot-navigation",
+];
+const orderedProjects = [...featuredProjects].sort(
+  (a, b) => projectOrder.indexOf(a.slug) - projectOrder.indexOf(b.slug),
+);
 ---
 
 <BaseLayout
@@ -61,58 +84,100 @@ const notes: Record<
       A few projects and experiments,
       <br /> collected along the way.
     </p>
-    <a class="court-scroll" href="#work">
+    <a class="court-scroll" href="#about">
       Take a look around <span aria-hidden="true">↓</span>
     </a>
   </section>
 
-  <section class="court-introduction page-frame" aria-label="A starting point">
-    <div class="court-introduction__note">
-      <p class="court-label">A starting point</p>
-      <h2>
-        Learning
-        <br />
-        by making.
-      </h2>
-      <p>
-        I tend to understand an idea better once I’ve tried to make it work.
-      </p>
+  <section class="court-about" id="about" aria-labelledby="about-heading">
+    <div class="page-frame court-about__grid">
+      <div>
+        <p class="court-label">01 / A little about me</p>
+        <h2 id="about-heading">
+          Curiosity tends
+          <br />
+          to travel.
+        </h2>
+      </div>
+      <div class="court-about__body">
+        <p class="court-about__lead">
+          I’m Om, a CS and mathematics student at Penn State, working on
+          robotics and controls.
+        </p>
+        <p>
+          Most of my projects begin with a question I can’t quite leave alone. I
+          like taking an idea from a paper or a model, building it, and seeing
+          what changes when it has to work with real data, timing, and hardware.
+        </p>
+        <p>
+          Away from the workbench, I read, play chess, and spend time on the
+          football pitch. I’ve played as a fullback at state and national level,
+          and still enjoy the decisions made away from the ball.
+        </p>
+        <div class="court-about__links">
+          <a class="court-link" href="/interests/">
+            Outside the work ↗
+          </a>
+          <a
+            class="court-link"
+            href={links.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Résumé ↗
+          </a>
+        </div>
+        <details class="court-toolbox">
+          <summary>A few tools I work with</summary>
+          <div>
+            {stack.map((group) => (
+              <p>
+                <strong>{group.title}</strong>
+                <br />
+                {group.items.join(" · ")}
+              </p>
+            ))}
+          </div>
+        </details>
+      </div>
     </div>
-    <figure class="court-workbench">
-      <a
-        href="/lab/"
-        aria-label="Explore the Flight Attitude Dashboard in the lab"
-      >
-        <img
-          src="/media/lab/attitude-dashboard/circuitry.jpg"
-          alt="The sensors, wiring, and circuitry behind the flight attitude dashboard"
-          width="576"
-          height="1024"
-          fetchpriority="high"
-        />
-      </a>
-      <figcaption>
-        <span>From the workbench</span>
-        <a href="/lab/">Flight Attitude Dashboard ↗</a>
-      </figcaption>
-    </figure>
-    <aside class="court-introduction__aside">
-      <p class="court-label">Explore</p>
-      <a href="#work">
-        Selected work <span aria-hidden="true">↗</span>
-      </a>
-      <a href="#about">
-        A little about me <span aria-hidden="true">↗</span>
-      </a>
-      <a href="/interests/">
-        Outside the work <span aria-hidden="true">↗</span>
-      </a>
-      <p>
-        And a few questions
-        <br />
-        still in progress.
-      </p>
-    </aside>
+  </section>
+
+  <section
+    class="court-experience page-frame"
+    id="experience"
+    aria-labelledby="experience-heading"
+  >
+    <p class="court-label">02 / Work experience</p>
+    <h2 id="experience-heading">A little further afield.</h2>
+    {experience.map((item) => (
+      <article>
+        <div class="court-experience__date">
+          <p>{item.period}</p>
+          <p>{item.location}</p>
+        </div>
+        <div>
+          <h3>{item.role}</h3>
+          <a
+            class="court-link"
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {item.company} ↗
+          </a>
+          <p class="court-experience__description">{item.description}</p>
+          <details>
+            <summary>Work & findings</summary>
+            <ul>
+              {item.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+          </details>
+        </div>
+      </article>
+    ))}
   </section>
 
   <section
@@ -122,7 +187,7 @@ const notes: Record<
   >
     <header class="court-section-heading">
       <div>
-        <p class="court-label">01 / Selected work</p>
+        <p class="court-label">03 / Selected work</p>
         <h2 id="work-heading">Ideas, put to the test.</h2>
       </div>
       <p>
@@ -132,7 +197,7 @@ const notes: Record<
       </p>
     </header>
     <div class="court-projects">
-      {featuredProjects.map((project, index) => {
+      {orderedProjects.map((project, index) => {
         const note = notes[project.slug];
         return (
           <article
@@ -155,13 +220,13 @@ const notes: Record<
             </div>
             {note.image ? (
               <figure class="court-project__figure">
-                {project.slug === "fastslam-1" ? (
+                {note.image.endsWith(".gif") ? (
                   <div class="court-playback" data-playback>
                     <img
                       src={note.image}
                       alt={note.alt}
-                      width="750"
-                      height="600"
+                      width={note.width}
+                      height={note.height}
                       loading="lazy"
                       data-playback-image
                     />
@@ -189,19 +254,15 @@ const notes: Record<
                     <img
                       src={note.image}
                       alt={note.alt}
-                      width={
-                        project.slug === "f1tenth-mpc-controller" ? 857 : 1582
-                      }
-                      height={
-                        project.slug === "f1tenth-mpc-controller" ? 568 : 1236
-                      }
+                      width={note.width}
+                      height={note.height}
                       loading="lazy"
                     />
                   </a>
                 )}
                 <figcaption>
                   {project.slug === "f1tenth-mpc-controller"
-                    ? "The comparison, across five circuits."
+                    ? "MPC and Pure Pursuit, side by side at Silverstone."
                     : project.slug === "fastslam-1"
                       ? "State estimation on the UTIAS MR.CLAM dataset."
                       : "A planned path through the simulated world."}
@@ -263,95 +324,55 @@ const notes: Record<
     </div>
   </section>
 
-  <section class="court-about" id="about" aria-labelledby="about-heading">
-    <div class="page-frame court-about__grid">
-      <div>
-        <p class="court-label">02 / A little about me</p>
-        <h2 id="about-heading">
-          Curiosity tends
-          <br />
-          to travel.
-        </h2>
-      </div>
-      <div class="court-about__body">
-        <p class="court-about__lead">
-          I’m Om, a CS and mathematics student at Penn State, working on
-          robotics and controls.
-        </p>
-        <p>
-          Most of my projects begin with a question I can’t quite leave alone. I
-          like taking an idea from a paper or a model, building it, and seeing
-          what changes when it has to work with real data, timing, and hardware.
-        </p>
-        <p>
-          Away from the workbench, I read, play chess, and spend time on the
-          football pitch. I’ve played as a fullback at state and national level,
-          and still enjoy the decisions made away from the ball.
-        </p>
-        <div class="court-about__links">
-          <a class="court-link" href="/interests/">
-            Outside the work ↗
-          </a>
-          <a
-            class="court-link"
-            href={links.resume}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Résumé ↗
-          </a>
-        </div>
-        <details class="court-toolbox">
-          <summary>A few tools I work with</summary>
-          <div>
-            {stack.map((group) => (
-              <p>
-                <strong>{group.title}</strong>
-                <br />
-                {group.items.join(" · ")}
-              </p>
-            ))}
-          </div>
-        </details>
-      </div>
-    </div>
-  </section>
-
   <section
-    class="court-experience page-frame"
-    id="experience"
-    aria-labelledby="experience-heading"
+    class="court-introduction court-lab page-frame"
+    id="lab"
+    aria-labelledby="lab-heading"
   >
-    <p class="court-label">Along the way</p>
-    <h2 id="experience-heading">A little further afield.</h2>
-    {experience.map((item) => (
-      <article>
-        <div class="court-experience__date">
-          <p>{item.period}</p>
-          <p>{item.location}</p>
-        </div>
-        <div>
-          <h3>{item.role}</h3>
-          <a
-            class="court-link"
-            href={item.link}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {item.company} ↗
-          </a>
-          <p class="court-experience__description">{item.description}</p>
-          <details>
-            <summary>Work & findings</summary>
-            <ul>
-              {item.highlights.map((highlight) => (
-                <li>{highlight}</li>
-              ))}
-            </ul>
-          </details>
-        </div>
-      </article>
-    ))}
+    <div class="court-introduction__note">
+      <p class="court-label">04 / Lab & experiments</p>
+      <h2 id="lab-heading">
+        From movement
+        <br />
+        to a measurement.
+      </h2>
+      <p>
+        A flight attitude dashboard connecting live sensor readings to a
+        three-dimensional view of motion.
+      </p>
+    </div>
+    <figure class="court-workbench">
+      <a
+        href="/lab/"
+        aria-label="Explore the Flight Attitude Dashboard in the lab"
+      >
+        <img
+          src="/media/lab/attitude-dashboard/dashboard.png"
+          alt="Flight attitude dashboard showing aircraft orientation and live sensor telemetry"
+          width="1918"
+          height="993"
+          loading="lazy"
+        />
+      </a>
+      <figcaption>
+        <span>Orientation, made visible</span>
+        <a href="/lab/">Flight Attitude Dashboard ↗</a>
+      </figcaption>
+    </figure>
+    <aside class="court-introduction__aside">
+      <p class="court-label">Keep exploring</p>
+      <a href="/lab/">
+        Inside the lab <span aria-hidden="true">↗</span>
+      </a>
+      <a href="#notebook">
+        The notebook <span aria-hidden="true">↗</span>
+      </a>
+      <p>
+        Experiments, prototypes,
+        <br />
+        and things learned by trying.
+      </p>
+    </aside>
   </section>
 
   <section
@@ -361,7 +382,7 @@ const notes: Record<
   >
     <header class="court-section-heading">
       <div>
-        <p class="court-label">03 / The notebook</p>
+        <p class="court-label">05 / The notebook</p>
         <h2 id="notebook-heading">Still working it out.</h2>
       </div>
       <p>
