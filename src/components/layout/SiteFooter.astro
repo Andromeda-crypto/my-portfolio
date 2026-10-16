@@ -6,64 +6,59 @@ const year = new Date().getFullYear();
 const footerLinks = [
   {
     label: "GitHub",
-    href: links.github
+    href: links.github,
   },
   {
     label: "LinkedIn",
-    href: links.linkedin
+    href: links.linkedin,
   },
   {
     label: "Résumé",
-    href: links.resume
+    href: links.resume,
   },
   {
     label: "Interests",
-    href: "/interests/"
+    href: "/interests/",
   },
   {
     label: "Email",
-    href: links.email
-  }
+    href: links.email,
+  },
 ];
 ---
 
 <footer class="site-footer site-footer--minimal">
   <div class="page-frame">
     <div class="site-footer-minimal__top">
-      <p class="section-marker">
-        Contact
-      </p>
+      <p class="section-marker">Contact</p>
 
-      <nav
-        class="site-footer-minimal__links"
-        aria-label="Footer links"
-      >
-        {
-          footerLinks.map((link) => (
-            <a
-              class="site-footer__link"
-              href={link.href}
-              target={
-                link.href.startsWith("mailto:") || link.href.startsWith("/")
-                  ? undefined
-                  : "_blank"
-              }
-              rel={
-                link.href.startsWith("mailto:") || link.href.startsWith("/")
-                  ? undefined
-                  : "noopener noreferrer"
-              }
-            >
-              {link.label}
-            </a>
-          ))
-        }
+      <nav class="site-footer-minimal__links" aria-label="Footer links">
+        {footerLinks.map((link) => (
+          <a
+            class="site-footer__link"
+            href={link.href}
+            target={
+              link.href.startsWith("mailto:") || link.href.startsWith("/")
+                ? undefined
+                : "_blank"
+            }
+            rel={
+              link.href.startsWith("mailto:") || link.href.startsWith("/")
+                ? undefined
+                : "noopener noreferrer"
+            }
+          >
+            {link.label}
+          </a>
+        ))}
       </nav>
     </div>
 
     <div class="site-footer__bottom">
       <span>© {year} Om Anand</span>
-      <span>Robotics · Controls · Embedded</span>
+      <a class="site-footer__link" href="/#main-content">
+        Back to the top ↑
+      </a>
     </div>
   </div>
 </footer>

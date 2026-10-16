@@ -92,8 +92,7 @@ import { cadStudies, labItems } from "../data/siteContent";
         <p>
           Foundational CAD skills through tutorial-led part models. This
           section expands into mounts, assemblies, and robotics-oriented
-          mechanical designs as the practice deepens. Drop renders into
-          <code>public/media/cad/</code> when ready.
+          mechanical designs as the practice deepens.
         </p>
       </div>
 
@@ -290,7 +289,7 @@ import { cadStudies, labItems } from "../data/siteContent";
     background:
       linear-gradient(
         135deg,
-        rgba(229, 43, 47, 0.1),
+        var(--color-red-soft),
         transparent 42%
       ),
       var(--color-surface);
@@ -316,7 +315,7 @@ import { cadStudies, labItems } from "../data/siteContent";
     gap: var(--space-1);
     padding: var(--space-3);
     border: 1px solid var(--color-border);
-    background: rgba(9, 10, 10, 0.5);
+    background: var(--color-surface);
   }
 
   .cad-study__pipeline li span:first-child {

@@ -3,34 +3,11 @@ const currentPath = Astro.url.pathname;
 const isHomePage = currentPath === "/";
 
 const navigation = [
-  {
-    label: "Experience",
-    href: "/#experience"
-  },
-  {
-    label: "Work",
-    href: "/#work"
-  },
-  {
-    label: "Upcoming",
-    href: "/#upcoming"
-  },
-  {
-    label: "Lab",
-    href: "/lab/"
-  },
-  {
-    label: "Research",
-    href: "/#research"
-  },
-  {
-    label: "Stack",
-    href: "/#stack"
-  },
-  {
-    label: "Contact",
-    href: "/#contact"
-  }
+  { label: "Work", href: "/#work" },
+  { label: "About", href: "/#about" },
+  { label: "Notebook", href: "/#notebook" },
+  { label: "Lab", href: "/lab/" },
+  { label: "Interests", href: "/interests/" },
 ];
 
 const isCurrentPage = (href: string) => {
@@ -46,45 +23,28 @@ const isCurrentPage = (href: string) => {
 };
 ---
 
-<header
-  class="site-header"
-  data-site-header
-  data-scrolled="false"
->
+<header class="site-header" data-site-header data-scrolled="false">
   <div class="page-frame site-header__inner">
-    <a
-      class="site-brand"
-      href="/"
-      aria-label="Om Anand home"
-    >
-      <span
-        class="site-brand__mark"
-        aria-hidden="true"
-      ></span>
+    <a class="site-brand" href="/" aria-label="Om Anand home">
+      <span class="site-brand__mark" aria-hidden="true"></span>
 
-      <span>OA</span>
+      <span>Om Anand</span>
     </a>
 
     <nav class="site-nav" aria-label="Primary navigation">
       <ul class="site-nav__list">
-        {
-          navigation.map((item) => (
-            <li>
-              <a
-                class="site-nav__link"
-                href={item.href}
-                data-scroll-nav={item.label.toLowerCase()}
-                aria-current={
-                  isCurrentPage(item.href)
-                    ? "page"
-                    : undefined
-                }
-              >
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
+        {navigation.map((item) => (
+          <li>
+            <a
+              class="site-nav__link"
+              href={item.href}
+              data-scroll-nav={item.label.toLowerCase()}
+              aria-current={isCurrentPage(item.href) ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
 
@@ -92,8 +52,8 @@ const isCurrentPage = (href: string) => {
       <button
         class="theme-toggle"
         type="button"
-        aria-label="Switch to light mode"
-        title="Switch to light mode"
+        aria-label="Switch to dark mode"
+        title="Switch to dark mode"
         data-theme-toggle
       >
         <span
@@ -121,49 +81,36 @@ const isCurrentPage = (href: string) => {
     </div>
   </div>
 
-  {
-    isHomePage && (
-      <div
-        class="site-header__progress"
-        aria-hidden="true"
-      >
-        <span data-header-progress></span>
-      </div>
-    )
-  }
+  {isHomePage && (
+    <div class="site-header__progress" aria-hidden="true">
+      <span data-header-progress></span>
+    </div>
+  )}
 
   <div
     class="mobile-navigation"
     id="mobile-navigation"
     aria-hidden="true"
     data-mobile-navigation
+    inert
   >
-    <nav
-      class="mobile-navigation__inner"
-      aria-label="Mobile navigation"
-    >
+    <nav class="mobile-navigation__inner" aria-label="Mobile navigation">
       <ul class="mobile-navigation__list">
-        {
-          navigation.map((item, index) => (
-            <li class="mobile-navigation__item">
-              <a
-                class="mobile-navigation__link"
-                href={item.href}
-                aria-current={
-                  isCurrentPage(item.href)
-                    ? "page"
-                    : undefined
-                }
-              >
-                <span class="mobile-navigation__index">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
+        {navigation.map((item, index) => (
+          <li class="mobile-navigation__item">
+            <a
+              class="mobile-navigation__link"
+              href={item.href}
+              aria-current={isCurrentPage(item.href) ? "page" : undefined}
+            >
+              <span class="mobile-navigation__index">
+                {String(index + 1).padStart(2, "0")}
+              </span>
 
-                <span>{item.label}</span>
-              </a>
-            </li>
-          ))
-        }
+              <span>{item.label}</span>
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
   </div>
@@ -226,22 +173,17 @@ const isCurrentPage = (href: string) => {
   .theme-toggle__icon--moon {
     border-radius: 50%;
     background: currentColor;
-    box-shadow:
-      0.22rem -0.14rem 0 0 var(--color-page);
+    box-shadow: 0.22rem -0.14rem 0 0 var(--color-page);
   }
 
-  :global(html[data-theme="dark"])
-    .theme-toggle__icon--moon,
-  :global(html[data-theme="light"])
-    .theme-toggle__icon--sun {
+  :global(html[data-theme="dark"]) .theme-toggle__icon--moon,
+  :global(html[data-theme="light"]) .theme-toggle__icon--sun {
     opacity: 0;
     transform: scale(0.45) rotate(-45deg);
   }
 
-  :global(html[data-theme="dark"])
-    .theme-toggle__icon--sun,
-  :global(html[data-theme="light"])
-    .theme-toggle__icon--moon {
+  :global(html[data-theme="dark"]) .theme-toggle__icon--sun,
+  :global(html[data-theme="light"]) .theme-toggle__icon--moon {
     opacity: 1;
     transform: scale(1) rotate(0);
   }
@@ -311,30 +253,21 @@ const isCurrentPage = (href: string) => {
 </style>
 
 <script>
-  const header =
-    document.querySelector<HTMLElement>(
-      "[data-site-header]"
-    );
+  const header = document.querySelector<HTMLElement>("[data-site-header]");
 
   const menuButton =
-    document.querySelector<HTMLButtonElement>(
-      "[data-menu-button]"
-    );
+    document.querySelector<HTMLButtonElement>("[data-menu-button]");
 
-  const mobileNavigation =
-    document.querySelector<HTMLElement>(
-      "[data-mobile-navigation]"
-    );
+  const mobileNavigation = document.querySelector<HTMLElement>(
+    "[data-mobile-navigation]",
+  );
 
-  const themeToggle =
-    document.querySelector<HTMLButtonElement>(
-      "[data-theme-toggle]"
-    );
+  const themeToggle = document.querySelector<HTMLButtonElement>(
+    "[data-theme-toggle]",
+  );
 
   const themeColor =
-    document.querySelector<HTMLMetaElement>(
-      "[data-theme-color]"
-    );
+    document.querySelector<HTMLMetaElement>("[data-theme-color]");
 
   const focusableSelector =
     'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -345,13 +278,10 @@ const isCurrentPage = (href: string) => {
       : "dark";
   };
 
-  const updateThemeButton = (
-    theme: "light" | "dark"
-  ) => {
+  const updateThemeButton = (theme: "light" | "dark") => {
     if (!themeToggle) return;
 
-    const nextTheme =
-      theme === "dark" ? "light" : "dark";
+    const nextTheme = theme === "dark" ? "light" : "dark";
 
     const label = `Switch to ${nextTheme} mode`;
 
@@ -359,26 +289,20 @@ const isCurrentPage = (href: string) => {
     themeToggle.setAttribute("title", label);
   };
 
-  const applyTheme = (
-    theme: "light" | "dark",
-    savePreference = false
-  ) => {
+  const applyTheme = (theme: "light" | "dark", savePreference = false) => {
     document.documentElement.dataset.theme = theme;
 
     updateThemeButton(theme);
 
     themeColor?.setAttribute(
       "content",
-      theme === "dark" ? "#070809" : "#f2f0ea"
+      theme === "dark" ? "#1e2522" : "#f5f0e4",
     );
 
     if (!savePreference) return;
 
     try {
-      window.localStorage.setItem(
-        "portfolio-theme",
-        theme
-      );
+      window.localStorage.setItem("quiet-court-theme", theme);
     } catch {
       // The selected theme still works for this page
       // if browser storage is unavailable.
@@ -388,8 +312,7 @@ const isCurrentPage = (href: string) => {
   const updateHeaderState = () => {
     if (!header) return;
 
-    header.dataset.scrolled =
-      window.scrollY > 24 ? "true" : "false";
+    header.dataset.scrolled = window.scrollY > 24 ? "true" : "false";
   };
 
   const getFocusableElements = () => {
@@ -400,32 +323,22 @@ const isCurrentPage = (href: string) => {
     return [
       menuButton,
       ...Array.from(
-        mobileNavigation.querySelectorAll<HTMLElement>(
-          focusableSelector
-        )
-      )
+        mobileNavigation.querySelectorAll<HTMLElement>(focusableSelector),
+      ),
     ];
   };
 
   const closeMenu = () => {
     if (!menuButton || !mobileNavigation) return;
 
-    menuButton.setAttribute(
-      "aria-expanded",
-      "false"
-    );
+    menuButton.setAttribute("aria-expanded", "false");
 
-    menuButton.setAttribute(
-      "aria-label",
-      "Open navigation"
-    );
+    menuButton.setAttribute("aria-label", "Open navigation");
 
-    mobileNavigation.setAttribute(
-      "aria-hidden",
-      "true"
-    );
+    mobileNavigation.setAttribute("aria-hidden", "true");
 
     mobileNavigation.dataset.open = "false";
+    mobileNavigation.inert = true;
 
     document.body.classList.remove("menu-open");
   };
@@ -433,37 +346,24 @@ const isCurrentPage = (href: string) => {
   const openMenu = () => {
     if (!menuButton || !mobileNavigation) return;
 
-    menuButton.setAttribute(
-      "aria-expanded",
-      "true"
-    );
+    menuButton.setAttribute("aria-expanded", "true");
 
-    menuButton.setAttribute(
-      "aria-label",
-      "Close navigation"
-    );
+    menuButton.setAttribute("aria-label", "Close navigation");
 
-    mobileNavigation.setAttribute(
-      "aria-hidden",
-      "false"
-    );
+    mobileNavigation.setAttribute("aria-hidden", "false");
 
     mobileNavigation.dataset.open = "true";
+    mobileNavigation.inert = false;
 
     document.body.classList.add("menu-open");
 
-    const firstLink =
-      mobileNavigation.querySelector<HTMLAnchorElement>(
-        "a"
-      );
+    const firstLink = mobileNavigation.querySelector<HTMLAnchorElement>("a");
 
     firstLink?.focus();
   };
 
   const toggleMenu = () => {
-    const isOpen =
-      menuButton?.getAttribute("aria-expanded") ===
-      "true";
+    const isOpen = menuButton?.getAttribute("aria-expanded") === "true";
 
     if (isOpen) {
       closeMenu();
@@ -474,39 +374,26 @@ const isCurrentPage = (href: string) => {
 
   updateHeaderState();
   applyTheme(getCurrentTheme());
+  closeMenu();
 
-  window.addEventListener(
-    "scroll",
-    updateHeaderState,
-    {
-      passive: true
-    }
-  );
+  window.addEventListener("scroll", updateHeaderState, {
+    passive: true,
+  });
 
   themeToggle?.addEventListener("click", () => {
-    const nextTheme =
-      getCurrentTheme() === "dark"
-        ? "light"
-        : "dark";
+    const nextTheme = getCurrentTheme() === "dark" ? "light" : "dark";
 
     applyTheme(nextTheme, true);
   });
 
-  menuButton?.addEventListener(
-    "click",
-    toggleMenu
-  );
+  menuButton?.addEventListener("click", toggleMenu);
 
-  mobileNavigation
-    ?.querySelectorAll<HTMLAnchorElement>("a")
-    .forEach((link) => {
-      link.addEventListener("click", closeMenu);
-    });
+  mobileNavigation?.querySelectorAll<HTMLAnchorElement>("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
 
   window.addEventListener("keydown", (event) => {
-    const isOpen =
-      menuButton?.getAttribute("aria-expanded") ===
-      "true";
+    const isOpen = menuButton?.getAttribute("aria-expanded") === "true";
 
     if (!isOpen) return;
 
@@ -529,10 +416,7 @@ const isCurrentPage = (href: string) => {
     if (event.shiftKey && active === first) {
       event.preventDefault();
       last.focus();
-    } else if (
-      !event.shiftKey &&
-      active === last
-    ) {
+    } else if (!event.shiftKey && active === last) {
       event.preventDefault();
       first.focus();
     }

@@ -268,7 +268,7 @@ const initializeScrollInterface = () => {
 
 export const initializeScrollAnimations = () => {
     createRevealObserver();
-    initializeInternalPageTransitions();
+    // Keep navigation immediate; the Court design uses native page changes.
     initializeMediaParallax();
     initializeScrollInterface();
 };

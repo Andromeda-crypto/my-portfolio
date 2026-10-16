@@ -251,7 +251,7 @@ const stack = [
         </div>
       </div>
 
-      <div class="results-table-wrap">
+      <div class="results-table-wrap" role="region" aria-label="Project results, scroll horizontally for all columns" tabindex="0">
         <table class="results-table">
           <thead>
             <tr><th>Metric</th><th>Synthetic</th><th>UTIAS MR.CLAM</th></tr>
@@ -419,9 +419,9 @@ const stack = [
     .demo-cta-section { background: var(--color-text); color: var(--color-page); }
     .demo-cta { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(2rem, 6vw, 6rem); align-items: end; }
     .demo-cta > div { display: grid; gap: var(--space-5); }
-    .demo-cta .case-section__label { color: rgba(255,255,255,.55); }
+    .demo-cta .case-section__label { color: var(--color-text-muted); }
     .demo-cta h2 { max-width: 13ch; }
-    .demo-cta p { color: rgba(255,255,255,.72); }
+    .demo-cta p { color: var(--color-text-soft); }
     .boundary-layout__body { display: grid; gap: var(--space-5); }
     .stack-list { display: flex; flex-wrap: wrap; gap: var(--space-3); }
     .stack-list li { padding: .7rem .9rem; border: var(--border-thin); color: var(--color-text-soft); font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; }

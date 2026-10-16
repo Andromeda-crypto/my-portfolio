@@ -1,60 +1,460 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  links,
+  featuredProjects,
+  secondaryProjects,
+  experience,
+  research,
+  upcoming,
+  stack,
+} from "../data/siteContent";
 
-import KineticHero from "../components/home/KineticHero.astro";
-import CapabilityStrip from "../components/home/CapabilityStrip.astro";
-import AboutSection from "../components/home/AboutSection.astro";
-import FeaturedWork from "../components/home/FeaturedWork.astro";
-import ExperienceSection from "../components/home/ExperienceSection.astro";
-import UpcomingSection from "../components/home/UpcomingSection.astro";
-import LabPreview from "../components/home/LabPreview.astro";
-import ResearchSection from "../components/home/ResearchSection.astro";
-import StackSection from "../components/home/StackSection.astro";
-import ContactSection from "../components/home/ContactSection.astro";
-import ScrollBackdrop from "../components/motion/ScrollBackdrop.astro";
+const notes: Record<
+  string,
+  { question: string; summary: string; image?: string; alt?: string }
+> = {
+  balbot: {
+    question: "A question of balance.",
+    summary:
+      "A two-wheeled robot, built and tuned to stay upright. The interesting part is what happens when sensor noise, motor lag, and mechanics join the equation.",
+  },
+  "f1tenth-mpc-controller": {
+    question: "A better model. A better result?",
+    summary:
+      "A predictive controller measured against a tuned geometric baseline. A comparison of what improves, what doesn’t, and whether the added complexity earns its place.",
+    image: "/media/projects/f1tenth-mpc-controller/multitrack_overview.svg",
+    alt: "Results from MPC and Pure Pursuit across five F1TENTH circuits",
+  },
+  "fastslam-1": {
+    question: "Learning to trust an estimate.",
+    summary:
+      "A particle-filter SLAM implementation, taken from clean simulation to real robot telemetry. An exercise in making uncertainty visible—and testing an estimate against ground truth.",
+    image: "/media/projects/fastslam-1/fastslam-demo.gif",
+    alt: "FastSLAM playback showing robot trajectories, landmarks, and uncertainty",
+  },
+  "autonomous-robot-navigation": {
+    question: "Finding a way through.",
+    summary:
+      "Sensing, mapping, planning, and control in one connected simulation. Following a path is a different problem when every part of the loop has to work together.",
+    image: "/media/projects/autonomous-robot-navigation/navigation-path.png",
+    alt: "A planned route through obstacles in the autonomous navigation simulator",
+  },
+};
 ---
 
 <BaseLayout
-  title="Om Anand | Robotics & Controls"
-  description="Portfolio of Om Anand — robotics, embedded systems, and closed-loop control. CS & Mathematics student seeking internships in robotics and controls."
-  bodyClass="home-page"
+  title="Om Anand — Selected work & other interests"
+  description="Projects, experiments, and working notes by Om Anand. A personal collection of things built, questions followed, and lessons learned."
+  bodyClass="home-page court-home"
 >
-  <ScrollBackdrop />
+  <section class="court-opening page-frame" aria-labelledby="intro-heading">
+    <div class="court-monogram" aria-hidden="true">
+      oa<span>.</span>
+    </div>
+    <h1 id="intro-heading">
+      Good questions.
+      <br />
+      Work worth doing carefully.
+    </h1>
+    <p>
+      A few projects and experiments,
+      <br /> collected along the way.
+    </p>
+    <a class="court-scroll" href="#work">
+      Take a look around <span aria-hidden="true">↓</span>
+    </a>
+  </section>
 
-  <KineticHero />
+  <section class="court-introduction page-frame" aria-label="A starting point">
+    <div class="court-introduction__note">
+      <p class="court-label">A starting point</p>
+      <h2>
+        Learning
+        <br />
+        by making.
+      </h2>
+      <p>
+        I tend to understand an idea better once I’ve tried to make it work.
+      </p>
+    </div>
+    <figure class="court-workbench">
+      <a
+        href="/lab/"
+        aria-label="Explore the Flight Attitude Dashboard in the lab"
+      >
+        <img
+          src="/media/lab/attitude-dashboard/circuitry.jpg"
+          alt="The sensors, wiring, and circuitry behind the flight attitude dashboard"
+          width="576"
+          height="1024"
+          fetchpriority="high"
+        />
+      </a>
+      <figcaption>
+        <span>From the workbench</span>
+        <a href="/lab/">Flight Attitude Dashboard ↗</a>
+      </figcaption>
+    </figure>
+    <aside class="court-introduction__aside">
+      <p class="court-label">Explore</p>
+      <a href="#work">
+        Selected work <span aria-hidden="true">↗</span>
+      </a>
+      <a href="#about">
+        A little about me <span aria-hidden="true">↗</span>
+      </a>
+      <a href="/interests/">
+        Outside the work <span aria-hidden="true">↗</span>
+      </a>
+      <p>
+        And a few questions
+        <br />
+        still in progress.
+      </p>
+    </aside>
+  </section>
 
-  <CapabilityStrip />
+  <section
+    class="court-work page-frame"
+    id="work"
+    aria-labelledby="work-heading"
+  >
+    <header class="court-section-heading">
+      <div>
+        <p class="court-label">01 / Selected work</p>
+        <h2 id="work-heading">Ideas, put to the test.</h2>
+      </div>
+      <p>
+        From the first model to the things
+        <br />
+        the model didn’t account for.
+      </p>
+    </header>
+    <div class="court-projects">
+      {featuredProjects.map((project, index) => {
+        const note = notes[project.slug];
+        return (
+          <article
+            class:list={[
+              "court-project",
+              index % 2 === 1 && "court-project--reverse",
+            ]}
+          >
+            <div class="court-project__copy">
+              <p class="court-label">
+                {String(index + 1).padStart(2, "0")} / {project.title}
+              </p>
+              <h3>
+                <a href={`/projects/${project.slug}/`}>{note.question}</a>
+              </h3>
+              <p>{note.summary}</p>
+              <a class="court-link" href={`/projects/${project.slug}/`}>
+                Explore the project <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            {note.image ? (
+              <figure class="court-project__figure">
+                {project.slug === "fastslam-1" ? (
+                  <div class="court-playback" data-playback>
+                    <img
+                      src={note.image}
+                      alt={note.alt}
+                      width="750"
+                      height="600"
+                      loading="lazy"
+                      data-playback-image
+                    />
+                    <canvas
+                      hidden
+                      role="img"
+                      aria-label={note.alt}
+                      data-playback-still
+                    ></canvas>
+                    <button
+                      type="button"
+                      hidden
+                      class="court-playback__toggle"
+                      data-playback-toggle
+                      aria-pressed="false"
+                    >
+                      Pause animation
+                    </button>
+                  </div>
+                ) : (
+                  <a
+                    href={`/projects/${project.slug}/`}
+                    aria-label={`Read ${project.title}`}
+                  >
+                    <img
+                      src={note.image}
+                      alt={note.alt}
+                      width={
+                        project.slug === "f1tenth-mpc-controller" ? 857 : 1582
+                      }
+                      height={
+                        project.slug === "f1tenth-mpc-controller" ? 568 : 1236
+                      }
+                      loading="lazy"
+                    />
+                  </a>
+                )}
+                <figcaption>
+                  {project.slug === "f1tenth-mpc-controller"
+                    ? "The comparison, across five circuits."
+                    : project.slug === "fastslam-1"
+                      ? "State estimation on the UTIAS MR.CLAM dataset."
+                      : "A planned path through the simulated world."}
+                </figcaption>
+              </figure>
+            ) : (
+              <a
+                href={`/projects/${project.slug}/`}
+                class="court-balance"
+                aria-label="Explore BALBOT, a self-balancing robot"
+              >
+                <svg
+                  viewBox="0 0 480 320"
+                  role="img"
+                  aria-label="Illustrative line drawing of a two-wheeled balancing robot"
+                >
+                  <g
+                    class="court-balance__guides"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path d="M45 265H435M240 35V280" stroke-dasharray="3 7" />
+                    <path d="M175 84Q240 52 305 84" />
+                  </g>
+                  <g fill="none" stroke="currentColor" stroke-width="1.6">
+                    <path d="M201 110H279V229H201ZM213 128H267V159H213ZM240 110V72M232 72H248" />
+                    <circle cx="207" cy="244" r="21" />
+                    <circle cx="273" cy="244" r="21" />
+                    <path d="M207 244H273M214 182H266M214 195H266M240 159V229" />
+                  </g>
+                  <circle cx="240" cy="72" r="3" fill="currentColor" />
+                </svg>
+                <span class="court-label">Estimate · Control · Actuate</span>
+                <span class="court-balance__caption">
+                  BALBOT / a study in balance
+                </span>
+              </a>
+            )}
+          </article>
+        );
+      })}
+    </div>
+    <div class="court-also">
+      <p class="court-label">Also explored</p>
+      {secondaryProjects.map((project) => (
+        <article>
+          <h3>
+            <a
+              href={project.links[0].href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {project.title} ↗
+            </a>
+          </h3>
+          <p>{project.origin}</p>
+        </article>
+      ))}
+    </div>
+  </section>
 
-  <AboutSection />
+  <section class="court-about" id="about" aria-labelledby="about-heading">
+    <div class="page-frame court-about__grid">
+      <div>
+        <p class="court-label">02 / A little about me</p>
+        <h2 id="about-heading">
+          Curiosity tends
+          <br />
+          to travel.
+        </h2>
+      </div>
+      <div class="court-about__body">
+        <p class="court-about__lead">
+          I’m Om, a CS and mathematics student at Penn State, working on
+          robotics and controls.
+        </p>
+        <p>
+          Most of my projects begin with a question I can’t quite leave alone. I
+          like taking an idea from a paper or a model, building it, and seeing
+          what changes when it has to work with real data, timing, and hardware.
+        </p>
+        <p>
+          Away from the workbench, I read, play chess, and spend time on the
+          football pitch. I’ve played as a fullback at state and national level,
+          and still enjoy the decisions made away from the ball.
+        </p>
+        <div class="court-about__links">
+          <a class="court-link" href="/interests/">
+            Outside the work ↗
+          </a>
+          <a
+            class="court-link"
+            href={links.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Résumé ↗
+          </a>
+        </div>
+        <details class="court-toolbox">
+          <summary>A few tools I work with</summary>
+          <div>
+            {stack.map((group) => (
+              <p>
+                <strong>{group.title}</strong>
+                <br />
+                {group.items.join(" · ")}
+              </p>
+            ))}
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
 
-  <ExperienceSection />
+  <section
+    class="court-experience page-frame"
+    id="experience"
+    aria-labelledby="experience-heading"
+  >
+    <p class="court-label">Along the way</p>
+    <h2 id="experience-heading">A little further afield.</h2>
+    {experience.map((item) => (
+      <article>
+        <div class="court-experience__date">
+          <p>{item.period}</p>
+          <p>{item.location}</p>
+        </div>
+        <div>
+          <h3>{item.role}</h3>
+          <a
+            class="court-link"
+            href={item.link}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {item.company} ↗
+          </a>
+          <p class="court-experience__description">{item.description}</p>
+          <details>
+            <summary>Work & findings</summary>
+            <ul>
+              {item.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+          </details>
+        </div>
+      </article>
+    ))}
+  </section>
 
-  <FeaturedWork />
+  <section
+    class="court-notebook page-frame"
+    id="notebook"
+    aria-labelledby="notebook-heading"
+  >
+    <header class="court-section-heading">
+      <div>
+        <p class="court-label">03 / The notebook</p>
+        <h2 id="notebook-heading">Still working it out.</h2>
+      </div>
+      <p>
+        Questions in progress,
+        <br />
+        and things I’d like to build next.
+      </p>
+    </header>
+    <div class="court-notebook__grid">
+      <div id="research">
+        <p class="court-label">On the desk</p>
+        {research.map((item) => (
+          <article>
+            <span class="court-status">{item.status}</span>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
+        ))}
+        <a class="court-link" href="/lab/">
+          Visit the lab ↗
+        </a>
+      </div>
+      <div id="upcoming">
+        <p class="court-label">Next to explore</p>
+        {upcoming.map((item) => (
+          <article>
+            <span class="court-status">{item.status}</span>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 
-  <UpcomingSection />
-
-  <LabPreview />
-
-  <ResearchSection />
-
-  <StackSection />
-
-  <ContactSection />
+  <section
+    class="court-contact page-frame"
+    id="contact"
+    aria-labelledby="contact-heading"
+  >
+    <p class="court-label">A conversation is a good place to start</p>
+    <h2 id="contact-heading">Something on your mind?</h2>
+    <p>I’d be glad to hear from you.</p>
+    <a class="court-link" href={links.email}>
+      Say hello <span aria-hidden="true">↗</span>
+    </a>
+    <span class="court-signature" aria-hidden="true">
+      Om.
+    </span>
+  </section>
 </BaseLayout>
 
 <script>
-  import { initializeScrollAnimations } from "../components/motion/scrollAnimations";
-
-  const initializePage = () => {
-    document.body.classList.add("is-ready");
-    initializeScrollAnimations();
-  };
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializePage, {
-      once: true
+  // Freeze the existing GIF on a canvas to provide pause and reduced-motion states.
+  document
+    .querySelectorAll<HTMLElement>("[data-playback]")
+    .forEach((player) => {
+      const image = player.querySelector<HTMLImageElement>(
+        "[data-playback-image]",
+      );
+      const still = player.querySelector<HTMLCanvasElement>(
+        "[data-playback-still]",
+      );
+      const button = player.querySelector<HTMLButtonElement>(
+        "[data-playback-toggle]",
+      );
+      if (!image || !still || !button) return;
+      button.hidden = false;
+      const motion = matchMedia("(prefers-reduced-motion: reduce)");
+      const pause = () => {
+        if (!image.complete || !image.naturalWidth) return;
+        still.width = image.naturalWidth;
+        still.height = image.naturalHeight;
+        const context = still.getContext("2d");
+        if (!context) return;
+        context.drawImage(image, 0, 0);
+        still.hidden = false;
+        image.hidden = true;
+        button.textContent = "Play animation";
+        button.setAttribute("aria-pressed", "true");
+      };
+      const play = () => {
+        still.hidden = true;
+        image.hidden = false;
+        button.textContent = "Pause animation";
+        button.setAttribute("aria-pressed", "false");
+      };
+      const applyMotionPreference = () => {
+        if (motion.matches) pause();
+      };
+      image.addEventListener("load", applyMotionPreference);
+      applyMotionPreference();
+      motion.addEventListener("change", applyMotionPreference);
+      button.addEventListener("click", () => (image.hidden ? play() : pause()));
     });
-  } else {
-    initializePage();
-  }
 </script>

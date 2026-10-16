@@ -7,6 +7,7 @@ import "../styles/base.css";
 import "../styles/layout.css";
 import "../styles/components.css";
 import "../styles/motion.css";
+import "../styles/quiet-court.css";
 
 interface Props {
   title: string;
@@ -21,18 +22,15 @@ const {
   description,
   image = "/og-image.svg",
   bodyClass = "",
-  hideFooter = false
+  hideFooter = false,
 } = Astro.props;
 
 const canonicalURL = new URL(
   Astro.url.pathname,
-  Astro.site ?? Astro.url.origin
+  Astro.site ?? Astro.url.origin,
 );
 
-const socialImageURL = new URL(
-  image,
-  Astro.site ?? Astro.url.origin
-);
+const socialImageURL = new URL(image, Astro.site ?? Astro.url.origin);
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -46,22 +44,22 @@ const structuredData = {
     email: "anandom.dev@gmail.com",
     alumniOf: {
       "@type": "CollegeOrUniversity",
-      name: "Pennsylvania State University"
+      name: "Pennsylvania State University",
     },
     knowsAbout: [
       "Robotics",
       "Embedded systems",
       "Control systems",
       "SLAM",
-      "Motion planning"
+      "Motion planning",
     ],
-    sameAs: [links.github, links.linkedin]
-  }
+    sameAs: [links.github, links.linkedin],
+  },
 };
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
 
@@ -72,50 +70,32 @@ const structuredData = {
 
     <meta name="description" content={description} />
 
-    <meta
-      name="theme-color"
-      content="#070809"
-      data-theme-color
-    />
+    <meta name="theme-color" content="#f5f0e4" data-theme-color />
 
     <meta name="author" content={profile.name} />
 
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!--
-      Apply a previously selected light theme before the page renders.
-      Dark remains the default when no preference has been saved.
-    -->
+    <link
+      rel="preload"
+      href="/fonts/newsreader-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <script is:inline>
       (() => {
+        document.documentElement.classList.add("js");
         try {
-          const savedTheme =
-            window.localStorage.getItem("portfolio-theme");
-
-          if (savedTheme === "light") {
-            document.documentElement.dataset.theme = "light";
-          } else {
-            document.documentElement.dataset.theme = "dark";
-          }
+          const theme = localStorage.getItem("quiet-court-theme");
+          document.documentElement.dataset.theme =
+            theme === "dark" ? "dark" : "light";
         } catch {
-          document.documentElement.dataset.theme = "dark";
+          document.documentElement.dataset.theme = "light";
         }
       })();
     </script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -123,28 +103,18 @@ const structuredData = {
     <meta property="og:image" content={socialImageURL} />
     <meta property="og:site_name" content="Om Anand" />
 
-    <meta
-      name="twitter:card"
-      content="summary_large_image"
-    />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <meta name="twitter:title" content={title} />
 
-    <meta
-      name="twitter:description"
-      content={description}
-    />
+    <meta name="twitter:description" content={description} />
 
-    <meta
-      name="twitter:image"
-      content={socialImageURL}
-    />
+    <meta name="twitter:image" content={socialImageURL} />
 
     <script
       type="application/ld+json"
       set:html={JSON.stringify(structuredData)}
     />
-
     <title>{title}</title>
   </head>
 
@@ -164,11 +134,8 @@ const structuredData = {
     </div>
 
     <script is:inline>
-      document.documentElement.classList.add("js");
-
       window.addEventListener("pageshow", () => {
-        <script is:inline>
-      document.documentElement.classList document.body.classList.remove("is-transitioning");
+        document.body.classList.remove("is-transitioning");
       });
     </script>
   </body>

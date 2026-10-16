@@ -7,8 +7,9 @@ Personal portfolio for Om Anand: robotics, embedded systems, controls, and algor
 ## Stack
 
 - [Astro](https://astro.build/) (static output)
-- Custom CSS design tokens (carbon / signal-red industrial theme)
-- Vanilla TypeScript for kinetic hero + scroll reveals
+- Quiet Court design: warm cream, court green, restrained terracotta, and editorial layouts
+- Locally hosted Newsreader and IBM Plex Sans (licenses in `public/fonts/`)
+- Vanilla TypeScript for accessible navigation, theme preference, and animation playback
 
 ## Development
 
@@ -24,7 +25,9 @@ npm run preview
 
 ## Content
 
-All site copy and structured data live in [`src/data/siteContent.ts`](src/data/siteContent.ts).
+Project records, experience, and structured data live in [`src/data/siteContent.ts`](src/data/siteContent.ts). Homepage editorial copy and composition live in [`src/pages/index.astro`](src/pages/index.astro), with the shared visual system in [`src/styles/quiet-court.css`](src/styles/quiet-court.css).
+
+The default palette is light. The theme button offers a matching forest evening palette and remembers the choice locally. Homepage animation can be paused and defaults to a still image when reduced motion is requested.
 
 ### Adding project media
 
