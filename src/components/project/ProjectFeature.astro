@@ -23,7 +23,6 @@ interface Props {
   media?: ProjectMedia | ProjectMedia[] | null;
   pipeline?: string[];
   outcomes?: string[];
-  status?: string;
 }
 
 const {
@@ -37,8 +36,7 @@ const {
   links = [],
   media = null,
   pipeline = [],
-  outcomes = [],
-  status
+  outcomes = []
 } = Astro.props;
 
 const safeTags = Array.isArray(tags) ? tags : [];
@@ -73,19 +71,6 @@ const formattedIndex = String(index + 1).padStart(
         {formattedIndex}
       </span>
 
-      {
-        status && (
-          <span
-            class:list={[
-              "project-feature__status",
-              status === "active" &&
-                "project-feature__status--active"
-            ]}
-          >
-            {status}
-          </span>
-        )
-      }
     </div>
 
     <p class="project-feature__type">
@@ -264,29 +249,6 @@ const formattedIndex = String(index + 1).padStart(
     align-items: center;
     justify-content: space-between;
     gap: var(--space-4);
-  }
-
-  .project-feature__status {
-    display: inline-flex;
-    align-items: center;
-    min-height: 1.7rem;
-    padding-inline: 0.65rem;
-    border: 1px solid var(--color-border);
-    color: var(--color-text-muted);
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .project-feature__status--active {
-    border-color: rgba(229, 43, 47, 0.55);
-    color: var(--color-accent);
-  }
-
-  :global(html[data-theme="light"])
-    .project-feature__status--active {
-    border-color: var(--color-accent);
   }
 
   .project-feature__origin {

@@ -187,9 +187,6 @@ html[data-theme] .site-main .demo-cta-section {
 html[data-theme] .site-main .demo-cta-section :is(p, h2) {
   color: var(--color-text);
 }
-html[data-theme] body .case-hero__status {
-  border-color: var(--color-border);
-}
 html[data-theme] body .site-footer {
   padding-block: 2.5rem 1.8rem;
   background: var(--color-page);

@@ -68,7 +68,7 @@ const stack = [
 
       <div class="case-hero__meta">
         <p class="section-kicker">State estimation & SLAM · Case study</p>
-        <p class="case-hero__status">Complete</p>
+
       </div>
 
       <h1>FastSLAM<br />1.0</h1>
@@ -364,11 +364,11 @@ const stack = [
   <style>
     .case-hero { padding: clamp(8.5rem, 14vw, 12rem) 0 clamp(4rem, 8vw, 7rem); }
     .case-hero__inner { display: grid; gap: clamp(2rem, 5vw, 4rem); }
-    .case-back, .case-section__label, .case-hero__status { color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .08em; text-transform: uppercase; }
+    .case-back, .case-section__label { color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .08em; text-transform: uppercase; }
     .case-back { width: fit-content; transition: color var(--duration-fast) var(--ease-standard); }
     .case-back:hover { color: var(--color-accent); }
     .case-hero__meta { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); padding-top: var(--space-5); border-top: var(--border-thin); }
-    .case-hero__status { color: var(--color-accent); }
+
     .case-hero h1 { max-width: 9ch; font-size: clamp(3rem, 6vw, 6.25rem); line-height: .9; letter-spacing: -.055em; text-transform: uppercase; }
     .case-hero__summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-8); align-items: end; margin-left: auto; width: min(100%, 58rem); }
     .case-hero__summary > p { max-width: 42rem; font-size: clamp(1.05rem, 1.5vw, 1.3rem); }
