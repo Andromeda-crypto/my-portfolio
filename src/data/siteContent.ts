@@ -149,11 +149,11 @@ export const projects: Project[] = [
       }
     ],
     priority: "featured",
-    status: "active",
+    status: "complete",
     outcomes: [
       "Designed the mechanical assembly in CAD around the sensing, electronics, and motor subsystems.",
       "Implemented complementary-filter tilt estimation and PID control modules in embedded C++, with motor and encoder interfaces.",
-      "Validated proportional-controller response with manual-tilt checks; physical actuation and balance tuning remain the next steps."
+      "Validated proportional-controller response with manual-tilt checks, including command direction, response scale, and output limits."
     ],
     pipeline: ["Estimate", "Control", "Actuate", "Telemetry"],
     media: [balbotDesign]
