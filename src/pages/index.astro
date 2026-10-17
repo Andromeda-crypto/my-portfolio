@@ -7,7 +7,6 @@ import {
   secondaryProjects,
   experience,
   research,
-  upcoming,
   stack,
 } from "../data/siteContent";
 
@@ -360,15 +359,11 @@ const orderedProjects = [...featuredProjects].sort(
         <p class="court-label">05 / The notebook</p>
         <h2 id="notebook-heading">Still working it out.</h2>
       </div>
-      <p>
-        Questions in progress,
-        <br />
-        and things I’d like to build next.
-      </p>
+      <p>Two projects I’m working on now.</p>
     </header>
-    <div class="court-notebook__grid">
-      <div id="research">
-        <p class="court-label">On the desk</p>
+    <div class="court-notebook__current" id="research">
+      <p class="court-label">On the desk</p>
+      <div class="court-notebook__grid">
         {research.map((item) => (
           <article>
             <span class="court-status">{item.status}</span>
@@ -376,20 +371,10 @@ const orderedProjects = [...featuredProjects].sort(
             <p>{item.description}</p>
           </article>
         ))}
-        <a class="court-link" href="/lab/">
-          Visit the lab ↗
-        </a>
       </div>
-      <div id="upcoming">
-        <p class="court-label">Next to explore</p>
-        {upcoming.map((item) => (
-          <article>
-            <span class="court-status">{item.status}</span>
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </article>
-        ))}
-      </div>
+      <a class="court-link" href="/lab/">
+        Visit the lab ↗
+      </a>
     </div>
   </section>
 

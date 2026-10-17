@@ -533,21 +533,24 @@ details summary:hover {
 .court-notebook {
   padding-bottom: 5rem;
 }
+.court-notebook__current {
+  margin-top: 2.5rem;
+}
 .court-notebook__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-  margin-top: 3rem;
+  gap: 3rem;
+  margin-top: 0.75rem;
 }
-.court-notebook__grid > div {
+.court-notebook__grid > article {
   min-width: 0;
 }
 .court-notebook article {
   padding-block: 1.5rem;
   border-bottom: var(--border-thin);
 }
-.court-notebook article:last-of-type {
-  margin-bottom: 1.2rem;
+.court-notebook__current > .court-link {
+  margin-top: 1.2rem;
 }
 .court-notebook h3 {
   font-size: 1.8rem;

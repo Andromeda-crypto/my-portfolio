@@ -85,21 +85,12 @@ export const about = {
     "Most of my projects sit somewhere between firmware and autonomy — estimating state, closing loops, and seeing how the pieces behave once they have to run together. Recent work includes an IIT BHU research internship in vision, edge deployment, and UAV targeting."
 };
 
-export const upcoming = [
-  {
-    title: "Autonomous Drone Precision Landing",
-    status: "Upcoming",
-    description:
-      "AprilTag pose estimation and visual servoing for autonomous landing and docking. V1 on a DJI Tello prototype, then V2 on a custom Pixhawk platform.",
-    tags: [
-      "Visual Servoing",
-      "AprilTag",
-      "UAV",
-      "Pose Estimation",
-      "Pixhawk"
-    ]
-  }
-];
+export const upcoming: Array<{
+  title: string;
+  status: string;
+  description: string;
+  tags: string[];
+}> = [];
 
 export const balbotDesign: ProjectMedia = {
   type: "image",
