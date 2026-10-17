@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   links,
+  balbotDesign,
   featuredProjects,
   secondaryProjects,
   experience,
@@ -25,6 +26,10 @@ const notes: Record<
     question: "A question of balance.",
     summary:
       "A two-wheeled robot being developed to stay upright. The interesting part is what happens when sensor noise, motor lag, and mechanics join the equation.",
+    image: balbotDesign.src,
+    alt: balbotDesign.alt,
+    width: 546,
+    height: 390,
   },
   "f1tenth-mpc-controller": {
     question: "A better model. A better result?",
@@ -265,42 +270,12 @@ const orderedProjects = [...featuredProjects].sort(
                     ? "MPC and Pure Pursuit, side by side at Silverstone."
                     : project.slug === "fastslam-1"
                       ? "State estimation on the UTIAS MR.CLAM dataset."
-                      : "A planned path through the simulated world."}
+                      : project.slug === "balbot"
+                        ? balbotDesign.caption
+                        : "A planned path through the simulated world."}
                 </figcaption>
               </figure>
-            ) : (
-              <a
-                href={`/projects/${project.slug}/`}
-                class="court-balance"
-                aria-label="Explore BALBOT, a self-balancing robot"
-              >
-                <svg
-                  viewBox="0 0 480 320"
-                  role="img"
-                  aria-label="Illustrative line drawing of a two-wheeled balancing robot"
-                >
-                  <g
-                    class="court-balance__guides"
-                    fill="none"
-                    stroke="currentColor"
-                  >
-                    <path d="M45 265H435M240 35V280" stroke-dasharray="3 7" />
-                    <path d="M175 84Q240 52 305 84" />
-                  </g>
-                  <g fill="none" stroke="currentColor" stroke-width="1.6">
-                    <path d="M201 110H279V229H201ZM213 128H267V159H213ZM240 110V72M232 72H248" />
-                    <circle cx="207" cy="244" r="21" />
-                    <circle cx="273" cy="244" r="21" />
-                    <path d="M207 244H273M214 182H266M214 195H266M240 159V229" />
-                  </g>
-                  <circle cx="240" cy="72" r="3" fill="currentColor" />
-                </svg>
-                <span class="court-label">Estimate · Control · Actuate</span>
-                <span class="court-balance__caption">
-                  BALBOT / a study in balance
-                </span>
-              </a>
-            )}
+            ) : null}
           </article>
         );
       })}

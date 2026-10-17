@@ -114,6 +114,13 @@ export const upcoming = [
   }
 ];
 
+export const balbotDesign: ProjectMedia = {
+  type: "image",
+  src: "/media/projects/balbot/design.png",
+  alt: "BALBOT CAD assembly showing the two driven wheels, stacked chassis, and component layout",
+  caption: "Mechanical design · CAD assembly"
+};
+
 export const projects: Project[] = [
   {
     slug: "balbot",
@@ -149,7 +156,7 @@ export const projects: Project[] = [
       "Validated proportional-controller response with manual-tilt checks; physical actuation and balance tuning remain the next steps."
     ],
     pipeline: ["Estimate", "Control", "Actuate", "Telemetry"],
-    media: null
+    media: [balbotDesign]
   },
 
     {
