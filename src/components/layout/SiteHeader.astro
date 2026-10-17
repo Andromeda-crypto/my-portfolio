@@ -97,17 +97,13 @@ const isCurrentPage = (href: string) => {
   >
     <nav class="mobile-navigation__inner" aria-label="Mobile navigation">
       <ul class="mobile-navigation__list">
-        {navigation.map((item, index) => (
+        {navigation.map((item) => (
           <li class="mobile-navigation__item">
             <a
               class="mobile-navigation__link"
               href={item.href}
               aria-current={isCurrentPage(item.href) ? "page" : undefined}
             >
-              <span class="mobile-navigation__index">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-
               <span>{item.label}</span>
             </a>
           </li>

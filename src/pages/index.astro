@@ -84,10 +84,7 @@ const orderedProjects = [...featuredProjects].sort(
       <br />
       Work worth doing carefully.
     </h1>
-    <p>
-      A few projects and experiments,
-      <br /> collected along the way.
-    </p>
+    <p>My work and projects, documented.</p>
     <a class="court-scroll" href="#about">
       Take a look around <span aria-hidden="true">↓</span>
     </a>
@@ -96,7 +93,7 @@ const orderedProjects = [...featuredProjects].sort(
   <section class="court-about" id="about" aria-labelledby="about-heading">
     <div class="page-frame court-about__grid">
       <div>
-        <p class="court-label">01 / A little about me</p>
+        <p class="court-label">A little about me</p>
         <h2 id="about-heading">
           Curiosity tends
           <br />
@@ -152,7 +149,7 @@ const orderedProjects = [...featuredProjects].sort(
     id="experience"
     aria-labelledby="experience-heading"
   >
-    <p class="court-label">02 / Work experience</p>
+    <p class="court-label">Work experience</p>
     <h2 id="experience-heading">A little further afield.</h2>
     {experience.map((item) => (
       <article>
@@ -191,7 +188,7 @@ const orderedProjects = [...featuredProjects].sort(
   >
     <header class="court-section-heading">
       <div>
-        <p class="court-label">03 / Selected work</p>
+        <p class="court-label">Selected work</p>
         <h2 id="work-heading">Ideas, put to the test.</h2>
       </div>
       <p>
@@ -211,9 +208,7 @@ const orderedProjects = [...featuredProjects].sort(
             ]}
           >
             <div class="court-project__copy">
-              <p class="court-label">
-                {String(index + 1).padStart(2, "0")} / {project.title}
-              </p>
+              <p class="court-label">{project.title}</p>
               <h3>
                 <a href={`/projects/${project.slug}/`}>{note.question}</a>
               </h3>
@@ -304,7 +299,7 @@ const orderedProjects = [...featuredProjects].sort(
     aria-labelledby="lab-heading"
   >
     <div class="court-introduction__note">
-      <p class="court-label">04 / Lab & experiments</p>
+      <p class="court-label">Lab & experiments</p>
       <h2 id="lab-heading">
         From movement
         <br />
@@ -356,7 +351,7 @@ const orderedProjects = [...featuredProjects].sort(
   >
     <header class="court-section-heading">
       <div>
-        <p class="court-label">05 / The notebook</p>
+        <p class="court-label">The notebook</p>
         <h2 id="notebook-heading">Still working it out.</h2>
       </div>
       <p>Two projects I’m working on now.</p>

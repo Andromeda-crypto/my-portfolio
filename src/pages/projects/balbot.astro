@@ -95,27 +95,23 @@ const sections = [
     aria-label="Inside the BALBOT project"
   >
     <p class="court-label">Inside the build</p>
-    <ol>
-      {sections.map((section, index) => (
+    <ul>
+      {sections.map((section) => (
         <li>
-          <a href={`#${section.id}`}>
-            <span>{String(index + 1).padStart(2, "0")}</span>
-            {section.title}
-          </a>
+          <a href={`#${section.id}`}>{section.title}</a>
         </li>
       ))}
-    </ol>
+    </ul>
   </nav>
 
   <div class="balbot-chapters page-frame">
-    {sections.map((section, index) => (
+    {sections.map((section) => (
       <section
         class="balbot-chapter"
         id={section.id}
         aria-labelledby={`${section.id}-heading`}
       >
         <header>
-          <p class="court-label">{String(index + 1).padStart(2, "0")}</p>
           <h2 id={`${section.id}-heading`}>{section.title}</h2>
         </header>
         <div class="balbot-chapter__body">
@@ -212,7 +208,7 @@ const sections = [
     padding-top: 1.5rem;
     padding-bottom: 2.5rem;
   }
-  .balbot-contents ol {
+  .balbot-contents ul {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 3rem;
@@ -229,10 +225,6 @@ const sections = [
   .balbot-contents a:hover {
     color: var(--color-terracotta);
   }
-  .balbot-contents a span {
-    font-size: 0.65rem;
-    color: var(--color-text-muted);
-  }
   .balbot-chapter {
     display: grid;
     grid-template-columns: 0.85fr 1.15fr;
@@ -242,7 +234,6 @@ const sections = [
   }
   .balbot-chapter h2 {
     font-size: clamp(1.8rem, 3vw, 2.5rem);
-    margin-top: 1rem;
     max-width: 21ch;
   }
   .balbot-chapter__body {
@@ -283,7 +274,7 @@ const sections = [
     .balbot-chapter__body {
       font-size: 1rem;
     }
-    .balbot-contents ol {
+    .balbot-contents ul {
       grid-template-columns: 1fr;
     }
   }
