@@ -445,12 +445,19 @@ export const stack = [
 
 export const interests = {
   reading: {
-    current: ["The Confidence Game by Maria Konnikova"],
+    current: [
+      {
+        title: "Zen and the Art of Motorcycle Maintenance",
+        author: "Robert M. Pirsig"
+      }
+    ],
     favorites: [
-      "Man’s Search for Meaning by Viktor Frankl",
-      "Meditations by Marcus Aurelius",
-      "The Alchemist by Paulo Coelho",
-      "Foundation by Isaac Asimov"
+      {
+        title: "Man’s Search for Meaning",
+        author: "Viktor Frankl",
+        note:
+          "What stays with me is Frankl’s conviction that we can find meaning even in suffering, and still choose how we respond. That is the hope I take from it: keeping an inner light alive through adversity."
+      }
     ]
   },
   sports: [
