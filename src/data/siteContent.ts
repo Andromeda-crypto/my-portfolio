@@ -87,19 +87,6 @@ export const about = {
 
 export const upcoming = [
   {
-    title: "Quadruple Inverted Pendulum on a Cart",
-    status: "Next",
-    description:
-      "A controls build on a motorized linear rail consisting joint encoders, nonlinear dynamics, state estimation, and LQR/LQG, with a path toward MPC. The next upcoming dynamics-and-controls project.",
-    tags: [
-      "Controls",
-      "LQR / LQG",
-      "State Estimation",
-      "Nonlinear Dynamics",
-      "Hardware"
-    ]
-  },
-  {
     title: "Autonomous Drone Precision Landing",
     status: "Upcoming",
     description:
@@ -371,11 +358,18 @@ export const secondaryProjects = projects.filter(
 
 export const research = [
   {
-    title: "FastSLAM 2.0",
+    title: "Quadruple Inverted Pendulum on a Cart",
     status: "In Progress",
     description:
-      "An implementation of FastSLAM 2.0 focused on incorporating the latest observation into the particle proposal distribution. The work is currently centred on understanding the paper, structuring the algorithm, and translating the updated proposal step into a reliable implementation.",
-    tags: ["C++17", "SLAM", "Particle Filters", "Research Implementation"]
+      "Working on a four-link inverted pendulum on a motorized cart, with a focus on nonlinear dynamics, state estimation, and feedback control. The aim is to bring the mechanical design, sensing, and controller together on one platform.",
+    tags: ["Controls", "State Estimation", "Nonlinear Dynamics", "Hardware"]
+  },
+  {
+    title: "Robotic Arm & Catching Gripper",
+    status: "In Progress",
+    description:
+      "A robotic arm and gripper being developed to track a moving object, estimate its motion, predict its future position, and time an interception to catch it.",
+    tags: ["Motion Tracking", "State Estimation", "Prediction", "Manipulation"]
   }
 ];
 
