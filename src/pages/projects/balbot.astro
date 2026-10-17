@@ -1,378 +1,250 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const stages = [
+const sections = [
   {
-    number: "01",
-    title: "Estimate",
-    body: "Read the IMU and wheel encoders, then estimate the robot’s tilt and motion."
+    id: "mechanical-design",
+    title: "Mechanical design and component layout",
+    paragraphs: [
+      "BALBOT brings an ESP32, an MPU6050 IMU, and encoder-equipped geared motors into a two-wheeled platform. The chassis has to support the electronics and power system while leaving room for wiring, access, and mechanical adjustment.",
+      "Component placement is part of the control problem. Mass distribution changes how the robot tips and responds; structural flex and loose wiring can introduce movement that the sensor reads as part of the robot’s motion. The aim is a rigid, accessible assembly that can be revised as the hardware is tested.",
+    ],
   },
   {
-    number: "02",
-    title: "Control",
-    body: "Use the estimated state to calculate the motor command required to correct the robot’s balance."
+    id: "attitude-estimation",
+    title: "IMU calibration and attitude estimation",
+    paragraphs: [
+      "Tilt is estimated by combining accelerometer and gyroscope measurements in a complementary filter. The gyroscope follows rapid changes in angle, while the accelerometer supplies a longer-term reference that helps limit drift.",
+      "Gyroscope bias is measured while the sensor is stationary. Sensor orientation and sign conventions then need to agree with the rest of the control loop. Filter tuning is a balance between responsiveness and noise: an estimate that looks smooth is only useful if it still responds quickly enough to a real disturbance.",
+    ],
   },
   {
-    number: "03",
-    title: "Actuate",
-    body: "Convert the control output into left and right motor commands through the motor driver."
+    id: "motor-control",
+    title: "Motor control and encoder feedback",
+    paragraphs: [
+      "The motor interface turns a signed command into wheel direction and PWM duty cycle. Encoder counts provide a separate measurement of wheel motion, allowing the firmware to estimate speed rather than assume that a PWM command produces a particular response.",
+      "Low-speed behavior is especially important. A motor may not move until its command clears a dead zone, and the two motors may respond differently to the same input. Direction checks, stop behavior, encoder signs, and speed estimates need to be established before closing the velocity loop.",
+    ],
   },
   {
-    number: "04",
-    title: "Observe",
-    body: "Send live sensor and controller data to a telemetry interface for testing and tuning."
-  }
-];
-
-const plannedSections = [
-  "Mechanical design and component layout",
-  "IMU calibration and attitude estimation",
-  "Motor control and encoder feedback",
-  "Controller design and tuning",
-  "Telemetry and debugging workflow",
-  "Test results, limitations, and next revisions"
-];
-
-const stack = [
-  "C++",
-  "ESP32",
-  "MPU-6050",
-  "Wheel encoders",
-  "PID control",
-  "Differential drive",
-  "Motor drivers",
-  "Telemetry"
+    id: "controller-tuning",
+    title: "Controller design and tuning",
+    paragraphs: [
+      "The balance controller uses the difference between target and estimated tilt to calculate a corrective command. The intended cascaded structure uses this outer loop to request wheel motion, with an inner velocity loop regulating motor response through encoder feedback.",
+      "The PID implementation includes output limits and anti-windup so the integral term does not keep accumulating when the requested correction exceeds the available output. Initial proportional-only checks confirm the direction and scale of the response; physical tuning must then evaluate oscillation, saturation, and recovery together.",
+    ],
+  },
+  {
+    id: "telemetry",
+    title: "Telemetry and debugging workflow",
+    paragraphs: [
+      "Serial telemetry exposes estimated tilt, target angle, error, controller output, wheel-speed targets, measured RPM, and PWM commands. Reading these signals together helps distinguish a sensing problem from a motor-response or timing problem.",
+      "The workflow is incremental: check the sensor, test actuation, verify encoder feedback, and then integrate the control loops. Keeping those checks separate makes an unexpected response easier to trace than changing the estimator, gains, and motor settings at the same time.",
+    ],
+  },
+  {
+    id: "evaluation",
+    title: "Test results, limitations, and next revisions",
+    paragraphs: [
+      "The repository records manual-tilt checks of the proportional controller: opposite tilt directions produce opposite commands, output grows with error, and saturation limits are exercised. These checks validate parts of the implementation; they are not a demonstration of sustained balancing.",
+      "Balance duration, tilt error, and disturbance recovery are the next evaluation measures. No recorded balancing results are presented here yet. Motor dead zones, differences between the wheels, sensor noise, and timing will guide the next mechanical, estimation, and control revisions once physical tests provide evidence.",
+    ],
+  },
 ];
 ---
 
 <BaseLayout
   title="BALBOT | Om Anand"
-  description="An engineering case study for BALBOT, a two-wheeled self-balancing robot built around embedded control, state estimation, and physical hardware."
-  bodyClass="project-case-study"
+  description="The design and development of BALBOT: a two-wheeled robot exploring mechanical layout, attitude estimation, motor feedback, and embedded control."
+  bodyClass="project-case-study balbot-page"
 >
-  <section class="case-hero">
-    <div class="page-frame case-hero__inner">
-      <a class="case-back" href="/#work">← Selected work</a>
-
-      <div class="case-hero__meta">
-        <p class="section-kicker">Embedded control · Case study</p>
-        <p class="case-hero__status">In progress</p>
-      </div>
-
-      <h1>BALBOT</h1>
-
-      <div class="case-hero__summary">
-        <p>
-          A two-wheeled self-balancing robot built around embedded C++, IMU
-          sensing, encoder feedback, motor control, and live telemetry.
-        </p>
-      </div>
+  <section class="balbot-hero page-frame" aria-labelledby="balbot-title">
+    <a class="balbot-back" href="/#work">
+      ← Selected work
+    </a>
+    <div class="balbot-meta">
+      <p class="court-label">A study in balance</p>
+      <span>In development</span>
     </div>
+    <h1 id="balbot-title">BALBOT</h1>
+    <p class="balbot-intro">
+      A small robot, an unstable system, and the work of bringing sensing,
+      mechanics, and control into one loop.
+    </p>
+    <p class="balbot-hardware">
+      ESP32 · MPU6050 · Encoder-equipped geared motors
+    </p>
   </section>
 
-  <section class="case-status">
-    <div class="page-frame case-status__inner">
-      <p class="case-section__label">Documentation status</p>
+  <nav
+    class="balbot-contents page-frame"
+    aria-label="Inside the BALBOT project"
+  >
+    <p class="court-label">Inside the build</p>
+    <ol>
+      {sections.map((section, index) => (
+        <li>
+          <a href={`#${section.id}`}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            {section.title}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </nav>
 
-      <div>
-        <h2>The engineering review is being prepared.</h2>
-        <p>
-          The project page is in place, but the detailed write-up, photographs,
-          controller results, and design revisions will be added after the
-          project material is organized.
-        </p>
-      </div>
-    </div>
-  </section>
+  <div class="balbot-chapters page-frame">
+    {sections.map((section, index) => (
+      <section
+        class="balbot-chapter"
+        id={section.id}
+        aria-labelledby={`${section.id}-heading`}
+      >
+        <header>
+          <p class="court-label">{String(index + 1).padStart(2, "0")}</p>
+          <h2 id={`${section.id}-heading`}>{section.title}</h2>
+        </header>
+        <div class="balbot-chapter__body">
+          {section.paragraphs.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
 
-  <section class="case-section case-section--surface">
-    <div class="page-frame">
-      <div class="case-section__header">
-        <p class="case-section__label">01 · System outline</p>
-        <h2>Estimate → Control → Actuate → Observe</h2>
-      </div>
-
-      <ol class="system-grid">
-        {
-          stages.map((stage) => (
-            <li class="system-card">
-              <span>{stage.number}</span>
-              <h3>{stage.title}</h3>
-              <p>{stage.body}</p>
-            </li>
-          ))
-        }
-      </ol>
-    </div>
-  </section>
-
-  <section class="case-section">
-    <div class="page-frame documentation-layout">
-      <div>
-        <p class="case-section__label">02 · Planned review</p>
-        <h2>What the full page will cover.</h2>
-      </div>
-
-      <ol class="documentation-list">
-        {
-          plannedSections.map((section, index) => (
-            <li>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <p>{section}</p>
-            </li>
-          ))
-        }
-      </ol>
-    </div>
-  </section>
-
-  <section class="case-section case-section--surface">
-    <div class="page-frame">
-      <div class="case-section__header">
-        <p class="case-section__label">03 · Stack</p>
-        <h2>Current hardware and software.</h2>
-      </div>
-
-      <ul class="tag-list case-stack" aria-label="Project technologies">
-        {stack.map((item) => <li class="tag">{item}</li>)}
-      </ul>
-    </div>
+  <section class="balbot-links page-frame" aria-label="Continue exploring">
+    <p>Code, implementation notes, and tuning records.</p>
+    <a
+      class="court-link"
+      href="https://github.com/Andromeda-crypto/BALBOT"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      View the repository ↗
+    </a>
+    <a class="court-link" href="/#work">
+      Back to selected work ↗
+    </a>
   </section>
 </BaseLayout>
 
-<script>
-  import { initializeScrollAnimations } from "../../components/motion/scrollAnimations";
-
-  const initializePage = () => {
-    document.body.classList.add("is-ready");
-    initializeScrollAnimations();
-  };
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initializePage, {
-      once: true
-    });
-  } else {
-    initializePage();
-  }
-</script>
-
 <style>
-  .case-hero {
-    min-height: 78svh;
-    padding-top: 8rem;
-    border-bottom: var(--border-thin);
+  .balbot-hero {
+    padding-top: 8.5rem;
+    padding-bottom: 3rem;
   }
-
-  .case-hero__inner {
-    padding-bottom: clamp(4rem, 9vw, 8rem);
-  }
-
-  .case-back {
-    display: inline-flex;
-    margin-bottom: var(--space-8);
+  .balbot-back {
+    display: inline-block;
+    font-size: 0.8rem;
     color: var(--color-text-muted);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    margin-bottom: 3rem;
   }
-
-  .case-back:hover,
-  .case-back:focus-visible {
+  .balbot-back:hover {
     color: var(--color-accent);
   }
-
-  .case-hero__meta {
+  .balbot-meta {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-4);
+    gap: 1.5rem;
   }
-
-  .case-hero__status {
-    padding: 0.55rem 0.8rem;
-    border: 1px solid var(--color-border);
-    color: var(--color-accent);
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  .balbot-meta span {
+    font-size: 0.75rem;
+    color: var(--color-terracotta);
   }
-
-  .case-hero h1 {
-    margin-top: var(--space-5);
-  font-size: clamp(3rem, 6vw, 6.25rem);
-  line-height: 0.82;
-    letter-spacing: var(--tracking-display);
-    text-transform: uppercase;
+  .balbot-hero h1 {
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    margin: 1.2rem 0 1.5rem;
   }
-
-  .case-hero__summary {
-    max-width: 44rem;
-    margin-top: var(--space-8);
+  .balbot-intro {
+    max-width: 40rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.45rem, 2.3vw, 1.9rem);
   }
-
-  .case-hero__summary p {
-    color: var(--color-text-soft);
-    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
-    line-height: 1.55;
-  }
-
-  .case-status {
-    padding-block: var(--section-space-md);
-    border-bottom: var(--border-thin);
-  }
-
-  .case-status__inner {
-    display: grid;
-    grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
-    gap: var(--space-7);
-  }
-
-  .case-status__inner > div {
-    max-width: 48rem;
-  }
-
-  .case-status h2,
-  .case-section h2 {
-    max-width: 16ch;
-    font-size: clamp(2.1rem, 4vw, 4.1rem);
-    line-height: 0.95;
-    letter-spacing: var(--tracking-tight);
-  }
-
-  .case-status__inner > div p {
-    max-width: 42rem;
-    margin-top: var(--space-5);
-    color: var(--color-text-muted);
-    font-size: clamp(1rem, 1.4vw, 1.2rem);
-  }
-
-  .case-section {
-    padding-block: var(--section-space-lg);
-    border-top: var(--border-thin);
-  }
-
-  .case-section--surface {
-    background: var(--color-surface);
-  }
-
-  .case-section__label {
-    color: var(--color-accent);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .case-section__header {
-    display: grid;
-    grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
-    gap: var(--space-7);
-    align-items: start;
-    margin-bottom: var(--space-8);
-  }
-
-  .system-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    border-top: var(--border-thin);
-    border-left: var(--border-thin);
-  }
-
-  .system-card {
-    min-height: 21rem;
-    padding: var(--space-6);
-    border-right: var(--border-thin);
-    border-bottom: var(--border-thin);
-  }
-
-  .system-card > span,
-  .documentation-list span {
-    color: var(--color-accent);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: 0.08em;
-  }
-
-  .system-card h3 {
-    margin-top: var(--space-8);
-    font-size: clamp(1.4rem, 2vw, 1.95rem);
-    text-transform: uppercase;
-  }
-
-  .system-card p {
-    margin-top: var(--space-4);
+  .balbot-hardware {
+    margin-top: 1.6rem;
+    font-size: 0.8rem;
     color: var(--color-text-muted);
   }
-
-  .documentation-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
-    gap: var(--space-8);
-  }
-
-  .documentation-layout > div h2 {
-    margin-top: var(--space-5);
-  }
-
-  .documentation-list {
+  .balbot-contents {
     border-top: var(--border-thin);
+    padding-top: 1.5rem;
+    padding-bottom: 2.5rem;
   }
-
-  .documentation-list li {
+  .balbot-contents ol {
     display: grid;
-    grid-template-columns: 3rem minmax(0, 1fr);
-    gap: var(--space-5);
-    padding-block: var(--space-5);
-    border-bottom: var(--border-thin);
+    grid-template-columns: 1fr 1fr;
+    column-gap: 3rem;
+    row-gap: 0.4rem;
+    margin-top: 1rem;
   }
-
-  .documentation-list p {
-    color: var(--color-text-soft);
+  .balbot-contents a {
+    display: flex;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.4rem 0;
+    font-size: 0.8rem;
   }
-
-  .case-stack {
-    max-width: 54rem;
+  .balbot-contents a:hover {
+    color: var(--color-terracotta);
   }
-
-  @media (max-width: 900px) {
-    .case-status__inner,
-    .case-section__header,
-    .documentation-layout {
+  .balbot-contents a span {
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+  }
+  .balbot-chapter {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    border-top: var(--border-thin);
+    padding-block: 3rem;
+  }
+  .balbot-chapter h2 {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    margin-top: 1rem;
+    max-width: 21ch;
+  }
+  .balbot-chapter__body {
+    max-width: 62ch;
+  }
+  .balbot-chapter__body p + p {
+    margin-top: 1.2rem;
+  }
+  .balbot-links {
+    display: flex;
+    gap: 1rem 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    border-top: var(--border-thin);
+    padding-block: 2rem 3.5rem;
+  }
+  .balbot-links > p {
+    flex-basis: 100%;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+  @media (max-width: 700px) {
+    .balbot-hero {
+      padding-top: 7rem;
+      padding-bottom: 2.5rem;
+    }
+    .balbot-back {
+      margin-bottom: 2rem;
+    }
+    .balbot-chapter {
       grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding-block: 2.5rem;
     }
-
-    .system-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .balbot-chapter h2 {
+      max-width: 24ch;
     }
-
-    .system-card {
-      min-height: 17rem;
+    .balbot-chapter__body {
+      font-size: 1rem;
     }
-  }
-
-  @media (max-width: 640px) {
-    .case-hero {
-      min-height: auto;
-      padding-top: 6.5rem;
-    }
-
-    .case-hero h1 {
-  font-size: clamp(2.7rem, 11vw, 4.15rem);
-    }
-
-    .system-grid {
+    .balbot-contents ol {
       grid-template-columns: 1fr;
-    }
-
-    .system-card {
-      min-height: auto;
-    }
-
-    .system-card h3 {
-      margin-top: var(--space-6);
     }
   }
 </style>
