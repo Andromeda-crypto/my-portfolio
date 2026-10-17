@@ -144,9 +144,9 @@ export const projects: Project[] = [
     priority: "featured",
     status: "active",
     outcomes: [
-      "Designed the mechanical assembly in CAD and built a physical prototype that balances on hardware.",
-      "Implemented attitude estimation and closed-loop PID control from scratch in embedded C++, wiring IMU and encoder feedback into motor actuation.",
-      "Tuned the controller against real sensor noise, latency, and mechanical coupling until the robot held a stable balance."
+      "Designed the mechanical assembly in CAD around the sensing, electronics, and motor subsystems.",
+      "Implemented complementary-filter tilt estimation and PID control modules in embedded C++, with motor and encoder interfaces.",
+      "Validated proportional-controller response with manual-tilt checks; physical actuation and balance tuning remain the next steps."
     ],
     pipeline: ["Estimate", "Control", "Actuate", "Telemetry"],
     media: null
